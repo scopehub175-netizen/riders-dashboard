@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Riders Performance Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg:#0f172a; --bg2:#1e293b; --bg3:#334155;
+      --accent:#38bdf8; --accent2:#818cf8;
+      --green:#34d399; --red:#f87171; --yellow:#fbbf24;
+      --orange:#fb923c; --text:#f1f5f9; --text2:#94a3b8;
+      --border:#334155;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+    header{
+      background:linear-gradient(135deg,#0ea5e9 0%,#6366f1 100%);
+      padding:18px 28px;display:flex;align-items:center;justify-content:space-between;
+      box-shadow:0 4px 20px rgba(0,0,0,.4)
+    }
+    header h1{font-size:1.5rem;font-weight:700}
+    header .sub{font-size:.82rem;opacity:.85;margin-top:3px}
+    .status-bar{
+      background:var(--bg2);border-bottom:1px solid var(--border);
+      padding:8px 28px;display:flex;align-items:center;gap:14px;font-size:.8rem;color:var(--text2)
+    }
+    .dot{width:9px;height:9px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .dot.loading{background:var(--yellow)}
+    .dot.error{background:var(--red);animation:none}
+
+    .main{padding:22px 28px}
+
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:24px}
+    .kpi-card{
+      background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+      padding:18px 16px;position:relative;overflow:hidden;transition:transform .2s
+    }
+    .kpi-card:hover{transform:translateY(-3px)}
+    .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+    .kpi-card.blue::before{background:#38bdf8}.kpi-card.green::before{background:#34d399}
+    .kpi-card.red::before{background:#f87171}.kpi-card.yellow::before{background:#fbbf24}
+    .kpi-card.purple::before{background:#818cf8}.kpi-card.orange::before{background:#fb923c}
+    .kpi-label{font-size:.72rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px}
+    .kpi-value{font-size:1.9rem;font-weight:700}
+    .kpi-card.blue .kpi-value{color:#38bdf8}.kpi-card.green .kpi-value{color:#34d399}
+    .kpi-card.red .kpi-value{color:#f87171}.kpi-card.yellow .kpi-value{color:#fbbf24}
+    .kpi-card.purple .kpi-value{color:#818cf8}.kpi-card.orange .kpi-value{color:#fb923c}
+    .kpi-sub{font-size:.75rem;color:var(--text2);margin-top:4px}
+    .kpi-icon{position:absolute;top:12px;left:12px;font-size:1.7rem;opacity:.12}
+
+    .section-title{font-size:1rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+    .section-title span{color:var(--accent);font-size:1.15rem}
+
+    .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
+    .chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px}
+    .chart-card canvas{max-height:260px}
+
+    .filters{
+      display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px;
+      background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px 18px
+    }
+    .filters label{font-size:.78rem;color:var(--text2);margin-left:4px}
+    .filters select,.filters input{
+      background:var(--bg3);border:1px solid var(--border);color:var(--text);
+      border-radius:8px;padding:5px 10px;font-size:.82rem;cursor:pointer
+    }
+    .filters select:focus,.filters input:focus{outline:2px solid var(--accent)}
+    .btn{
+      background:var(--accent);color:#0f172a;border:none;border-radius:8px;
+      padding:6px 16px;font-size:.82rem;font-weight:600;cursor:pointer;transition:opacity .2s
+    }
+    .btn:hover{opacity:.85}
+    .btn.sec{background:var(--bg3);color:var(--text)}
+    .btn.refresh{background:#334155;color:#38bdf8;border:1px solid #38bdf8}
+
+    .perf-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
+    .perf-list{list-style:none}
+    .perf-list li{
+      display:flex;align-items:center;gap:9px;padding:7px 0;
+      border-bottom:1px solid var(--border)
+    }
+    .perf-list li:last-child{border-bottom:none}
+    .perf-rank{
+      width:24px;height:24px;border-radius:50%;display:flex;align-items:center;
+      justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0
+    }
+    .r1{background:#fbbf24;color:#0f172a}.r2{background:#94a3b8;color:#0f172a}
+    .r3{background:#b45309;color:#fff}.ro{background:var(--bg3);color:var(--text2)}
+    .perf-name{flex:1;font-size:.78rem}
+    .perf-bar-wrap{width:70px;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+    .perf-bar{height:100%;border-radius:3px}
+    .perf-val{font-size:.78rem;font-weight:700;min-width:34px;text-align:left}
+
+    .table-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px}
+    .table-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
+    .table-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:.8rem}
+    thead th{
+      background:var(--bg3);padding:9px 12px;text-align:right;color:var(--text2);
+      font-weight:600;white-space:nowrap;cursor:pointer;user-select:none
+    }
+    thead th:hover{color:var(--accent)}
+    tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+    tbody tr:hover{background:var(--bg3)}
+    tbody td{padding:8px 12px;white-space:nowrap}
+    .badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.7rem;font-weight:600}
+    .badge-FTMN{background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid #38bdf840}
+    .badge-FNMN{background:rgba(129,140,248,.15);color:#818cf8;border:1px solid #818cf840}
+    .badge-SUPT{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid #fbbf2440}
+    .badge-SRBS{background:rgba(52,211,153,.15);color:#34d399;border:1px solid #34d39940}
+    .pos{color:#34d399;font-weight:600}.neg{color:#f87171;font-weight:600}.neu{color:#fbbf24;font-weight:600}
+
+    .loading-overlay{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      min-height:300px;gap:16px;color:var(--text2)
+    }
+    .spinner{
+      width:44px;height:44px;border:3px solid var(--bg3);
+      border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .error-box{
+      background:#f8717120;border:1px solid #f87171;border-radius:12px;
+      padding:20px;text-align:center;color:#f87171;margin:20px 0
+    }
+
+    ::-webkit-scrollbar{width:5px;height:5px}
+    ::-webkit-scrollbar-track{background:var(--bg2)}
+    ::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:3px}
+
+    @media(max-width:800px){
+      .charts-row,.perf-grid{grid-template-columns:1fr}
+      .main{padding:12px}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🚴 Riders Performance Dashboard</h1>
+    <div class="sub">تتزامن تلقائياً مع Google Sheets · Auto-sync with Google Sheets</div>
+  </div>
+  <div style="font-size:2.2rem">📊</div>
+</header>
+
+<div class="status-bar">
+  <div class="dot" id="statusDot"></div>
+  <span id="statusText">جاري تحميل البيانات...</span>
+  <span style="margin-right:auto"></span>
+  <span id="lastUpdate"></span>
+  <button class="btn refresh" onclick="loadData(true)">🔄 تحديث</button>
+</div>
+
+<div class="main" id="mainContent">
+  <div class="loading-overlay">
+    <div class="spinner"></div>
+    <div>جاري الاتصال بـ Google Sheets...</div>
+  </div>
+</div>
+
+<script>
+// ==================== CONFIG ====================
+// ضع رابط CSV من Google Sheets هنا
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTc5sFosqCuYPsG1lwVaTqRsNmrFbSchwrUG-udsG2IaAxsDLQzi-Oc_O5Ia7MR-jkYDnoRWBLPV5uS/pub?gid=1908654568&single=true&output=csv';
+
+// تحديث تلقائي كل 60 ثانية
+const AUTO_REFRESH_MS = 60000;
+
+// ==================== STATE ====================
+let allData = [];
+let filteredData = [];
+let sortKey = 'total';
+let sortDir = -1;
+let chartInstances = {};
+let refreshTimer = null;
+
+const dayLabels = ['1-Oct','2-Oct','3-Oct','4-Oct','5-Oct','6-Oct','7-Oct','8-Oct'];
+const coColors = { FTMN:'#38bdf8', FNMN:'#818cf8', SUPT:'#fbbf24', SRBS:'#34d399' };
+
+// ==================== DATA LOADING ====================
+async function loadData(manual = false) {
+  setStatus('loading', manual ? 'يتم التحديث...' : 'جاري تحميل البيانات...');
+
+  try {
+    // نضيف timestamp لتفادي الـ cache
+    const url = SHEET_CSV_URL + (SHEET_CSV_URL.includes('?') ? '&' : '?') + '_t=' + Date.now();
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    allData = parseCSV(text);
+
+    if (allData.length === 0) throw new Error('لا توجد بيانات في الشيت');
+
+    filteredData = [...allData];
+    renderAll();
+    setStatus('ok', `آخر تحديث: ${new Date().toLocaleTimeString('ar-EG')}`);
+  } catch (err) {
+    setStatus('error', `خطأ في التحميل: ${err.message}`);
+    if (allData.length === 0) {
+      document.getElementById('mainContent').innerHTML = `
+        <div class="error-box">
+          <div style="font-size:1.4rem;margin-bottom:10px">⚠️ تعذّر تحميل البيانات</div>
+          <div>${err.message}</div>
+          <div style="margin-top:10px;font-size:.85rem;color:var(--text2)">
+            تأكد من أن رابط Google Sheets صحيح ومنشور للعامة
+          </div>
+          <button class="btn" style="margin-top:14px" onclick="loadData(true)">إعادة المحاولة</button>
+        </div>`;
+    }
+  }
+
+  // إعادة جدولة التحديث التلقائي
+  clearTimeout(refreshTimer);
+  refreshTimer = setTimeout(() => loadData(), AUTO_REFRESH_MS);
+}
+
+function setStatus(state, msg) {
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('statusText');
+  dot.className = 'dot ' + (state === 'ok' ? '' : state);
+  txt.textContent = msg;
+  if (state === 'ok') document.getElementById('lastUpdate').textContent = '';
+}
+
+// ==================== CSV PARSER ====================
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+
+  // نحاول تحديد الهيدر - نبحث عن صف يحتوي "Rider" أو اسم
+  let headerIdx = 0;
+  for (let i = 0; i < Math.min(5, lines.length); i++) {
+    if (lines[i].toLowerCase().includes('rider') || lines[i].toLowerCase().includes('name')) {
+      headerIdx = i; break;
+    }
+  }
+
+  const headers = parseCSVLine(lines[headerIdx]);
+  const riders = [];
+
+  for (let i = headerIdx + 1; i < lines.length; i++) {
+    const row = parseCSVLine(lines[i]);
+    if (!row[0] || row[0].trim() === '' || row[0].toLowerCase().includes('total')) continue;
+
+    // تحديد الأعمدة تلقائياً
+    const nameCol = 0;
+    const coCol = findCol(headers, ['co', 'category', 'type', 'classification']);
+    const totalCol = findCol(headers, ['total', 'إجمالي', 'sum']);
+    const missingCol = findCol(headers, ['missing', 'difference', 'diff', 'الفرق']);
+
+    // أعمدة الأيام (أرقام فقط)
+    const daysCols = [];
+    headers.forEach((h, idx) => {
+      const clean = h.replace(/[^a-zA-Z0-9\-]/g, '').toLowerCase();
+      if (clean.includes('oct') || clean.includes('nov') || clean.includes('sep') ||
+          /^\d{1,2}[-\/]\w/.test(h.trim()) || /\d{5}/.test(h)) {
+        daysCols.push(idx);
+      }
+    });
+
+    const parseDayVal = v => {
+      if (!v || v.trim() === '' || v.trim() === '0') return null;
+      const n = parseFloat(v.replace(/[^0-9.\-]/g,''));
+      return isNaN(n) ? null : n;
+    };
+
+    const days = daysCols.slice(0, 12).map(c => parseDayVal(row[c] || ''));
+    const totalRaw = totalCol >= 0 ? parseFloat((row[totalCol]||'0').replace(/[^0-9.\-]/g,'')) : days.reduce((s,d)=>s+(d||0),0);
+    const missingRaw = missingCol >= 0 ? parseFloat((row[missingCol]||'0').replace(/[^0-9.\-]/g,'')) : 0;
+
+    if (isNaN(totalRaw) || totalRaw === 0) continue;
+
+    riders.push({
+      name: (row[nameCol]||'').trim().replace(/\s+/g,' '),
+      co: coCol >= 0 ? (row[coCol]||'').trim().toUpperCase() : 'N/A',
+      days: days,
+      total: totalRaw,
+      missing: missingRaw,
+    });
+  }
+  return riders;
+}
+
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === '"') { inQuotes = !inQuotes; continue; }
+    if (line[i] === ',' && !inQuotes) { result.push(current); current = ''; continue; }
+    current += line[i];
+  }
+  result.push(current);
+  return result;
+}
+
+function findCol(headers, keywords) {
+  for (let i = 0; i < headers.length; i++) {
+    const h = headers[i].toLowerCase().trim();
+    if (keywords.some(k => h.includes(k))) return i;
+  }
+  return -1;
+}
+
+// ==================== RENDER ALL ====================
+function renderAll() {
+  const html = `
+    <div class="kpi-grid" id="kpiGrid"></div>
+    <div class="filters">
+      <div><label>التصنيف</label>
+        <select id="filterCO"><option value="">الكل</option></select></div>
+      <div><label>الحالة</label>
+        <select id="filterStatus">
+          <option value="">الكل</option>
+          <option value="above">فوق الهدف ✅</option>
+          <option value="below">تحت الهدف ❌</option>
+        </select></div>
+      <div><label>بحث</label>
+        <input type="text" id="searchInput" placeholder="ابحث عن راكب..." style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:5px 10px;font-size:.82rem;width:200px"/></div>
+      <button class="btn" onclick="applyFilters()">🔍 تطبيق</button>
+      <button class="btn sec" onclick="resetFilters()">↺ إعادة</button>
+      <span id="filteredCount" style="font-size:.78rem;color:var(--text2);margin-right:auto"></span>
+    </div>
+    <div class="charts-row">
+      <div class="chart-card"><div class="section-title"><span>📈</span> الأداء اليومي الإجمالي</div><canvas id="dailyChart"></canvas></div>
+      <div class="chart-card"><div class="section-title"><span>🥧</span> توزيع الرايدرز حسب التصنيف</div><canvas id="donutChart"></canvas></div>
+    </div>
+    <div class="charts-row">
+      <div class="chart-card"><div class="section-title"><span>🏢</span> متوسط الأداء حسب التصنيف</div><canvas id="avgChart"></canvas></div>
+      <div class="chart-card"><div class="section-title"><span>📊</span> توزيع مستويات الأداء</div><canvas id="histChart"></canvas></div>
+    </div>
+    <div class="perf-grid">
+      <div class="chart-card"><div class="section-title"><span>🥇</span> أفضل 10 رايدرز</div><ul class="perf-list" id="topList"></ul></div>
+      <div class="chart-card"><div class="section-title"><span>⚠️</span> أدنى 10 رايدرز</div><ul class="perf-list" id="bottomList"></ul></div>
+    </div>
+    <div class="table-card">
+      <div class="table-header">
+        <div class="section-title" style="margin:0"><span>📋</span> تفاصيل جميع الرايدرز</div>
+        <div id="tableCount" style="font-size:.78rem;color:var(--text2)"></div>
+      </div>
+      <div class="table-wrap"><table id="mainTable">
+        <thead><tr>
+          <th onclick="sortTable('name')"># الاسم ↕</th>
+          <th onclick="sortTable('co')">CO ↕</th>
+          <th>الأيام</th>
+          <th onclick="sortTable('total')">الإجمالي ↕</th>
+          <th onclick="sortTable('missing')">الفرق ↕</th>
+          <th>الحالة</th>
+        </tr></thead>
+        <tbody id="tableBody"></tbody>
+      </table></div>
+    </div>`;
+
+  document.getElementById('mainContent').innerHTML = html;
+
+  // ملء خيارات CO
+  const cos = [...new Set(allData.map(r=>r.co))].sort();
+  const sel = document.getElementById('filterCO');
+  cos.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); });
+
+  // ربط الفلاتر
+  document.getElementById('searchInput').addEventListener('input', applyFilters);
+  document.getElementById('filterCO').addEventListener('change', applyFilters);
+  document.getElementById('filterStatus').addEventListener('change', applyFilters);
+
+  renderKPIs();
+  renderCharts();
+  renderPerformers();
+  renderTable(filteredData);
+}
+
+// ==================== KPIs ====================
+function renderKPIs() {
+  const data = allData;
+  const total = data.reduce((s,r)=>s+r.total,0);
+  const avg = (total/data.length).toFixed(1);
+  const above = data.filter(r=>r.missing>0).length;
+  const below = data.filter(r=>r.missing<0).length;
+  const best = data.reduce((a,b)=>a.total>b.total?a:b);
+  const kpis = [
+    {label:'إجمالي التوصيلات',value:total.toLocaleString(),sub:'خلال الفترة المحددة',cls:'blue',icon:'🚀'},
+    {label:'عدد الرايدرز',value:data.length,sub:'رايدر نشط',cls:'purple',icon:'👤'},
+    {label:'المتوسط العام',value:avg,sub:'توصيلة/رايدر',cls:'yellow',icon:'📊'},
+    {label:'فوق الهدف',value:above,sub:`${Math.round(above/data.length*100)}% من الفريق ✅`,cls:'green',icon:'✅'},
+    {label:'تحت الهدف',value:below,sub:`${Math.round(below/data.length*100)}% من الفريق ❌`,cls:'red',icon:'❌'},
+    {label:'أعلى أداء',value:best.total,sub:best.name.split(' ').slice(0,2).join(' '),cls:'orange',icon:'🏆'},
+  ];
+  document.getElementById('kpiGrid').innerHTML = kpis.map(k=>`
+    <div class="kpi-card ${k.cls}">
+      <div class="kpi-icon">${k.icon}</div>
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-sub">${k.sub}</div>
+    </div>`).join('');
+}
+
+// ==================== CHARTS ====================
+function destroyChart(id){ if(chartInstances[id]){chartInstances[id].destroy();delete chartInstances[id]} }
+
+function renderCharts() {
+  // Daily totals
+  const daysCount = allData[0]?.days?.length || 8;
+  const dailyTotals = Array.from({length:daysCount},(_,d)=>
+    allData.reduce((s,r)=>s+(r.days[d]||0),0));
+
+  destroyChart('daily');
+  chartInstances['daily'] = new Chart(document.getElementById('dailyChart'),{
+    type:'line',
+    data:{labels:dayLabels.slice(0,daysCount),datasets:[{
+      label:'إجمالي التوصيلات',data:dailyTotals,
+      borderColor:'#38bdf8',backgroundColor:'rgba(56,189,248,.1)',
+      tension:.4,fill:true,pointBackgroundColor:'#38bdf8',pointRadius:5,borderWidth:2
+    }]},
+    options:{responsive:true,plugins:{legend:{labels:{color:'#94a3b8'}}},
+      scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}},
+              y:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}}}}
+  });
+
+  // Doughnut
+  const counts={};
+  allData.forEach(r=>{counts[r.co]=(counts[r.co]||0)+1});
+  destroyChart('donut');
+  chartInstances['donut'] = new Chart(document.getElementById('donutChart'),{
+    type:'doughnut',
+    data:{labels:Object.keys(counts),datasets:[{
+      data:Object.values(counts),
+      backgroundColor:Object.keys(counts).map(k=>(coColors[k]||'#64748b')+'cc'),
+      borderColor:Object.keys(counts).map(k=>coColors[k]||'#64748b'),borderWidth:2
+    }]},
+    options:{responsive:true,plugins:{legend:{labels:{color:'#94a3b8'},position:'bottom'},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} رايدر`}}}}
+  });
+
+  // Avg by CO
+  const sums={},cnts={};
+  allData.forEach(r=>{sums[r.co]=(sums[r.co]||0)+r.total;cnts[r.co]=(cnts[r.co]||0)+1});
+  const cos=Object.keys(sums);
+  destroyChart('avg');
+  chartInstances['avg'] = new Chart(document.getElementById('avgChart'),{
+    type:'bar',
+    data:{labels:cos,datasets:[{label:'متوسط الإجمالي',
+      data:cos.map(c=>(sums[c]/cnts[c]).toFixed(1)),
+      backgroundColor:cos.map(c=>(coColors[c]||'#64748b')+'99'),
+      borderColor:cos.map(c=>coColors[c]||'#64748b'),borderWidth:2,borderRadius:6
+    }]},
+    options:{responsive:true,plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}},
+              y:{grid:{color:'#334155'},ticks:{color:'#94a3b8'},beginAtZero:true}}}
+  });
+
+  // Histogram
+  const bins={'0-50':0,'51-75':0,'76-100':0,'101-120':0,'121-150':0,'150+':0};
+  allData.forEach(r=>{
+    if(r.total<=50)bins['0-50']++;
+    else if(r.total<=75)bins['51-75']++;
+    else if(r.total<=100)bins['76-100']++;
+    else if(r.total<=120)bins['101-120']++;
+    else if(r.total<=150)bins['121-150']++;
+    else bins['150+']++;
+  });
+  destroyChart('hist');
+  chartInstances['hist'] = new Chart(document.getElementById('histChart'),{
+    type:'bar',
+    data:{labels:Object.keys(bins),datasets:[{label:'عدد الرايدرز',data:Object.values(bins),
+      backgroundColor:['#f87171aa','#fb923caa','#fbbf24aa','#34d399aa','#38bdf8aa','#818cf8aa'],
+      borderColor:['#f87171','#fb923c','#fbbf24','#34d399','#38bdf8','#818cf8'],
+      borderWidth:2,borderRadius:6
+    }]},
+    options:{responsive:true,plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}},
+              y:{grid:{color:'#334155'},ticks:{color:'#94a3b8',stepSize:1},beginAtZero:true}}}
+  });
+}
+
+// ==================== PERFORMERS ====================
+function renderPerformers() {
+  const sorted=[...allData].sort((a,b)=>b.total-a.total);
+  const top=sorted.slice(0,10), bottom=sorted.slice(-10).reverse();
+  const mx=sorted[0].total;
+  function li(r,i,isTop){
+    const rc=i===0?'r1':i===1?'r2':i===2?'r3':'ro';
+    const pct=Math.round(r.total/mx*100);
+    const col=isTop?'#38bdf8':'#f87171';
+    return `<li>
+      <div class="perf-rank ${rc}">${i+1}</div>
+      <div class="perf-name">${r.name.split(' ').slice(0,2).join(' ')}<br>
+        <span style="font-size:.68rem;color:var(--text2)">${r.co}</span></div>
+      <div class="perf-bar-wrap"><div class="perf-bar" style="width:${pct}%;background:${col}"></div></div>
+      <div class="perf-val" style="color:${col}">${r.total}</div>
+    </li>`;
+  }
+  document.getElementById('topList').innerHTML=top.map((r,i)=>li(r,i,true)).join('');
+  document.getElementById('bottomList').innerHTML=bottom.map((r,i)=>li(r,i,false)).join('');
+}
+
+// ==================== TABLE ====================
+function renderTable(data) {
+  document.getElementById('tableCount').textContent = `${data.length} رايدر`;
+  const el = document.getElementById('filteredCount');
+  if(el) el.textContent = `عرض ${data.length} من ${allData.length} رايدر`;
+
+  const tbody = document.getElementById('tableBody');
+  if(!data.length){tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--text2);padding:24px">لا توجد نتائج</td></tr>`;return;}
+
+  tbody.innerHTML = data.map((r,idx)=>{
+    const sc = r.missing>0?'pos':r.missing<0?'neg':'neu';
+    const sign = r.missing>0?'+':'';
+    const icon = r.missing>15?'🌟':r.missing>0?'✅':r.missing>-20?'🟡':'🔴';
+    // عرض مختصر للأيام
+    const daysHtml = r.days.slice(0,8).map((d,i)=>
+      d===null?`<span style="color:#f87171;font-size:.7rem">—</span>`
+              :`<span style="font-size:.72rem">${d}</span>`
+    ).join(' ');
+    return `<tr>
+      <td>${idx+1}. ${r.name}</td>
+      <td><span class="badge badge-${r.co}">${r.co}</span></td>
+      <td style="letter-spacing:2px">${daysHtml}</td>
+      <td style="font-weight:700;text-align:center">${r.total}</td>
+      <td class="${sc}" style="text-align:center">${sign}${r.missing}</td>
+      <td style="text-align:center">${icon}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ==================== FILTERS ====================
+function applyFilters() {
+  const co = document.getElementById('filterCO')?.value || '';
+  const status = document.getElementById('filterStatus')?.value || '';
+  const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
+  filteredData = allData.filter(r => {
+    if (co && r.co !== co) return false;
+    if (status==='above' && r.missing<=0) return false;
+    if (status==='below' && r.missing>=0) return false;
+    if (search && !r.name.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  sortAndRender();
+}
+
+function resetFilters() {
+  document.getElementById('filterCO').value='';
+  document.getElementById('filterStatus').value='';
+  document.getElementById('searchInput').value='';
+  filteredData=[...allData];
+  sortAndRender();
+}
+
+function sortTable(key) {
+  if(sortKey===key) sortDir*=-1; else {sortKey=key;sortDir=-1;}
+  sortAndRender();
+}
+
+function sortAndRender() {
+  const s=[...filteredData].sort((a,b)=>{
+    if(sortKey==='name') return sortDir*a.name.localeCompare(b.name);
+    if(sortKey==='co') return sortDir*a.co.localeCompare(b.co);
+    return sortDir*(a[sortKey]-b[sortKey]);
+  });
+  renderTable(s);
+}
+
+// ==================== INIT ====================
+loadData();
+</script>
+</body>
+</html>
