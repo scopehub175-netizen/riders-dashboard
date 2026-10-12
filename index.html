@@ -1596,7 +1596,7 @@
                 <th>عجز التارجت</th>
                 <th>الراتب الأساسي</th>
                 <th>خصم التارجت</th>
-                <th>خصم الصيانة</th>
+                <th>مستحقات الصيانة (+)</th>
                 <th>غرامة الكاش</th>
                 <th>كاش غير مورد</th>
                 <th>صافي دخل السائق</th>
@@ -1827,7 +1827,12 @@
        ========================================================================= */
     function calcRiderWages(total, missingDailyTarget, nat, vehicleType, batch) {
       const t = Math.max(0, parseInt(total) || 0);
-      const missing = Math.max(0, parseInt(missingDailyTarget) || 0);
+      const rawMissing = parseFloat(missingDailyTarget);
+      // Missing deficit orders only if the number in Missing Daily Target column is negative (< 0)
+      // "ايضا الاوردرات التي موجود في خانة عجز التارجت لو كانت بالموجب فلا تخصم من السائق"
+      // "عجز التارجت اذا كان الاوردرات موجودة بالسالب فتخصم من السائق بسعر الاوردر حسب الشرائح الاتية فيما عدا سائقي السياكل الجنسية الكينية"
+      const missingCount = (!isNaN(rawMissing) && rawMissing < 0) ? Math.abs(rawMissing) : 0;
+
       const n = (nat || '').toLowerCase();
       const v = (vehicleType || '').toLowerCase();
       const isBike = v.includes('motorbike') || v.includes('سيكل') || v.includes('bike');
@@ -1836,7 +1841,7 @@
 
       let base = 0, bonus = 0, penalty = 0, tierLabel = '';
 
-      // 1. Kenyan Biker Tiers
+      // 1. Kenyan Biker Tiers (لا يسري خصم التارجت على سائقي السيكل الكينيين)
       if (n.includes('kenya') && isBike) {
         if (t === 0) { base = 0; tierLabel = 'بدون أوردرات'; }
         else if (t <= 400) { base = t * 0.337; tierLabel = 'الشريحة 1 (0.337 د.ك)'; }
@@ -1844,32 +1849,30 @@
         else if (t <= 499) { base = t * 0.350; tierLabel = 'الشريحة 3 (0.350 د.ك)'; }
         else if (t <= 599) { base = t * 0.400; tierLabel = 'الشريحة 4 (0.400 د.ك)'; }
         else { base = t * 0.500; tierLabel = 'الشريحة 5 (0.500 د.ك)'; }
-        penalty = 0; // No missing penalty for Kenyans
+        penalty = 0; // لا يسري خصم التارجت على سائقي السيكل الكينيين
       }
-      // 2. Indian Biker
+      // 2. Indian Biker (سعر الأوردر = 0.500 د.ك، بعد التارجت 450 = 0.750 د.ك، خصم العجز = 0.500 د.ك)
       else if (n.includes('india') && isBike) {
-        const eff = Math.min(t, 450);
-        base = Math.ceil(eff / 2) * 0.500 + Math.floor(eff / 2) * 0.300;
+        base = Math.min(t, 450) * 0.500;
         if (t > 450) bonus = (t - 450) * 0.750;
-        penalty = missing * 0.500;
-        tierLabel = t >= 450 ? 'حقق التارجت (+0.750 د.ك)' : `عجز تارجت (-0.500×${missing})`;
+        penalty = missingCount * 0.500;
+        tierLabel = t >= 450 ? 'حقق التارجت (+0.750 د.ك)' : (missingCount > 0 ? `عجز تارجت (-0.500×${missingCount})` : 'التارجت مستوفى');
       }
-      // 3. Indian Car
+      // 3. Indian Car (سعر الأوردر = 0.600 د.ك، بعد التارجت = 0.750 د.ك، خصم العجز = 0.600 د.ك)
       else if (n.includes('india') && isCar) {
-        const eff = Math.min(t, 450);
-        base = Math.ceil(eff / 2) * 0.600 + Math.floor(eff / 2) * 0.400;
+        base = Math.min(t, 450) * 0.600;
         if (t > 450) bonus = (t - 450) * 0.750;
-        penalty = missing * 0.600;
-        tierLabel = t >= 450 ? 'حقق التارجت (+0.750 د.ك)' : `عجز تارجت (-0.600×${missing})`;
+        penalty = missingCount * 0.600;
+        tierLabel = t >= 450 ? 'حقق التارجت (+0.750 د.ك)' : (missingCount > 0 ? `عجز تارجت (-0.600×${missingCount})` : 'التارجت مستوفى');
       }
-      // 4. Bangladeshi & Ethiopian Car
+      // 4. Bangladeshi & Ethiopian Car (سعر الأوردر = 0.333 د.ك، بعد 450 حسب الباتش، خصم العجز = 0.350 د.ك)
       else if ((n.includes('bangla') || n.includes('ethiop')) && isCar) {
-        base = t * 0.333;
+        base = Math.min(t, 450) * 0.333;
         const bRates = { 1: 1.000, 2: 0.900, 3: 0.800, 4: 0.500 };
         const rateExtra = bRates[b] || 0.500;
         if (t > 450) bonus = (t - 450) * rateExtra;
-        penalty = missing * 0.350;
-        tierLabel = t >= 450 ? `حقق التارجت (باتش ${b}: +${rateExtra} د.ك)` : `عجز تارجت (-0.350×${missing})`;
+        penalty = missingCount * 0.350;
+        tierLabel = t >= 450 ? `حقق التارجت (باتش ${b}: +${rateExtra} د.ك)` : (missingCount > 0 ? `عجز تارجت (-0.350×${missingCount})` : 'التارجت مستوفى');
       }
       // Default fallback
       else {
@@ -1878,7 +1881,7 @@
         tierLabel = 'الافتراضي';
       }
 
-      return { base, bonus, penalty, tierLabel };
+      return { base, bonus, penalty, missingCount, tierLabel };
     }
 
     function calcCashPenalty(pendingCash) {
@@ -2050,8 +2053,8 @@
             const totalCol = parseInt(r[35]);
             rider.totalOrders = !isNaN(totalCol) && totalCol > 0 ? totalCol : sumOrders;
             // Col 36 is Missing Daily Target
-            const missCol = parseInt(r[36]);
-            rider.missingDailyTarget = !isNaN(missCol) ? missCol : Math.max(0, 450 - rider.totalOrders);
+            const missCol = parseFloat(r[36]);
+            rider.missingDailyTarget = !isNaN(missCol) ? missCol : 0;
           }
         }
       }
@@ -2237,8 +2240,8 @@
         r.driverEarned = r.baseSalary + r.bonus;
 
         // Driver Net Due
-        // NET = Earned - missingPenalty - maintCost - violations - debt - cashPenalty - undepositedCash + housing
-        r.driverNet = r.driverEarned - r.missingPenalty - r.maintCost - r.violations - r.debt - r.cashPenalty - r.undepositedCash + r.housing;
+        // اي مصاريف صيانة تخصم من ربح الشركة وتضاف لمستحقات السائق
+        r.driverNet = r.driverEarned - r.missingPenalty + r.maintCost - r.violations - r.debt - r.cashPenalty - r.undepositedCash + r.housing;
 
         // Company Profit Calculation
         // Order rate for company: Bike = 0.850 KWD, Car = 1.180 KWD
@@ -2329,8 +2332,9 @@
           bestRider = r;
         }
 
-        if (r.vehicleType === 'Car') carPayroll += r.driverEarned;
-        else bikePayroll += r.driverEarned;
+        const riderPayout = r.driverEarned + r.maintCost;
+        if (r.vehicleType === 'Car') carPayroll += riderPayout;
+        else bikePayroll += riderPayout;
 
         totalFuel += r.fuelExpense;
         totalMaint += r.maintCost;
@@ -2343,7 +2347,7 @@
       const avgOrders = totalRiders > 0 ? (totalOrders / totalRiders).toFixed(1) : 0;
       const totalPayroll = bikePayroll + carPayroll;
       const totalMaintFuelCost = totalMaint + totalFuel;
-      const companyNetProfit = totalCompanyRevenue - totalPayroll - totalMaintFuelCost;
+      const companyNetProfit = totalCompanyRevenue - totalPayroll - totalFuel;
 
       document.getElementById('ovTotalOrders').textContent = totalOrders.toLocaleString();
       document.getElementById('ovTotalRiders').textContent = totalRiders;
@@ -2613,10 +2617,10 @@
           <td><code>${r.id}</code></td>
           <td><span class="badge badge-${r.co.toLowerCase()}">${r.co}</span></td>
           <td style="font-weight:800;font-size:14px;color:${r.totalOrders >= 450 ? 'var(--green)' : 'var(--yellow)'};">${r.totalOrders}</td>
-          <td style="font-weight:800;color:var(--red);">${r.missingDailyTarget}</td>
+          <td style="font-weight:800;color:${r.missingDailyTarget < 0 ? 'var(--red)' : 'var(--green)'};">${r.missingDailyTarget < 0 ? r.missingDailyTarget : ('+' + r.missingDailyTarget)}</td>
           <td>
-            <span class="badge" style="background:${r.totalOrders >= 450 ? '#10B98122' : '#EF444422'};color:${r.totalOrders >= 450 ? 'var(--green)' : 'var(--red)'};">
-              ${r.totalOrders >= 450 ? 'حقق التارجت' : 'عجز تارجت'}
+            <span class="badge" style="background:${r.missingDailyTarget >= 0 ? '#10B98122' : '#EF444422'};color:${r.missingDailyTarget >= 0 ? 'var(--green)' : 'var(--red)'};">
+              ${r.missingDailyTarget >= 0 ? 'مستوفى التارجت' : 'عجز تارجت'}
             </span>
           </td>
           <td>
@@ -2754,11 +2758,11 @@
                 </div>
                 <div class="mini-metric-item">
                   <span class="mini-metric-lbl">خصم التارجت:</span>
-                  <span class="mini-metric-val val-neg">-${fmtKWD(r.missingPenalty)}</span>
+                  <span class="mini-metric-val val-neg">${r.missingPenalty > 0 ? ('-' + fmtKWD(r.missingPenalty)) : '0.000 د.ك'}</span>
                 </div>
                 <div class="mini-metric-item">
-                  <span class="mini-metric-lbl">فواتير الصيانة:</span>
-                  <span class="mini-metric-val val-neg">-${fmtKWD(r.maintCost)}</span>
+                  <span class="mini-metric-lbl">مستحقات الصيانة (+):</span>
+                  <span class="mini-metric-val val-pos">+${fmtKWD(r.maintCost)}</span>
                 </div>
                 <div class="mini-metric-item">
                   <span class="mini-metric-lbl">كاش غير مورد:</span>
@@ -3000,8 +3004,8 @@
           <div class="mini-metrics-grid" style="margin-bottom:10px;">
             <div class="mini-metric-item"><span>الراتب الأساسي:</span><b class="val-pos">${fmtKWD(r.baseSalary)}</b></div>
             <div class="mini-metric-item"><span>بونص ما فوق التارجت:</span><b class="val-pos">${fmtKWD(r.bonus)}</b></div>
-            <div class="mini-metric-item"><span>خصم عجز التارجت:</span><b class="val-neg">-${fmtKWD(r.missingPenalty)}</b></div>
-            <div class="mini-metric-item"><span>فواتير الصيانة:</span><b class="val-neg">-${fmtKWD(r.maintCost)}</b></div>
+            <div class="mini-metric-item"><span>خصم عجز التارجت:</span><b class="val-neg">${r.missingPenalty > 0 ? ('-' + fmtKWD(r.missingPenalty)) : '0.000 د.ك'}</b></div>
+            <div class="mini-metric-item"><span>مستحقات الصيانة (+):</span><b class="val-pos">+${fmtKWD(r.maintCost)}</b></div>
             <div class="mini-metric-item"><span>كاش غير مورد (Undeposited):</span><b class="val-neg">-${fmtKWD(r.undepositedCash)}</b></div>
             <div class="mini-metric-item"><span>غرامة الكاش:</span><b class="val-neg">-${fmtKWD(r.cashPenalty)}</b></div>
             <div class="mini-metric-item"><span>استهلاك البنزين (تكلفة شركة):</span><b>${fmtKWD(r.fuelExpense)}</b></div>
@@ -3045,7 +3049,8 @@
       r.violations = v;
       r.debt = d;
       r.housing = h;
-      r.driverNet = r.driverEarned - r.missingPenalty - r.maintCost - v - d - r.cashPenalty - r.undepositedCash + h;
+      // اي مصاريف صيانة تخصم من ربح الشركة وتضاف لمستحقات السائق
+      r.driverNet = r.driverEarned - r.missingPenalty + r.maintCost - v - d - r.cashPenalty - r.undepositedCash + h;
     }
 
     function saveModalAdjustments(riderId) {
@@ -3286,10 +3291,10 @@
           <td>${r.vehicleType === 'Car' ? 'سيارة' : 'سيكل'}</td>
           <td>باتش ${r.batch}</td>
           <td style="font-weight:800;">${r.totalOrders}</td>
-          <td style="color:var(--red);font-weight:700;">${r.missingDailyTarget}</td>
+          <td style="color:${r.missingDailyTarget < 0 ? 'var(--red)' : 'var(--green)'};font-weight:700;">${r.missingDailyTarget < 0 ? r.missingDailyTarget : ('+' + r.missingDailyTarget)}</td>
           <td class="val-pos">${fmtKWD(r.baseSalary)}</td>
           <td class="val-neg">${r.missingPenalty > 0 ? ('-' + fmtKWD(r.missingPenalty)) : '0.000'}</td>
-          <td class="val-neg">${r.maintCost > 0 ? ('-' + fmtKWD(r.maintCost)) : '0.000'}</td>
+          <td class="val-pos">${r.maintCost > 0 ? ('+' + fmtKWD(r.maintCost)) : '0.000'}</td>
           <td class="val-neg">${r.cashPenalty > 0 ? ('-' + fmtKWD(r.cashPenalty)) : '0.000'}</td>
           <td class="val-neg">${r.undepositedCash > 0 ? ('-' + fmtKWD(r.undepositedCash)) : '0.000'}</td>
           <td style="font-weight:900;color:${r.driverNet >= 0 ? 'var(--green)' : 'var(--red)'};font-size:13.5px;">${fmtKWD(r.driverNet)}</td>
@@ -3299,7 +3304,7 @@
     }
 
     function exportPayrollCSV() {
-      const headers = ['اسم السائق','الرقم الوظيفي','الشركة','الجنسية','المركبة','الباتش','الأوردرات','عجز التارجت','الراتب الأساسي','بونص التارجت','خصم عجز التارجت','خصم الصيانة','غرامة الكاش','كاش غير مورد','صافي دخل السائق','إيراد الشركة','تكاليف الشركة','صافي ربح الشركة'];
+      const headers = ['اسم السائق','الرقم الوظيفي','الشركة','الجنسية','المركبة','الباتش','الأوردرات','عجز التارجت','الراتب الأساسي','بونص التارجت','خصم عجز التارجت','مستحقات الصيانة (+)','غرامة الكاش','كاش غير مورد','صافي دخل السائق','إيراد الشركة','تكاليف الشركة','صافي ربح الشركة'];
       const rows = [headers];
       DB.allRidersList.forEach(r => {
         rows.push([
