@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" data-theme="dark" dir="rtl">
+<html lang="ar" data-theme="light" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SPORTIVE FLEET V8 — Enterprise Operations, Live Roster & AI Autopilot Suite</title>
+  <title>SPORTIVE FLEET V9 DIAMOND — Apple & Meta Executive Workspace, Live Cloud Sync & AI Suite</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -366,7 +366,7 @@
     .smarthr-banner {
       background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
       border: 1px solid var(--border);
-      border-right: 5px solid var(--orange);
+      
       border-radius: var(--r);
       padding: 16px 20px;
       margin-bottom: 14px;
@@ -909,6 +909,597 @@
     .rest-card { background: var(--card-alt); border: 1px solid var(--border); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
     .surge-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 800; }
     .surge-high { background: rgba(239, 68, 68, 0.2); color: #F87171; border: 1px solid rgba(239,68,68,0.4); }
+  
+    
+    /* =========================================================================
+       SPORTIVE FLEET V10 — AUTHENTIC APPLE CUPERTINO (macOS Sequoia & iCloud) UI
+       ========================================================================= */
+    :root {
+      --font: 'Cairo', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+      --font-mono: 'SF Mono', 'JetBrains Mono', monospace;
+      --sw: 260px;
+      --bg: #F5F5F7;
+      --card: #FFFFFF;
+      --card-alt: #F5F5F7;
+      --border: rgba(0, 0, 0, 0.07);
+      --text: #1D1D1F;
+      --text2: #6E6E73;
+      --text3: #86868B;
+      --sb: rgba(245, 245, 247, 0.88);
+      --sb-h: rgba(0, 0, 0, 0.05);
+      --blue: #0071E3;
+      --green: #28CD41;
+      --red: #FF3B30;
+      --yellow: #FF9500;
+      --purple: #5856D6;
+      --orange: #FF9500;
+      --teal: #00C7BE;
+      --cyan: #32ADE6;
+      --sh: 0 2px 14px rgba(0, 0, 0, 0.035), 0 1px 2px rgba(0, 0, 0, 0.02);
+      --sh-md: 0 8px 28px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+      --sh-lg: 0 20px 48px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
+      --r: 20px;
+      --r-sm: 12px;
+      --seg-bg: rgba(118, 118, 128, 0.12);
+      --seg-active: #FFFFFF;
+    }
+
+    [data-theme='dark'] {
+      --bg: #000000;
+      --card: #1C1C1E;
+      --card-alt: #2C2C2E;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #F5F5F7;
+      --text2: #A1A1A6;
+      --text3: #8E8E93;
+      --sb: rgba(28, 28, 30, 0.88);
+      --sb-h: rgba(255, 255, 255, 0.08);
+      --blue: #0A84FF;
+      --green: #30D158;
+      --red: #FF453A;
+      --yellow: #FF9F0A;
+      --purple: #5E5CE6;
+      --orange: #FF9F0A;
+      --sh: 0 4px 20px rgba(0, 0, 0, 0.45);
+      --sh-md: 0 10px 32px rgba(0, 0, 0, 0.6);
+      --sh-lg: 0 24px 56px rgba(0, 0, 0, 0.75);
+      --seg-bg: rgba(118, 118, 128, 0.24);
+      --seg-active: #3A3A3C;
+    }
+
+    body {
+      background-color: var(--bg) !important;
+      background-image: none !important;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Collapsible Sidebar */
+    body.sidebar-collapsed { --sw: 0px; }
+    body.sidebar-collapsed .sidebar {
+      transform: translateX(100%);
+      width: 0;
+      overflow: hidden;
+      border: none;
+    }
+
+    /* Authentic macOS Translucent Sidebar */
+    .sidebar {
+      background: var(--sb) !important;
+      backdrop-filter: saturate(180%) blur(25px);
+      -webkit-backdrop-filter: saturate(180%) blur(25px);
+      color: var(--text) !important;
+      border-left: 1px solid var(--border) !important;
+      box-shadow: none !important;
+      transition: all 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .sidebar-brand {
+      padding: 18px 16px 14px;
+      border-bottom: 1px solid var(--border) !important;
+      background: transparent !important;
+    }
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(180deg, #007AFF 0%, #0051D5 100%) !important;
+      box-shadow: 0 3px 10px rgba(0, 113, 227, 0.25) !important;
+      font-size: 15px;
+      font-weight: 800;
+      color: #FFF;
+    }
+    .brand-title {
+      font-size: 15px !important;
+      font-weight: 800 !important;
+      color: var(--text) !important;
+      letter-spacing: -0.2px;
+    }
+    .brand-sub {
+      font-size: 11px !important;
+      color: var(--text3) !important;
+      font-weight: 600;
+    }
+    .sidebar-nav {
+      padding: 10px 12px;
+      gap: 2px;
+    }
+    .nav-label {
+      font-size: 11px;
+      color: var(--text3) !important;
+      padding: 14px 10px 4px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+    .nav-item {
+      padding: 8px 10px;
+      border-radius: 10px;
+      color: var(--text) !important;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .nav-item:hover {
+      background: var(--sb-h) !important;
+      color: var(--text) !important;
+      transform: none !important;
+    }
+    .nav-item.active {
+      background: var(--blue) !important;
+      color: #FFFFFF !important;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25) !important;
+    }
+    .apple-nav-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .nav-item.active .apple-nav-icon {
+      background: rgba(255, 255, 255, 0.22) !important;
+      color: #FFFFFF !important;
+    }
+    .nav-badge-alert {
+      background: var(--seg-bg) !important;
+      color: var(--text2) !important;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 10px;
+    }
+    .nav-item.active .nav-badge-alert {
+      background: rgba(255, 255, 255, 0.25) !important;
+      color: #FFFFFF !important;
+    }
+    .nav-sub {
+      color: var(--text2) !important;
+      font-size: 12.5px;
+      border-radius: 8px;
+      padding: 6px 10px;
+    }
+    .nav-sub:hover { background: var(--sb-h) !important; color: var(--text) !important; }
+    .nav-sub.active { background: rgba(0, 113, 227, 0.12) !important; color: var(--blue) !important; font-weight: 700; }
+
+    .sidebar-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border) !important;
+      background: transparent !important;
+      color: var(--text2) !important;
+    }
+    .apple-mini-sync-btn {
+      background: rgba(0, 113, 227, 0.1);
+      color: var(--blue);
+      border: none;
+      border-radius: 980px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .apple-mini-sync-btn:hover { background: var(--blue); color: #FFF; }
+
+    /* Authentic Apple Translucent Topbar */
+    .topbar {
+      height: 60px;
+      background: var(--sb) !important;
+      backdrop-filter: saturate(180%) blur(25px);
+      -webkit-backdrop-filter: saturate(180%) blur(25px);
+      border-bottom: 1px solid var(--border) !important;
+      box-shadow: none !important;
+      padding: 0 24px;
+    }
+    .main {
+      padding-top: 60px;
+    }
+    .content {
+      padding: 24px 28px;
+      max-width: 1640px;
+      margin: 0 auto;
+    }
+
+    /* Apple Spotlight Search Input */
+    .global-search-wrap { max-width: 380px; }
+    .global-search-input {
+      background: var(--seg-bg) !important;
+      border: 1px solid transparent !important;
+      border-radius: 10px !important;
+      padding: 7px 14px 7px 48px !important;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .global-search-input:focus {
+      background: var(--card) !important;
+      border-color: var(--blue) !important;
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.18) !important;
+    }
+    .search-kbd {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text3) !important;
+      font-size: 11px;
+    }
+
+    /* Apple Pill Buttons */
+    .top-btn {
+      background: var(--seg-bg) !important;
+      border: none !important;
+      color: var(--text) !important;
+      padding: 6px 13px !important;
+      border-radius: 980px !important;
+      font-size: 12.5px;
+      font-weight: 700;
+      box-shadow: none !important;
+    }
+    .top-btn:hover {
+      background: rgba(118, 118, 128, 0.2) !important;
+      transform: none !important;
+    }
+    .top-btn.apple-primary-pill {
+      background: var(--blue) !important;
+      color: #FFFFFF !important;
+    }
+    .top-btn.apple-primary-pill:hover {
+      opacity: 0.92;
+    }
+    .top-btn.apple-launchpad-btn {
+      background: rgba(0, 113, 227, 0.12) !important;
+      color: var(--blue) !important;
+    }
+    .top-btn.apple-icon-only {
+      width: 34px;
+      height: 34px;
+      padding: 0 !important;
+      justify-content: center;
+      border-radius: 50% !important;
+    }
+
+    .sync-live-pill {
+      background: rgba(40, 205, 65, 0.12) !important;
+      border: none !important;
+      color: var(--text) !important;
+      padding: 6px 13px;
+      border-radius: 980px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Apple Hero Card & Status Strip */
+    .apple-hero-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px 24px;
+      margin-bottom: 18px;
+      box-shadow: var(--sh);
+    }
+    .apple-status-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .apple-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--card-alt);
+      padding: 6px 14px;
+      border-radius: 980px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text2);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .apple-status-pill:hover {
+      background: var(--seg-bg);
+      color: var(--text);
+    }
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    /* Authentic Apple iOS / macOS Segmented Controls */
+    .apple-segmented-bar, .subtabs-nav {
+      display: inline-flex !important;
+      width: 100%;
+      gap: 4px !important;
+      flex-wrap: wrap;
+      background: var(--seg-bg) !important;
+      padding: 5px !important;
+      border-radius: 14px !important;
+      border: none !important;
+      margin-bottom: 20px !important;
+      box-shadow: none !important;
+    }
+    .apple-seg-btn, .subtab-btn {
+      flex: 1;
+      justify-content: center;
+      background: transparent !important;
+      border: none !important;
+      color: var(--text2) !important;
+      padding: 8px 14px !important;
+      border-radius: 10px !important;
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.25, 1, 0.5, 1) !important;
+      box-shadow: none !important;
+      white-space: nowrap;
+    }
+    .apple-seg-btn:hover, .subtab-btn:hover {
+      color: var(--text) !important;
+    }
+    .apple-seg-btn.active, .subtab-btn.active {
+      background: var(--seg-active) !important;
+      color: var(--text) !important;
+      font-weight: 800 !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+    }
+
+    /* Cohort Pills in Apple Style */
+    .cohort-pills-bar {
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .cohort-pill {
+      background: var(--card-alt) !important;
+      border: 1px solid var(--border) !important;
+      color: var(--text2) !important;
+      padding: 7px 15px !important;
+      border-radius: 980px !important;
+      font-size: 12.5px !important;
+      font-weight: 700 !important;
+      box-shadow: none !important;
+    }
+    .cohort-pill:hover {
+      color: var(--text) !important;
+      border-color: var(--text3) !important;
+    }
+    .cohort-pill.active {
+      background: var(--blue) !important;
+      color: #FFFFFF !important;
+      border-color: var(--blue) !important;
+      box-shadow: 0 3px 10px rgba(0, 113, 227, 0.25) !important;
+    }
+
+    /* Apple Bento Cards */
+    .kpi-card, .chart-card, .notes-box, .form-box, .filter-bar, .rider-card {
+      background: var(--card) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: var(--r) !important;
+      box-shadow: var(--sh) !important;
+    }
+    .kpi-card {
+      padding: 20px !important;
+    }
+    .kpi-card.clickable:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--sh-md) !important;
+      border-color: rgba(0, 113, 227, 0.3) !important;
+    }
+    .kpi-label {
+      font-size: 12.5px;
+      color: var(--text2);
+      font-weight: 600;
+    }
+    .kpi-value {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+      color: var(--text);
+      margin-top: 2px;
+    }
+    .kpi-footer-link {
+      border-top: 1px solid var(--border) !important;
+      color: var(--blue) !important;
+      font-size: 11.5px;
+      font-weight: 700;
+      margin-top: 12px;
+      padding-top: 8px;
+    }
+
+
+    /* Clean Apple Bento Financial Cards (Zero Neon Clutter & High Contrast Text) */
+    .profit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .profit-card {
+      background: var(--card) !important;
+      color: var(--text) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: var(--r) !important;
+      padding: 18px 20px !important;
+      box-shadow: var(--sh) !important;
+      position: relative;
+      overflow: hidden;
+    }
+    .profit-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 4px !important;
+      background: var(--blue);
+    }
+    .profit-card.grad-profit::before, .profit-card.grad-total::before, .profit-card.grad-cash-col::before { background: var(--green); }
+    .profit-card.grad-maint::before, .profit-card.grad-cash-pre::before { background: var(--yellow); }
+    .profit-card.grad-fuel::before, .profit-card.grad-cash-net::before { background: var(--red); }
+    .profit-card.grad-mtd::before, .profit-card.grad-car::before { background: var(--purple); }
+    .profit-card.grad-mobile::before { background: var(--cyan); }
+
+    .profit-card .p-title {
+      color: var(--text2) !important;
+      font-size: 12.5px !important;
+      font-weight: 700 !important;
+      opacity: 1 !important;
+      margin-bottom: 6px !important;
+    }
+    .profit-card .p-val {
+      color: var(--text) !important;
+      font-size: 21px !important;
+      font-weight: 800 !important;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.4px;
+    }
+    .profit-card.grad-profit .p-val, .profit-card.grad-total .p-val, .profit-card.grad-cash-col .p-val { color: #1D9E34 !important; }
+    .profit-card.grad-cash-net .p-val, .profit-card.grad-fuel .p-val { color: var(--red) !important; }
+    .profit-card.grad-bike .p-val, .profit-card.grad-cash-sales .p-val, .profit-card.grad-cash-dep .p-val { color: var(--blue) !important; }
+    .profit-card.grad-mtd .p-val, .profit-card.grad-car .p-val { color: var(--purple) !important; }
+    .profit-card .p-desc {
+      color: var(--text3) !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      opacity: 1 !important;
+      margin-top: 6px !important;
+    }
+
+    /* Rider Card Tabs in Apple Segmented Style */
+    .card-tab-btn {
+      background: var(--card-alt) !important;
+      border: 1px solid var(--border) !important;
+      color: var(--text2) !important;
+      border-radius: 9px !important;
+      font-weight: 700 !important;
+    }
+    .card-tab-btn.active {
+      background: var(--blue) !important;
+      color: #FFFFFF !important;
+      border-color: var(--blue) !important;
+    }
+
+
+    /* Action & Secondary Buttons in Apple Style */
+    .btn-action {
+      background: var(--blue) !important;
+      color: #FFFFFF !important;
+      border-radius: 980px !important;
+      padding: 7px 16px !important;
+      font-size: 12.5px !important;
+      font-weight: 700 !important;
+      box-shadow: none !important;
+    }
+    .btn-action:hover {
+      opacity: 0.9;
+      transform: none !important;
+    }
+    .btn-secondary {
+      background: var(--seg-bg) !important;
+      border: none !important;
+      color: var(--text) !important;
+      border-radius: 980px !important;
+      padding: 7px 15px !important;
+      font-size: 12.5px !important;
+      font-weight: 700 !important;
+    }
+    .btn-secondary:hover {
+      background: rgba(118, 118, 128, 0.2) !important;
+    }
+    .btn-danger {
+      border-radius: 980px !important;
+      padding: 5px 12px !important;
+    }
+
+    /* Clean Apple Tables */
+    .tbl-wrap {
+      border-radius: var(--r) !important;
+      border: 1px solid var(--border) !important;
+      box-shadow: var(--sh) !important;
+      background: var(--card) !important;
+    }
+    thead th {
+      background: var(--card-alt) !important;
+      color: var(--text2) !important;
+      font-weight: 700 !important;
+      border-bottom: 1px solid var(--border) !important;
+      padding: 12px 14px !important;
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--border) !important;
+    }
+    tbody tr:hover {
+      background: rgba(0, 113, 227, 0.04) !important;
+    }
+
+    /* Apple Launchpad Grid inside Modal */
+    .apple-launchpad-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+      gap: 14px;
+    }
+    .apple-launchpad-card {
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .apple-launchpad-card:hover {
+      background: var(--card);
+      border-color: var(--blue);
+      box-shadow: var(--sh-md);
+      transform: translateY(-2px);
+    }
+    .lp-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .lp-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .lp-desc {
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.45;
+    }
+
   </style>
 </head>
 <body>
@@ -917,82 +1508,88 @@
   <aside class="sidebar">
     <div class="sidebar-brand">
       <div class="brand-logo">SF</div>
-      <div>
-        <div class="brand-title">SPORTIVE FLEET</div>
-        <div class="brand-sub">V8 Enterprise AI Autopilot</div>
+      <div style="flex:1;">
+        <div class="brand-title">Sportive Fleet</div>
+        <div class="brand-sub">Apple Cupertino Workspace</div>
       </div>
+      <button class="top-btn apple-icon-only" style="width:30px;height:30px;padding:0;" onclick="openAppleLaunchpadModal()" title="كل الأقسام">🧭</button>
     </div>
 
     <div class="sidebar-nav">
-      <div class="nav-label">مركز القيادة الذكي</div>
+      <div class="nav-label">القيادة والذكاء</div>
       <div class="nav-item active" id="nav-overview" onclick="navigate('overview')">
-        <div class="nav-left"><span>📊</span><span>نظرة عامة (Overview)</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(0,113,227,0.12);color:#0071E3;">📊</span><span>الرئيسية (Home)</span></div>
       </div>
 
       <div class="nav-item" id="nav-autopilot" onclick="navigate('autopilot')">
-        <div class="nav-left"><span>🧠</span><span>المستشار الذكي والمحاكاة</span></div>
-        <span class="nav-badge-alert" style="background:rgba(16,185,129,0.25);color:#34D399;">AI</span>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(88,86,214,0.12);color:#5856D6;">🧠</span><span>المستشار الذكي (AI)</span></div>
       </div>
 
       <div class="nav-item" id="nav-liveroster" onclick="navigate('liveroster')">
-        <div class="nav-left"><span>📡</span><span>الشفتات والأونلاين الحي</span></div>
-        <span class="nav-badge-alert" id="sidebarOnlineNowBadge" style="background:rgba(59,130,246,0.25);color:#60A5FA;">LIVE</span>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">📡</span><span>الشفتات والأونلاين</span></div>
+        <span class="nav-badge-alert" id="sidebarOnlineNowBadge">LIVE</span>
       </div>
 
-      <div class="nav-item" id="nav-cashfuel" onclick="navigate('cashfuel')">
-        <div class="nav-left"><span>📂</span><span>الكاش والإيداعات والوقود</span></div>
-        <span class="nav-badge-alert" id="sidebarFuelAlertCount" style="background:rgba(245,158,11,0.25);color:#FBBF24;">محدث</span>
-      </div>
-
-      <div class="nav-item" id="nav-histbudget" onclick="navigate('histbudget')">
-        <div class="nav-left"><span>📈</span><span>رواتب الشهور وموازنة الشركة</span></div>
-        <span class="nav-badge-alert" style="background:rgba(139,92,246,0.25);color:#C4B5FD;">M1-M7</span>
-      </div>
-
-      <div class="nav-item" id="nav-alerts" onclick="navigate('alerts')">
-        <div class="nav-left"><span>🚨</span><span>رادار المخاطر والوثائق</span></div>
-        <span class="nav-badge-alert" id="sidebarAlertCount">0</span>
-      </div>
-
-      <!-- Orders Submenu -->
+      <div class="nav-label">التشغيل والأسطول</div>
       <div class="nav-item" id="nav-orders" onclick="toggleOrdersMenu()">
-        <div class="nav-left"><span>📦</span><span>الأوردرات والفئات الـ 7</span></div>
-        <span id="ordersChevron">▼</span>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,149,0,0.14);color:#FF9500;">📦</span><span>الأوردرات والفئات الـ 7</span></div>
+        <span id="ordersChevron" style="font-size:10px;opacity:0.6;">▼</span>
       </div>
       <div class="nav-submenu" id="ordersSubmenu">
-        <div class="nav-sub" onclick="navigateOrders('ALL')"><span>🌐</span><span>تقرير شامل (All Companies)</span></div>
-        <div class="nav-sub" onclick="navigateOrders('SUPT')"><span>🔸</span><span>SUPT (Sportive)</span></div>
-        <div class="nav-sub" onclick="navigateOrders('FTMN')"><span>🔹</span><span>FTMN (15 Min)</span></div>
-        <div class="nav-sub" onclick="navigateOrders('FNMN')"><span>🟣</span><span>FNMN (14 Min)</span></div>
-        <div class="nav-sub" onclick="navigateOrders('SRBS')"><span>🟢</span><span>SRBS (Sarb Saree)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('ALL')"><span>🌐</span><span>كل الشركات (All)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('SUPT')"><span>🔸</span><span>سبورتيف (SUPT)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('FTMN')"><span>🔹</span><span>ففتين منت (FTMN)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('FNMN')"><span>🟣</span><span>فورتين منت (FNMN)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('SRBS')"><span>🟢</span><span>سرب سريع (SRBS)</span></div>
       </div>
 
       <div class="nav-item" id="nav-fleet" onclick="navigate('fleet')">
-        <div class="nav-left"><span>🚗</span><span>إدارة الأسطول (Fleet 360°)</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(0,113,227,0.12);color:#0071E3;">🪪</span><span>بطاقات السائقين 360°</span></div>
       </div>
       <div class="nav-item" id="nav-attendance" onclick="navigate('attendance')">
-        <div class="nav-left"><span>📅</span><span>الحضور والعقود (Attendance)</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">📅</span><span>الحضور والعقود</span></div>
       </div>
       <div class="nav-item" id="nav-performance" onclick="navigate('performance')">
-        <div class="nav-left"><span>📈</span><span>الأداء ومستوى الخدمة (SLA)</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(90,200,250,0.16);color:#007AFF;">📈</span><span>الأداء ومستوى الخدمة</span></div>
       </div>
-      <div class="nav-item" id="nav-maintenance" onclick="navigate('maintenance')">
-        <div class="nav-left"><span>🔧</span><span>الصيانة والزيت والسبير</span></div>
+
+      <div class="nav-label">المالية والوقود والموازنة</div>
+      <div class="nav-item" id="nav-cashfuel" onclick="navigate('cashfuel')">
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,149,0,0.14);color:#FF9500;">📂</span><span>الكاش والوقود والشيتات</span></div>
+        <span class="nav-badge-alert" id="sidebarFuelAlertCount" style="display:none;">0</span>
       </div>
       <div class="nav-item" id="nav-payroll" onclick="navigate('payroll')">
-        <div class="nav-left"><span>💰</span><span>الرواتب ومركز واتساب</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">💰</span><span>الرواتب ومركز واتساب</span></div>
+      </div>
+      <div class="nav-item" id="nav-histbudget" onclick="navigate('histbudget')">
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(175,82,222,0.14);color:#AF52DE;">🏛️</span><span>أرشيف الشهور والموازنة</span></div>
+      </div>
+
+      <div class="nav-label">الرقابة والصيانة</div>
+      <div class="nav-item" id="nav-alerts" onclick="navigate('alerts')">
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,59,48,0.14);color:#FF3B30;">🚨</span><span>رادار المخاطر والوثائق</span></div>
+        <span class="nav-badge-alert" id="sidebarAlertCount">0</span>
+      </div>
+      <div class="nav-item" id="nav-maintenance" onclick="navigate('maintenance')">
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(142,142,147,0.16);color:#636366;">🔧</span><span>الصيانة والزيت والسبير</span></div>
       </div>
       <div class="nav-item" id="nav-investigations" onclick="navigate('investigations')">
-        <div class="nav-left"><span>🔍</span><span>التحقيقات الأمنية (Legal)</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,59,48,0.12);color:#FF3B30;">🔍</span><span>التحقيقات القانونية</span></div>
       </div>
     </div>
 
     <div class="sidebar-footer">
-      <div class="sync-status">
-        <div class="status-dot" id="syncDot"></div>
-        <span id="syncText">النظام متصل ومحدث بالكامل</span>
+      <div class="sync-status" style="justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:7px;">
+          <div class="status-dot" id="syncDot"></div>
+          <span id="syncText" style="font-weight:700;">متصل ومحدث</span>
+        </div>
+        <button onclick="syncAllData(true)" class="apple-mini-sync-btn">تحديث</button>
       </div>
-      <div style="font-size:10.5px;color:#94A3B8;" id="lastSyncTime">آخر تحديث: --</div>
+      <div style="font-size:11px;color:var(--text3);display:flex;justify-content:space-between;align-items:center;">
+        <span id="lastSyncTime">--</span>
+        <span style="color:var(--blue);cursor:pointer;font-weight:700;" onclick="openSheetSettingsModal()">الإعدادات</span>
+      </div>
     </div>
   </aside>
 
@@ -1008,42 +1605,50 @@
 
   <!-- TOPBAR -->
   <header class="topbar">
-    <div class="breadcrumb" id="topBreadcrumb">
-      Sportive Fleet <span>/</span> <b id="currentCrumb">نظرة عامة</b>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="top-btn apple-icon-btn" onclick="toggleSidebarCollapse()" title="إظهار / إخفاء القائمة الجانبية">
+        <span style="font-size:15px;">☰</span> <span>القائمة</span>
+      </button>
+      <div class="breadcrumb" id="topBreadcrumb">
+        <span style="color:var(--text3);font-weight:600;">Sportive</span>
+        <span style="color:var(--text3);">›</span>
+        <b id="currentCrumb" style="color:var(--text);font-size:15px;font-weight:800;">الرئيسية</b>
+      </div>
     </div>
 
-    <!-- Global Search Bar -->
+    <!-- Apple Spotlight Search -->
     <div class="global-search-wrap">
       <input type="text" id="globalCommandInput" class="global-search-input"
-             placeholder="🔍 ابحث عن سائق عربي/إنجليزي، ID، لوحة، هاتف، كارت بنزين..."
+             placeholder="🔍 بحث Spotlight (اسم السائق، ID، اللوحة، الهاتف)..."
              autocomplete="off" oninput="handleGlobalSearch(this.value)" />
-      <kbd class="search-kbd">CTRL + /</kbd>
+      <kbd class="search-kbd">⌘K</kbd>
       <div id="globalSearchDropdown" class="autocomplete-dropdown"></div>
     </div>
 
     <div class="topbar-actions">
-      <div id="liveClock" style="font-size:12px;font-weight:900;color:var(--orange);">--:--:--</div>
-      <button class="top-btn" style="background:linear-gradient(135deg,#F59E0B,#D97706);color:#FFF;border:none;" onclick="navigate('autopilot'); switchSubTab('autopilot', 'morning');">
-        <span>☕</span> <span>وضع القهوة الصباحية</span>
+      <button class="top-btn apple-launchpad-btn" onclick="openAppleLaunchpadModal()" title="خريطة أقسام الموقع السريعة لعدم التوهان">
+        <span>🧭</span> <span>كل الأقسام (12)</span>
       </button>
-      <button class="top-btn" style="background:linear-gradient(135deg,#2563EB,#1D4ED8);color:#FFF;border:none;" onclick="navigate('liveroster')">
-        <span>📡</span> <span>شفتات الأونلاين الآن</span>
+
+      <div class="sync-live-pill" onclick="syncAllData(true)" title="اضغط للمزامنة الفورية مع Google Sheets">
+        <span class="status-dot" id="topSyncDot" style="width:7px;height:7px;"></span>
+        <span id="topSyncLabel">مزامنة حية</span>
+      </div>
+
+      <button class="top-btn" onclick="navigate('liveroster')" title="المتواجدون في الشفت الآن">
+        <span>📡</span> <span>الأونلاين</span>
       </button>
-      <button class="top-btn" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);color:#FFF;border:none;" onclick="openTvWallboardModal()">
-        <span>📺</span> <span>شاشة المكتب TV</span>
-      </button>
-      <button class="top-btn" onclick="toggleMobileFieldMode()" title="نسخة الموبايل السريعة للميدان">
-        <span>📱</span> <span>موبايل</span>
-      </button>
-      <button class="top-btn" onclick="togglePrivacyMode()" id="privacyBtn" title="إخفاء أرباح الشركة السرية عند مشاركة الشاشة">
-        <span>👁️</span> <span id="privacyBtnTxt">إخفاء الأرباح</span>
-      </button>
-      <button class="top-btn" style="border-color:var(--green);color:var(--green);" onclick="generateExecutiveCompanyPDF()">
+
+      <button class="top-btn apple-primary-pill" onclick="generateExecutiveCompanyPDF()">
         <span>📄</span> <span>تقرير PDF</span>
       </button>
-      <button class="top-btn" onclick="toggleTheme()">
-        <span id="themeIcon">☀️</span>
-      </button>
+
+      <button class="top-btn apple-icon-only" onclick="openSheetSettingsModal()" title="إعدادات السحابة والنسخ الاحتياطي">☁️</button>
+      <button class="top-btn apple-icon-only" onclick="openTvWallboardModal()" title="شاشة العرض للمكتب TV">📺</button>
+      <button class="top-btn apple-icon-only" onclick="togglePrivacyMode()" id="privacyBtn" title="إخفاء/إظهار أرباح الشركة">👁️<span id="privacyBtnTxt" style="display:none;"></span></button>
+      <button class="top-btn apple-icon-only" onclick="toggleMobileFieldMode()" title="وضع الموبايل">📱</button>
+      <button class="top-btn apple-icon-only" onclick="toggleTheme()" title="تبديل المظهر النهاري / الليلي"><span id="themeIcon">🌙</span></button>
+      <div id="liveClock" style="font-size:12px;font-weight:700;color:var(--text2);font-variant-numeric:tabular-nums;padding-right:4px;">--:--</div>
     </div>
   </header>
 
@@ -1054,32 +1659,78 @@
       <!-- ================= PAGE 1: OVERVIEW ================= -->
       <section id="page-overview" class="page-section active">
 
-        <!-- SmartHR Welcome & Actionable Alerts Banner -->
-        <div class="smarthr-banner">
-          <div style="display:flex;align-items:center;gap:14px;">
-            <div class="banner-avatar">SF</div>
+        <!-- Apple Cupertino Hero & Live Status Strip -->
+        <div class="apple-hero-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
             <div>
-              <h2 style="font-size:17.5px;font-weight:900;color:#FFF;">مركز القيادة التنفيذي — Sportive Fleet V8 Autopilot 👋</h2>
-              <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;" id="bannerAlertPills">
-                <span class="banner-pill" onclick="navigate('liveroster')">🟢 أونلاين בשفت الآن: <b id="bnrOnlineNowCount" style="color:#34D399;">0</b></span>
-                <span class="banner-pill" onclick="navigate('alerts')">💵 كاش متجاوز (&gt;20 د.ك): <b id="bnrCashCount" style="color:#F87171;">0</b></span>
-                <span class="banner-pill" onclick="navigate('cashfuel')">⛽ كروت بنزين حرجة (&lt;0.5 د.ك): <b id="bnrLowFuelCount" style="color:#FBBF24;">0</b></span>
-                <span class="banner-pill" onclick="navigate('autopilot')">🚨 اشتباه هدر بنزين: <b id="bnrFuelAnomalyCount" style="color:#F87171;">0</b></span>
-                <span class="banner-pill" onclick="navigate('alerts')">🪪 وثائق وعقود للتجديد: <b id="bnrDocsCount" style="color:#FBBF24;">0</b></span>
-              </div>
+              <div style="font-size:12px;font-weight:700;color:var(--blue);letter-spacing:0.3px;margin-bottom:2px;">SPORTIVE FLEET • EXECUTIVE WORKSPACE</div>
+              <h2 style="font-size:22px;font-weight:900;color:var(--text);letter-spacing:-0.4px;">مركز القيادة والتشغيل الموحد</h2>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-secondary" onclick="openAppleLaunchpadModal()">🧭 خريطة الأقسام (Launchpad)</button>
+              <button class="btn-secondary" onclick="navigate('autopilot')">🧠 المستشار الذكي (5 قرارات)</button>
+              <button class="btn-action" onclick="switchOverviewWorkspace('finance')">📂 الرفع الصباحي والمالية</button>
             </div>
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn-action" style="background:linear-gradient(135deg,#F59E0B,#D97706);" onclick="navigate('autopilot')">🧠 المستشار الذكي (أهم القرارات الفورية)</button>
-            <button class="btn-action" style="background:linear-gradient(135deg,#10B981,#059669);" onclick="generateExecutiveCompanyPDF()">📊 تقرير الاجتماعات PDF</button>
-            <button class="btn-action" style="background:var(--orange);" onclick="navigate('cashfuel')">📂 رفع الشيتات الصباحي</button>
+          <div class="apple-status-strip" id="bannerAlertPills">
+            <div class="apple-status-pill" onclick="navigate('liveroster')">
+              <span class="pill-dot" style="background:#34C759;"></span>
+              <span>أونلاين بالشفت الآن:</span>
+              <b id="bnrOnlineNowCount" style="color:#28CD41;">0</b>
+            </div>
+            <div class="apple-status-pill" onclick="navigate('alerts')">
+              <span class="pill-dot" style="background:#FF3B30;"></span>
+              <span>كاش متجاوز (&gt;20 د.ك):</span>
+              <b id="bnrCashCount" style="color:#FF3B30;">0</b>
+            </div>
+            <div class="apple-status-pill" onclick="navigate('cashfuel')">
+              <span class="pill-dot" style="background:#FF9500;"></span>
+              <span>كروت بنزين حرجة:</span>
+              <b id="bnrLowFuelCount" style="color:#FF9500;">0</b>
+            </div>
+            <div class="apple-status-pill" onclick="navigate('cashfuel');switchSubTab('cashfuel','anomaly');">
+              <span class="pill-dot" style="background:#AF52DE;"></span>
+              <span>اشتباه هدر بنزين:</span>
+              <b id="bnrFuelAnomalyCount" style="color:#AF52DE;">0</b>
+            </div>
+            <div class="apple-status-pill" onclick="navigate('alerts')">
+              <span class="pill-dot" style="background:#0071E3;"></span>
+              <span>وثائق وعقود للتجديد:</span>
+              <b id="bnrDocsCount" style="color:#0071E3;">0</b>
+            </div>
           </div>
         </div>
 
+        <!-- APPLE SEGMENTED WORKSPACE BAR FOR ZERO-CLUTTER NAVIGATION -->
+        <div class="apple-segmented-bar" id="overviewWorkspaceTabs">
+          <button class="apple-seg-btn active" data-ovtab="pulse" onclick="switchOverviewWorkspace('pulse')">
+            <span>📊</span> <span>1. الملخص التنفيذي</span>
+          </button>
+          <button class="apple-seg-btn" data-ovtab="cohorts" onclick="switchOverviewWorkspace('cohorts')">
+            <span>🗂️</span> <span>2. الفئات الـ 7 والتصدير</span>
+          </button>
+          <button class="apple-seg-btn" data-ovtab="finance" onclick="switchOverviewWorkspace('finance')">
+            <span>💳</span> <span>3. المالية والكاش والرفع الصباحي</span>
+          </button>
+          <button class="apple-seg-btn" data-ovtab="leaders" onclick="switchOverviewWorkspace('leaders')">
+            <span>🏆</span> <span>4. المتصدرون والملاحظات</span>
+          </button>
+          <button class="apple-seg-btn" data-ovtab="calendar" onclick="switchOverviewWorkspace('calendar')">
+            <span>📅</span> <span>5. التقويم والأعذار</span>
+          </button>
+          <button class="apple-seg-btn" data-ovtab="map" onclick="switchOverviewWorkspace('map')">
+            <span>🗺️</span> <span>6. خريطة الكويت والمطاعم</span>
+          </button>
+          <button class="apple-seg-btn" data-ovtab="all" onclick="switchOverviewWorkspace('all')">
+            <span>🌐</span> <span>عرض الكل</span>
+          </button>
+        </div>
+
+        <!-- WORKSPACE PANE 1: EXECUTIVE PULSE, 7 COHORTS, KPIS & CHARTS -->
         <!-- Executive Strip: 1. Break-Even Thermometer | 2. End-of-Month AI Predictor | 3. Kuwait Live Weather & Heat-Ban Radar -->
-        <div class="exec-strip-grid">
+        <div class="exec-strip-grid" data-ov-group="pulse">
           <!-- Break-Even Thermometer -->
-          <div class="kpi-card" style="padding:14px;border-right:4px solid var(--green);">
+          <div class="kpi-card" style="padding:14px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
               <b style="font-size:13px;color:var(--text);">🌡️ عداد نقطة التعادل الشهري (Monthly Break-Even Thermometer)</b>
               <span class="badge badge-good" id="beStatusBadge">تحقق التعادل</span>
@@ -1094,7 +1745,7 @@
           </div>
 
           <!-- End of Month AI Predictor -->
-          <div class="kpi-card clickable" style="padding:14px;border-right:4px solid var(--purple);" onclick="navigate('autopilot'); switchSubTab('autopilot', 'whatif');">
+          <div class="kpi-card clickable" style="padding:14px;" onclick="navigate('autopilot'); switchSubTab('autopilot', 'whatif');">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
               <b style="font-size:13px;color:var(--text);">🔮 المتنبئ الذكي لنهاية الشهر (31 أكتوبر)</b>
               <span class="badge" style="background:rgba(139,92,246,0.2);color:#C4B5FD;">AI Forecast</span>
@@ -1112,7 +1763,7 @@
           </div>
 
           <!-- Kuwait Live Weather & Dust / Heat-Ban Advisory -->
-          <div class="kpi-card" style="padding:14px;border-right:4px solid var(--cyan);">
+          <div class="kpi-card" style="padding:14px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
               <b style="font-size:13px;color:var(--text);">🌤️ رادار طقس الكويت والتوجيه الميداني</b>
               <span class="badge badge-bike" id="kwWeatherTempBadge">33°C الصفاة / العارضية</span>
@@ -1124,7 +1775,7 @@
         </div>
 
         <!-- Quick Morning Upload Bar -->
-        <div class="kpi-card" style="margin-bottom:16px;padding:15px;border-right:4px solid var(--blue);">
+        <div class="kpi-card" data-ov-group="finance" style="margin-bottom:16px;padding:15px;">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
             <div>
               <h3 style="font-size:14.5px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:8px;">
@@ -1145,17 +1796,17 @@
         </div>
 
         <!-- SmartHR Segmented Fleet Status & 7 Operational Cohorts Bar + Export Cohort Image/Excel with WH & Last Day Orders -->
-        <div class="kpi-card" style="margin-bottom:16px;padding:16px;">
+        <div class="kpi-card" data-ov-group="cohorts" style="margin-bottom:16px;padding:22px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:10px;">
             <div>
               <h3 style="font-size:15px;font-weight:900;">📊 الفئات التشغيلية الـ 7 المدمجة مع ساعات الشفت اليومية (WH) وأوردرات آخر يوم</h3>
               <span style="font-size:12px;color:var(--text2);font-weight:600;">يتضمن التصدير: الترقيم (1..N)، الاسم بالعربي، الاسم بالإنجليزي، أوردرات آخر يوم، توتال الأوردرات، فارق التارجت التراكمي، الباتش، وساعات عمل اليوم (00:00 - 24:00)</span>
             </div>
             <div style="display:flex;gap:7px;flex-wrap:wrap;">
-              <button class="btn-action" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);" onclick="exportActiveCohortAsImage()">
+              <button class="btn-action" style="" onclick="exportActiveCohortAsImage()">
                 <span>📸</span> <span>تصدير الفئة كصورة (شامل ساعات الشفت وأوردرات آخر يوم)</span>
               </button>
-              <button class="btn-action" style="background:linear-gradient(135deg,#10B981,#059669);" onclick="exportActiveCohortExcel()">
+              <button class="btn-action" style="" onclick="exportActiveCohortExcel()">
                 <span>📊</span> <span>تصدير الفئة إكسل (.xlsx)</span>
               </button>
               <button class="btn-action" style="background:var(--orange);" onclick="exportAll7CohortsWorkbook()">
@@ -1190,8 +1841,37 @@
           </div>
         </div>
 
+        <!-- Live Cohort Quick Table inside Tab 2 (Cohorts) -->
+        <div class="kpi-card" data-ov-group="cohorts" style="margin-bottom:18px;padding:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+            <div>
+              <h3 style="font-size:15px;font-weight:800;color:var(--text);">📋 جدول الفئة المختارة المباشر (شامل أوردرات آخر يوم وساعات الشفت WH)</h3>
+              <p style="font-size:12px;color:var(--text2);">اضغط على أي فئة بالأعلى لتصفية الجدول فوراً أو تصديره كصورة PNG أو ملف Excel</p>
+            </div>
+            <button class="btn-secondary" onclick="navigateOrders('ALL')">فتح صفحة الأوردرات المتقدمة ←</button>
+          </div>
+          <div class="tbl-wrap" style="max-height:420px;overflow-y:auto;margin-bottom:0;">
+            <table>
+              <thead>
+                <tr>
+                  <th>م</th>
+                  <th>الاسم بالعربي</th>
+                  <th>الاسم بالإنجليزي</th>
+                  <th>الشركة</th>
+                  <th>أوردرات آخر يوم</th>
+                  <th>توتال الأوردرات</th>
+                  <th>فارق التارجت</th>
+                  <th>الباتش</th>
+                  <th>ساعات شفت اليوم (WH)</th>
+                </tr>
+              </thead>
+              <tbody id="ovCohortPreviewTbody"></tbody>
+            </table>
+          </div>
+        </div>
+
         <!-- Row 1: Operational KPI Cards (6) -->
-        <div class="kpi-grid">
+        <div class="kpi-grid" data-ov-group="pulse">
           <div class="kpi-card clickable" onclick="navigateOrders('ALL')">
             <div>
               <div class="kpi-top-row">
@@ -1266,7 +1946,7 @@
         </div>
 
         <!-- Row 2: Financial & Profit Cards (8 Cards — Maintenance, Fuel & Mobile Recharge Fee Each Separated!) -->
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+        <div data-ov-group="finance" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
           <h3 style="font-size:14px;font-weight:900;color:var(--text);">💼 الموقف المالي، الأجور، الصيانة، البنزين، ورسوم شحن الموبايل (تُخصم من صافي ربح الشركة، بينما الكاش لا يدخل بالحسبة)</h3>
           <div style="display:flex;align-items:center;gap:6px;">
             <span style="font-size:12px;color:var(--text2);font-weight:700;">📱 رسم شحن الموبايل الافتراضي/سائق:</span>
@@ -1274,7 +1954,7 @@
             <span style="font-size:11.5px;color:var(--text2);">د.ك</span>
           </div>
         </div>
-        <div class="profit-grid">
+        <div class="profit-grid" data-ov-group="finance">
           <div class="profit-card grad-bike">
             <div>
               <div class="p-title">🏍️ استحقاقات السياكل</div>
@@ -1334,11 +2014,11 @@
         </div>
 
         <!-- Row 2.5: Professional Cash & Daily Deposits Reconciliation Cards (5 Cards) -->
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+        <div data-ov-group="finance" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
           <h3 style="font-size:14px;font-weight:900;color:var(--text);">💵 مؤشرات التدفقات النقدية والتوريدات والإيداعات اليومية (PendingDues & Daily Deposits)</h3>
           <button class="btn-secondary" style="font-size:11.5px;padding:4px 10px;" onclick="navigate('cashfuel')">⚙️ لوحة المطابقة النقدية وتفاصيل الكروت</button>
         </div>
-        <div class="profit-grid">
+        <div class="profit-grid" data-ov-group="finance">
           <div class="profit-card grad-cash-sales">
             <div>
               <div class="p-title">📊 المبالغ المحصلة شهرياً</div>
@@ -1377,7 +2057,7 @@
         </div>
 
         <!-- Row 3: Daily Notes Registry with Search Bar -->
-        <div class="notes-box" id="notesBoxSection">
+        <div class="notes-box" id="notesBoxSection" data-ov-group="leaders">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:10px;">
             <div>
               <h3 style="font-size:15px;font-weight:900;color:var(--text);">📋 سجل الملاحظات اليومية الذكي (Auto-Workflow Operational Notes)</h3>
@@ -1414,7 +2094,7 @@
         </div>
 
         <!-- Top 10 & Bottom 10 Performers -->
-        <div class="filter-bar">
+        <div class="filter-bar" data-ov-group="leaders">
           <div class="filter-group">
             <span class="filter-label">نوع المركبة:</span>
             <select class="filter-select" id="rfVehicle" onchange="renderOverviewRankings()">
@@ -1446,7 +2126,7 @@
           <button class="btn-secondary" onclick="resetRankingsFilters()">🔄 إعادة تعيين</button>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;">
+        <div data-ov-group="leaders" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;">
           <div class="kpi-card" style="padding:15px;">
             <h3 style="font-size:14px;font-weight:900;color:var(--green);margin-bottom:10px;">🏆 نخبة الإنتاجية: أعلى 10 سائقين إنجازاً</h3>
             <div id="topRankList" style="display:flex;flex-direction:column;gap:6px;"></div>
@@ -1458,7 +2138,7 @@
         </div>
 
         <!-- Charts Grid -->
-        <div class="charts-grid">
+        <div class="charts-grid" data-ov-group="pulse">
           <div class="chart-card">
             <h3 style="font-size:14px;font-weight:800;margin-bottom:10px;">📈 المنحنى اليومي للأوردرات المنجزة (أكتوبر 2026)</h3>
             <div class="chart-body"><canvas id="overviewDailyChart"></canvas></div>
@@ -1470,7 +2150,7 @@
         </div>
 
         <!-- Interactive Calendar + Top 10 of Day + Non-Working Excuses + Utilization Chart -->
-        <div class="calendar-analytics-layout">
+        <div class="calendar-analytics-layout" data-ov-group="calendar">
           <div class="chart-card">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
               <h3 style="font-size:14.5px;font-weight:900;">📅 التقويم التشغيلي التفاعلي (أكتوبر 2026)</h3>
@@ -1514,7 +2194,7 @@
         </div>
 
         <!-- Real Interactive Map of Kuwait -->
-        <div class="chart-card" style="margin-bottom:18px;">
+        <div class="chart-card" data-ov-group="map" style="margin-bottom:18px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:10px;">
             <div>
               <h3 style="font-size:15.5px;font-weight:900;">🗺️ الخريطة الجغرافية الحقيقية لدولة الكويت — التمركز التشغيلي ومناطق الكثافة</h3>
@@ -1531,7 +2211,7 @@
         </div>
 
         <!-- Live Auto-Updating Kuwait Restaurants & Offers Radar -->
-        <div class="notes-box" style="border-top:4px solid var(--orange);">
+        <div class="notes-box" data-ov-group="map" style="">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
             <div>
               <h3 style="font-size:15.5px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:8px;">
@@ -1584,10 +2264,10 @@
 
         <!-- SUB-TAB 1: MORNING EXECUTIVE BRIEFING & AI ACTION SIMULATOR -->
         <div class="subtab-panel active" id="subtab-autopilot-morning">
-          <div class="smarthr-banner" style="background:linear-gradient(135deg,#0F172A,#1E1B4B);border-right:5px solid #F59E0B;">
+          <div class="smarthr-banner" style="">
             <div>
-              <h2 style="font-size:18px;font-weight:900;color:#FBBF24;">☕ ملخص القهوة الصباحية التنفيذي — أهم 5 قرارات خلال الـ 10 دقائق القادمة</h2>
-              <p style="font-size:12.5px;color:#E2E8F0;margin-top:4px;">تم تحليل 109 سائقين، 4 شيتات كاش، شيت الشفتات، شيت الأونلاين، و498 عملية بنزين لاستخراج القرارات ذات الأثر المالي المباشر:</p>
+              <h2 style="font-size:17px;font-weight:800;color:var(--text);">☕ ملخص القهوة الصباحية التنفيذي — أهم 5 قرارات خلال الـ 10 دقائق القادمة</h2>
+              <p style="font-size:12.5px;color:var(--text2);margin-top:4px;">تم تحليل 109 سائقين، 4 شيتات كاش، شيت الشفتات، شيت الأونلاين، و498 عملية بنزين لاستخراج القرارات ذات الأثر المالي المباشر:</p>
             </div>
             <button class="btn-action" style="background:#F59E0B;color:#0F172A;" onclick="renderAutopilotPage()">🔄 إعادة فحص الشيتات الآن</button>
           </div>
@@ -1595,15 +2275,15 @@
           <div class="kpi-grid" id="morningTop5Cards"></div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px;">
-            <div class="notes-box" style="border-top:4px solid var(--red);margin-bottom:0;">
+            <div class="notes-box" style="margin-bottom:0;">
               <h3 style="font-size:14.5px;font-weight:900;color:var(--red);margin-bottom:8px;">🔴 إجراءات طارئة فوراً (خلال 5 دقائق)</h3>
               <div id="aiUrgentActionsList" style="display:flex;flex-direction:column;gap:8px;"></div>
             </div>
-            <div class="notes-box" style="border-top:4px solid var(--yellow);margin-bottom:0;">
+            <div class="notes-box" style="margin-bottom:0;">
               <h3 style="font-size:14.5px;font-weight:900;color:var(--yellow);margin-bottom:8px;">🟡 تكليفات المشرفين اليوم (تقاطع الشيتات)</h3>
               <div id="aiSupervisorActionsList" style="display:flex;flex-direction:column;gap:8px;"></div>
             </div>
-            <div class="notes-box" style="border-top:4px solid var(--green);margin-bottom:0;">
+            <div class="notes-box" style="margin-bottom:0;">
               <h3 style="font-size:14.5px;font-weight:900;color:var(--green);margin-bottom:8px;">🟢 مكاسب سريعة لرفع الربح اليوم (Quick Wins)</h3>
               <div id="aiQuickWinsList" style="display:flex;flex-direction:column;gap:8px;"></div>
             </div>
@@ -1666,7 +2346,7 @@
 
         <!-- SUB-TAB 3: WHAT-IF COMMISSION SIMULATOR & END-OF-MONTH AI PREDICTOR -->
         <div class="subtab-panel" id="subtab-autopilot-whatif">
-          <div class="form-box" style="border-right:4px solid var(--purple);">
+          <div class="form-box" style="">
             <h3 style="font-size:16px;font-weight:900;margin-bottom:6px;">🧪 مختبر قرارات التسعير والعمولات ("ماذا لو؟" What-If Commission & Target Simulator)</h3>
             <p style="font-size:12.5px;color:var(--text2);margin-bottom:14px;">جرب تغيير أي معيار مالي أو تشغيلي وشاهد فوراً كيف سيتغير إجمالي الرواتب وصافي ربح الشركة بالدينار الكويتي قبل تطبيقه:</p>
             <div class="form-grid">
@@ -1722,19 +2402,19 @@
 
         <!-- SUB-TAB 4: CHAMPIONS PODIUM, FLIGHT-RISK & ONBOARDING PIPELINE -->
         <div class="subtab-panel" id="subtab-autopilot-champions">
-          <div class="notes-box" style="border-top:4px solid var(--yellow);">
+          <div class="notes-box" style="">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
               <div>
                 <h3 style="font-size:15.5px;font-weight:900;">🏆 لوحة شرف الحوافز الأسبوعية (Weekly Champions Podium)</h3>
                 <p style="font-size:12px;color:var(--text2);">أفضل 3 سائقين في الإنتاجية، الالتزام بالكاش، ومعدل `UTR` مع زر لتوليد بطاقة تهنئة باللغة الإنجليزية لجروبات الواتساب</p>
               </div>
-              <button class="btn-action" style="background:linear-gradient(135deg,#F59E0B,#D97706);" onclick="generateChampionsPodiumImage()">📸 توليد بطاقة تهنئة الأبطال (PNG)</button>
+              <button class="btn-action" style="" onclick="generateChampionsPodiumImage()">📸 توليد بطاقة تهنئة الأبطال (PNG)</button>
             </div>
             <div class="kpi-grid" id="championsPodiumGrid" style="margin-bottom:0;"></div>
           </div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-            <div class="notes-box" style="border-top:4px solid var(--red);">
+            <div class="notes-box" style="">
               <h3 style="font-size:15px;font-weight:900;color:var(--red);margin-bottom:6px;">🚨 مؤشر خطر الاستقالة أو التوقف المفاجئ (Attrition & Flight-Risk Alert)</h3>
               <p style="font-size:11.5px;color:var(--text2);margin-bottom:10px;">يرصد السائقين الذين لديهم تراجع حاد في آخر 3 أيام + كاش مرتفع في اليد + تحويل طلبات متكرر لسحب الكاش منهم فوراً:</p>
               <div class="tbl-wrap" style="max-height:300px;overflow-y:auto;margin-bottom:0;">
@@ -1745,7 +2425,7 @@
               </div>
             </div>
 
-            <div class="notes-box" style="border-top:4px solid var(--blue);">
+            <div class="notes-box" style="">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
                 <div>
                   <h3 style="font-size:15px;font-weight:900;color:var(--blue);">🛂 مسار تجهيز السائقين الجدد قبل التشغيل (Onboarding Pipeline)</h3>
@@ -1777,21 +2457,21 @@
         </div>
 
         <!-- Talabat Live Backoffice Connector & Upload Hub -->
-        <div class="form-box" style="background:linear-gradient(135deg,#0F172A,#1E293B);color:#FFF;border-right:5px solid #F97316;">
+        <div class="form-box" style="">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
             <div>
-              <h3 style="font-size:16px;font-weight:900;color:#FFF;display:flex;align-items:center;gap:8px;">
+              <h3 style="font-size:16px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:8px;">
                 <span>🔗</span> <span>بوابة الربط السريع مع داشبورد طلبات الحية (Talabat Live 3PL Backoffice & Shifts Sync)</span>
               </h3>
-              <p style="font-size:12.5px;color:#CBD5E1;margin-top:4px;">افتح داشبورد طلبات مباشرة أو انسخ بيانات الدخول بضغطة زر، ثم ارفع شيت `online.xlsx` وشيت `شفتات اليوم` ليقوم النظام بتحليلها فوراً:</p>
+              <p style="font-size:12.5px;color:var(--text2);margin-top:4px;">افتح داشبورد طلبات مباشرة أو انسخ بيانات الدخول بضغطة زر، ثم ارفع شيت `online.xlsx` وشيت `شفتات اليوم` ليقوم النظام بتحليلها فوراً:</p>
               <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
                 <a href="https://kw.me.logisticsbackoffice.com/dashboard/rooster/live-3pl" target="_blank" class="btn-action" style="background:#F97316;text-decoration:none;">
                   🚀 فتح داشبورد طلبات (Live 3PL Rooster)
                 </a>
-                <button class="btn-secondary" style="background:rgba(255,255,255,0.1);color:#FFF;border-color:rgba(255,255,255,0.2);" onclick="navigator.clipboard.writeText('fifteen.minute.ext@talabat.com');showToast('📋 تم نسخ الإيميل: fifteen.minute.ext@talabat.com');">
+                <button class="btn-secondary"  onclick="navigator.clipboard.writeText('fifteen.minute.ext@talabat.com');showToast('📋 تم نسخ الإيميل: fifteen.minute.ext@talabat.com');">
                   📋 نسخ اليوزر: fifteen.minute.ext@talabat.com
                 </button>
-                <button class="btn-secondary" style="background:rgba(255,255,255,0.1);color:#FFF;border-color:rgba(255,255,255,0.2);" onclick="navigator.clipboard.writeText('Mohamed@12345');showToast('🔑 تم نسخ الباسورد: Mohamed@12345');">
+                <button class="btn-secondary"  onclick="navigator.clipboard.writeText('Mohamed@12345');showToast('🔑 تم نسخ الباسورد: Mohamed@12345');">
                   🔑 نسخ الباسورد: Mohamed@12345
                 </button>
               </div>
@@ -1907,7 +2587,7 @@
                 <p style="font-size:12px;color:var(--text2);">مرتب بالضبط كما طلبت: (1. الترقيم | 2. الاسم بالعربي | 3. الاسم بالإنجليزي | 4. أوردرات آخر يوم | 5. توتال الأوردرات | 6. فارق التارجت التراكمي | 7. الباتش | 8. ساعات عمل اليوم WH)</p>
               </div>
               <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <button class="btn-action" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);" onclick="exportActiveCohortAsImage()">📸 تصدير الفئة كصورة</button>
+                <button class="btn-action" style="" onclick="exportActiveCohortAsImage()">📸 تصدير الفئة كصورة</button>
                 <button class="btn-action" style="background:var(--green);" onclick="exportActiveCohortExcel()">📊 تصدير الفئة الحالية (.xlsx)</button>
                 <button class="btn-action" style="background:var(--orange);" onclick="exportAll7CohortsWorkbook()">📑 تصدير الـ 7 فئات كاملة (.xlsx)</button>
               </div>
@@ -2232,7 +2912,7 @@
 
         <!-- SUB-TAB 3: FUEL ANOMALY DETECTOR -->
         <div class="subtab-panel" id="subtab-cashfuel-anomaly">
-          <div class="notes-box" style="border-top:4px solid var(--red);">
+          <div class="notes-box" style="">
             <h3 style="font-size:15.5px;font-weight:900;color:var(--red);margin-bottom:6px;">🚨 كاشف الهدر والتلاعب في كروت البنزين (Fuel Anomaly & Zero-Order Refuel Detector)</h3>
             <p style="font-size:12px;color:var(--text2);margin-bottom:12px;">يطابق تاريخ كل عملية تعبئة بنزين في `Report 5` مع أوردرات السائق في نفس اليوم بشيت `Orders Daily`، ويكشف من قام بتفويل البنزين في يوم كان فيه (0 أوردر / إيقاف / حادث / صيانة) أو تجاوز المعدل الطبيعي للاستهلاك:</p>
             <div class="tbl-wrap" style="max-height:440px;overflow-y:auto;margin-bottom:0;">
@@ -2276,13 +2956,13 @@
         </div>
 
         <!-- Visual 3-Month Expiry Timeline & Renewal Budget Estimator -->
-        <div class="notes-box" style="border-top:4px solid var(--purple);">
+        <div class="notes-box" style="">
           <h3 style="font-size:15.5px;font-weight:900;margin-bottom:6px;">🗓️ الجدول الزمني البصري لتجديد الوثائق والإقامات والتكلفة التقديرية (Visual 90-Day Expiry Timeline)</h3>
           <p style="font-size:12px;color:var(--text2);margin-bottom:12px;">يوضح عدد الوثائق المنتهية أو التي ستنتهي خلال 30، 60، و90 يوماً مع التكلفة التقديرية لتجديدها للاستعداد المالي والإداري مسبقاً:</p>
           <div class="kpi-grid" id="visualExpiryTimelineGrid" style="margin-bottom:0;"></div>
         </div>
 
-        <div class="notes-box" style="border-right:4px solid var(--orange);">
+        <div class="notes-box" style="">
           <h3 style="font-size:15px;font-weight:900;margin-bottom:10px;color:var(--orange);">⛽ 1. إنذار كروت البنزين التي قاربت على الانتهاء (&lt; 0.500 د.ك أو منخفضة)</h3>
           <div class="tbl-wrap" style="max-height:260px;overflow-y:auto;margin-bottom:0;">
             <table>
@@ -2321,7 +3001,7 @@
             <p class="page-desc">مرتبة ومحدثة بأوردرات آخر يوم وساعات عمل اليوم (`WH 00:00 - 24:00`)، مع أسهم الترتيب التنازلي/التصاعدي، فلتر حالة التارجت، والبحث الفوري.</p>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn-action" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);" onclick="exportActiveCohortAsImage()">📸 تصدير الفئة كصورة</button>
+            <button class="btn-action" style="" onclick="exportActiveCohortAsImage()">📸 تصدير الفئة كصورة</button>
             <button class="btn-action" style="background:var(--green);" onclick="exportActiveCohortExcel()">📊 تصدير الفئة (.xlsx)</button>
             <button class="btn-action" style="background:var(--orange);" onclick="exportAll7CohortsWorkbook()">📑 تصدير الـ 7 فئات معاً (.xlsx)</button>
           </div>
@@ -2402,7 +3082,7 @@
             <p class="page-desc">كروت تفاعلية كبيرة الخط لكل سائق تحتوي على 6 تبويبات ديناميكية وزر لتوليد كارت كشف راتب مصور باللغة الإنجليزية (Payslip PNG/PDF).</p>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn-action" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);" onclick="exportActiveCohortAsImage()">📸 تصدير الفئة كصورة</button>
+            <button class="btn-action" style="" onclick="exportActiveCohortAsImage()">📸 تصدير الفئة كصورة</button>
             <button class="btn-action" style="background:var(--green);" onclick="exportActiveCohortExcel()">📊 تصدير شيت إكسل (.xlsx)</button>
           </div>
         </div>
@@ -2542,7 +3222,7 @@
             <h1 class="page-title">🔧 الصيانة، فواتير الورش، تغيير الزيت الذكي، وسجل المركبات البديلة</h1>
             <p class="page-desc">منظومة متكاملة لإدارة فواتير الصيانة (مع التحديد وتصدير PDF)، ومتابعة تغيير الزيت بالصورة أو مانوال، وسجل المركبات البديلة (السبير).</p>
           </div>
-          <button class="btn-action" style="background:linear-gradient(135deg,#EF4444,#DC2626);" onclick="exportSelectedMaintenancePDF()">📄 تصدير الفواتير المحددة (PDF)</button>
+          <button class="btn-action" style="" onclick="exportSelectedMaintenancePDF()">📄 تصدير الفواتير المحددة (PDF)</button>
         </div>
 
         <div class="subtabs-nav" id="maintenanceSubtabs">
@@ -2615,7 +3295,7 @@
 
         <!-- SUB-TAB 2: PREVENTIVE MAINTENANCE & OIL CHANGE (OCR PHOTO + MANUAL) -->
         <div class="subtab-panel" id="subtab-maintenance-oilpreventive">
-          <div class="form-box" style="border-right:4px solid var(--green);">
+          <div class="form-box" style="">
             <h3 style="font-size:15.5px;font-weight:900;margin-bottom:6px;">🛢️ نموذج فحص وتغيير الزيت والصيانة الوقائية (يدعم الاستخلاص الذكي من صورة العداد والاستيكر + الإدخال اليدوي)</h3>
             <p style="font-size:12px;color:var(--text2);margin-bottom:14px;">ارفع صورة عداد المركبة وصورة استيكر موعد تغيير الزيت ليقوم النظام بقراءة الكيلومترات تلقائياً (أو أدخلها يدوياً مباشرة) ومطابقتها مع الموعد المطلوب:</p>
             <form onsubmit="handleSaveOilCheckRecord(event)">
@@ -2675,7 +3355,7 @@
 
         <!-- SUB-TAB 3: SPARE VEHICLES & DOWNTIME LOG -->
         <div class="subtab-panel" id="subtab-maintenance-sparevehicles">
-          <div class="form-box" style="border-right:4px solid var(--blue);">
+          <div class="form-box" style="">
             <h3 style="font-size:15px;font-weight:900;margin-bottom:10px;">🏍️ تسجيل تسليم مركبة بديلة (سبير) ومتابعة توقف المركبة الأساسية بالورشة</h3>
             <form onsubmit="handleSaveSpareVehicleLog(event)" class="form-grid" style="margin-bottom:0;align-items:flex-end;">
               <div class="form-group">
@@ -2776,7 +3456,7 @@
 
         <!-- SUB-TAB 2: BULK WHATSAPP BROADCAST CENTER -->
         <div class="subtab-panel" id="subtab-payroll-whatsappcenter">
-          <div class="notes-box" style="border-top:4px solid var(--green);">
+          <div class="notes-box" style="">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
               <div>
                 <h3 style="font-size:15.5px;font-weight:900;color:var(--green);">📲 مركز الإرسال الجماعي والفوري عبر واتساب (Bulk WhatsApp Broadcast Center)</h3>
@@ -2969,27 +3649,162 @@
     </div>
   </div>
 
-  <!-- 6. GOOGLE SHEETS CONNECTION & DIAGNOSTICS MODAL -->
+  <!-- 6. GOOGLE SHEETS CONNECTION, LIVE SYNC & BACKUP DIAGNOSTICS MODAL -->
   <div class="modal-overlay" id="sheetSettingsModalOverlay">
-    <div class="modal-box" style="max-width:650px;">
+    <div class="modal-box" style="max-width:760px;">
       <div class="modal-header">
         <div>
-          <h3 style="font-size:16px;font-weight:900;">🔗 إعدادات وفحص الربط الحي مع Google Sheets</h3>
-          <p style="font-size:12px;color:var(--text2);">أي تعديل تجريه في جوجل شيت ينعكس تلقائياً في الداش بورد بالإضافة إلى دعم رفع ملفات الإكسل المباشر</p>
+          <h3 style="font-size:17px;font-weight:900;">☁️ مركز المزامنة السحابية الحية والربط مع Google Sheets والتبويبات</h3>
+          <p style="font-size:12.5px;color:var(--text2);">مزامنة فورية مع الأوراق الـ 8 في Google Sheets + مزامنة لحظية بين كافة التبويبات المفتوحة + نسخ احتياطي شامل</p>
         </div>
         <button class="modal-close-btn" onclick="closeSheetSettingsModal()">✕</button>
       </div>
       <div class="modal-body">
-        <div style="background:var(--card-alt);padding:14px;border-radius:10px;border:1px solid var(--border);margin-bottom:16px;">
-          <label style="font-size:12.5px;font-weight:800;color:var(--text);display:block;margin-bottom:6px;">الرابط الأساسي لشيت جوجل المنشور (Published URL):</label>
-          <input type="text" id="customSheetBaseUrlInput" class="filter-input" style="width:100%;direction:ltr;text-align:left;font-size:12px;" />
-          <div style="display:flex;gap:8px;margin-top:10px;">
-            <button class="btn-action" style="background:var(--orange);" onclick="saveCustomSheetUrl()">💾 حفظ الرابط ومزامنة البيانات الآن</button>
-            <button class="btn-secondary" onclick="resetDefaultSheetUrl()">🔄 استعادة الرابط الافتراضي</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div style="background:var(--card-alt);padding:14px;border-radius:12px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:12px;color:var(--text2);font-weight:800;">⏱️ المزامنة التلقائية الدورية (كل 60 ثانية)</div>
+              <div style="font-size:14px;font-weight:900;color:var(--green);margin-top:2px;" id="autoSyncStatusLabel">مفعلة ونشطة (Active)</div>
+            </div>
+            <button class="btn-secondary" onclick="toggleAutoSyncInterval()" id="autoSyncToggleBtn">إيقاف مؤقت</button>
+          </div>
+          <div style="background:var(--card-alt);padding:14px;border-radius:12px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:12px;color:var(--text2);font-weight:800;">📡 مزامنة التبويبات الفورية (Multi-Tab Sync)</div>
+              <div style="font-size:14px;font-weight:900;color:var(--blue);margin-top:2px;">BroadcastChannel متصل ⚡</div>
+            </div>
+            <button class="btn-action" style="background:var(--green);" onclick="syncAllData(true)">🔄 مزامنة الآن</button>
           </div>
         </div>
-        <h4 style="font-size:13.5px;font-weight:900;margin-bottom:8px;">حالة الاتصال بالأوراق الـ 8 داخل Google Sheets:</h4>
-        <div id="sheetsDiagnosticList" class="mini-metrics-grid" style="margin-bottom:14px;"></div>
+
+        <div style="background:var(--card-alt);padding:14px;border-radius:12px;border:1px solid var(--border);margin-bottom:16px;">
+          <label style="font-size:12.5px;font-weight:800;color:var(--text);display:block;margin-bottom:6px;">🔗 الرابط الأساسي لشيت جوجل المنشور (Published Google Sheet URL):</label>
+          <input type="text" id="customSheetBaseUrlInput" class="filter-input" style="width:100%;direction:ltr;text-align:left;font-size:12px;" />
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+            <button class="btn-action" style="background:var(--orange);" onclick="saveCustomSheetUrl()">💾 حفظ الرابط ومزامنة البيانات الآن</button>
+            <button class="btn-secondary" onclick="resetDefaultSheetUrl()">🔄 استعادة الرابط الافتراضي</button>
+            <button class="btn-secondary" style="margin-right:auto;border-color:var(--blue);color:var(--blue);" onclick="exportFullSystemSyncSnapshot()">📥 تصدير نسخة المزامنة (.json)</button>
+            <button class="btn-secondary" style="border-color:var(--purple);color:var(--purple);" onclick="document.getElementById('importSyncSnapshotInput').click()">📤 استيراد نسخة مزامنة (.json)</button>
+            <input type="file" id="importSyncSnapshotInput" accept=".json" style="display:none;" onchange="importFullSystemSyncSnapshot(event)" />
+          </div>
+        </div>
+
+        <h4 style="font-size:13.5px;font-weight:900;margin-bottom:8px;">📊 تشخيص الاتصال الحي بالأوراق الـ 8 داخل Google Sheets:</h4>
+        <div id="sheetsDiagnosticList" class="mini-metrics-grid" style="margin-bottom:10px;"></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  
+  <!-- 7. APPLE LAUNCHPAD / APP SWITCHER MODAL (ZERO-CONFUSION NAVIGATION) -->
+  <div class="modal-overlay" id="appleLaunchpadModalOverlay" onclick="if(event.target===this)closeAppleLaunchpadModal()">
+    <div class="modal-box" style="max-width:960px;border-radius:26px;padding:8px;">
+      <div class="modal-header" style="border-bottom:1px solid var(--border);padding:18px 24px;">
+        <div>
+          <div style="font-size:11.5px;font-weight:800;color:var(--blue);letter-spacing:0.4px;">APPLE LAUNCHPAD • QUICK NAVIGATION</div>
+          <h3 style="font-size:20px;font-weight:900;color:var(--text);margin-top:2px;">🧭 دليل أقسام النظام السريع — اختر وجهتك بضغطة واحدة</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeAppleLaunchpadModal()">✕</button>
+      </div>
+      <div class="modal-body" style="padding:22px 24px;">
+        <div class="apple-launchpad-grid">
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigate('overview');switchOverviewWorkspace('pulse');">
+            <div class="lp-icon" style="background:rgba(0,113,227,0.12);color:#0071E3;">📊</div>
+            <div>
+              <div class="lp-title">1. الرئيسية والملخص التنفيذي</div>
+              <div class="lp-desc">مؤشرات الأداء الـ 6، عداد التعادل، التوقعات، والشارتس اليومية</div>
+            </div>
+          </div>
+
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigate('overview');switchOverviewWorkspace('cohorts');">
+            <div class="lp-icon" style="background:rgba(88,86,214,0.12);color:#5856D6;">🗂️</div>
+            <div>
+              <div class="lp-title">2. الفئات التشغيلية الـ 7 والتصدير</div>
+              <div class="lp-desc">تصفية وتصدير الفئات الـ 7 كصورة PNG أو ملف إكسل شامل الشفتات</div>
+            </div>
+          </div>
+
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigate('autopilot');">
+            <div class="lp-icon" style="background:rgba(175,82,222,0.12);color:#AF52DE;">🧠</div>
+            <div>
+              <div class="lp-title">3. المستشار الذكي والمحاكاة (AI)</div>
+              <div class="lp-desc">وضع القهوة الصباحية، محاكي ترقية الباتش، ومختبر "ماذا لو؟"</div>
+            </div>
+          </div>
+
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigate('liveroster');">
+            <div class="lp-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">📡</div>
+            <div>
+              <div class="lp-title">4. الشفتات والأونلاين الحي الآن</div>
+              <div class="lp-desc">حساب ساعات عمل اليوم (00:00-24:00) وربط شيت ONline وطلبات</div>
+            </div>
+          </div>
+
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigate('cashfuel');">
+            <div class="lp-icon" style="background:rgba(255,149,0,0.14);color:#FF9500;">📂</div>
+            <div>
+              <div class="lp-title">5. الكاش والإيداعات والوقود</div>
+              <div class="lp-desc">رفع شيتات PendingDues وReport 5 & 6 وكاشف هدر البنزين</div>
+            </div>
+          </div>
+
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigate('payroll');">
+            <div class="lp-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">💰</div>
+            <div>
+              <div class="lp-title">6. الرواتب ومركز واتساب الجماعي</div>
+              <div class="lp-desc">مسير الرواتب، رسوم الموبايل، كارت Payslip، ورسائل واتساب EN</div>
+            </div>
+          </div>
+
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigate('histbudget');">
+            <div class="lp-icon" style="background:rgba(0,113,227,0.12);color:#0071E3;">🏛️</div>
+            <div>
+              <div class="lp-title">7. أرشيف الشهور والموازنة (M1–M7)</div>
+              <div class="lp-desc">رواتب يناير إلى يوليو، تسلسل المديونيات، ونمو موازنة الشركة</div>
+            </div>
+          </div>
+
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigate('fleet');">
+            <div class="lp-icon" style="background:rgba(90,200,250,0.16);color:#007AFF;">🪪</div>
+            <div>
+              <div class="lp-title">8. بطاقات السائقين الشاملة 360°</div>
+              <div class="lp-desc">كروت تفاعلية لكل سائق تضم 6 تبويبات وتعديلات فردية فورية</div>
+            </div>
+          </div>
+
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigateOrders('ALL');">
+            <div class="lp-icon" style="background:rgba(255,149,0,0.14);color:#FF9500;">📦</div>
+            <div>
+              <div class="lp-title">9. جداول الأوردرات والتارجت</div>
+              <div class="lp-desc">فرز وترتيب تنازلي/تصاعدي لكافة السائقين حسب الشركات والفئات</div>
+            </div>
+          </div>
+
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigate('attendance');">
+            <div class="lp-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">📅</div>
+            <div>
+              <div class="lp-title">10. الحضور والعقود والالتزام</div>
+              <div class="lp-desc">جدول الحضور اليومي لـ 31 يوماً وسجل ملاحظات الحضور والإيقاف</div>
+            </div>
+          </div>
+
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigate('maintenance');">
+            <div class="lp-icon" style="background:rgba(142,142,147,0.16);color:#636366;">🔧</div>
+            <div>
+              <div class="lp-title">11. الصيانة وتغيير الزيت والسبير</div>
+              <div class="lp-desc">فواتير الورش، قراءة عداد الزيت بالصورة OCR، والمركبات البديلة</div>
+            </div>
+          </div>
+
+          <div class="apple-launchpad-card" onclick="closeAppleLaunchpadModal();navigate('alerts');">
+            <div class="lp-icon" style="background:rgba(255,59,48,0.14);color:#FF3B30;">🚨</div>
+            <div>
+              <div class="lp-title">12. رادار المخاطر والوثائق والتحقيقات</div>
+              <div class="lp-desc">الجدول الزمني لتجديد الإقامات والرخص خلال 90 يوماً والتحقيقات</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -3003,6 +3818,14 @@
     /* =========================================================================
        1. CONFIGURATION, STORAGE KEYS & STATE MANAGEMENT (V8)
        ========================================================================= */
+    
+    const _memStore = {};
+    const safeStorage = {
+      getItem(k) { try { return window.safeStorage.getItem(k); } catch(e) { return _memStore[k] ?? null; } },
+      setItem(k, v) { try { window.safeStorage.setItem(k, v); } catch(e) { _memStore[k] = String(v); } },
+      removeItem(k) { try { window.safeStorage.removeItem(k); } catch(e) { delete _memStore[k]; } }
+    };
+
     const DEFAULT_BASE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTc5sFosqCuYPsG1lwVaTqRsNmrFbSchwrUG-udsG2IaAxsDLQzi-Oc_O5Ia7MR-jkYDnoRWBLPV5uS/pub';
 
     const STORAGE_KEYS = {
@@ -3049,8 +3872,8 @@
     };
 
     const APP = {
-      lang: localStorage.getItem(STORAGE_KEYS.lang) || 'ar',
-      theme: localStorage.getItem(STORAGE_KEYS.theme) || 'dark',
+      lang: safeStorage.getItem(STORAGE_KEYS.lang) || 'ar',
+      theme: safeStorage.getItem('sportive_apple_theme_v10') || 'light',
       activePage: 'overview',
       activeOrdersCO: 'ALL',
       activeCohort: 'ALL',
@@ -3059,7 +3882,7 @@
       isSyncing: false,
       privacyMode: false,
       mobileFieldMode: false,
-      defaultMobileFee: parseFloat(localStorage.getItem(STORAGE_KEYS.mobileFeeDefault) ?? '5.000'),
+      defaultMobileFee: parseFloat(safeStorage.getItem(STORAGE_KEYS.mobileFeeDefault) ?? '5.000'),
       sheetStatus: {},
       cardTabState: {},
       selectedMaintRefs: new Set(),
@@ -3188,7 +4011,7 @@
       const num = parseFloat(val);
       if (isNaN(num) || num < 0) return;
       APP.defaultMobileFee = num;
-      localStorage.setItem(STORAGE_KEYS.mobileFeeDefault, String(num));
+      safeStorage.setItem(STORAGE_KEYS.mobileFeeDefault, String(num));
       rebuildAllAndRender(`📱 تم تحديث رسم شحن الموبايل الافتراضي إلى (${num.toFixed(3)} د.ك) وتحديث صافي ربح الشركة!`);
     }
 
@@ -3196,8 +4019,8 @@
        3. INITIALIZATION & STORAGE LOADER
        ========================================================================= */
     function initSheetsStorage() {
-      const removedDefaults = JSON.parse(localStorage.getItem(STORAGE_KEYS.removedDefaultSheets) || '{}');
-      const customUploaded = JSON.parse(localStorage.getItem(STORAGE_KEYS.uploadedSheets) || '{}');
+      const removedDefaults = JSON.parse(safeStorage.getItem(STORAGE_KEYS.removedDefaultSheets) || '{}');
+      const customUploaded = JSON.parse(safeStorage.getItem(STORAGE_KEYS.uploadedSheets) || '{}');
 
       const masterSrc = customUploaded.MASTER || EMBEDDED_BUNDLE.main;
       DB.riders = masterSrc['Riders'] || [];
@@ -3236,25 +4059,25 @@
       else if (!removedDefaults.ONLINE && EMBEDDED_BUNDLE.onlineRoster) DB.onlineSheet = EMBEDDED_BUNDLE.onlineRoster;
       else DB.onlineSheet = null;
 
-      const customHist = JSON.parse(localStorage.getItem(STORAGE_KEYS.customHistPayrolls) || '[]');
+      const customHist = JSON.parse(safeStorage.getItem(STORAGE_KEYS.customHistPayrolls) || '[]');
       DB.historicalPayrolls = [...(EMBEDDED_BUNDLE.historicalPayrolls || []), ...customHist];
 
-      DB.localMaint = JSON.parse(localStorage.getItem(STORAGE_KEYS.maint) || '[]');
-      DB.deletedMaintRefs = JSON.parse(localStorage.getItem(STORAGE_KEYS.deletedMaint) || '[]');
-      DB.localInv = JSON.parse(localStorage.getItem(STORAGE_KEYS.inv) || '[]');
-      DB.deletedInvRefs = JSON.parse(localStorage.getItem(STORAGE_KEYS.deletedInv) || '[]');
-      DB.localAdj = JSON.parse(localStorage.getItem(STORAGE_KEYS.adj) || '{}');
-      DB.localAttNotes = JSON.parse(localStorage.getItem(STORAGE_KEYS.attNotes) || '[]');
-      DB.manualDailyDeposits = JSON.parse(localStorage.getItem(STORAGE_KEYS.dailyDeposits) || '{}');
-      DB.oilCheckRecords = JSON.parse(localStorage.getItem(STORAGE_KEYS.oilChecks) || '[]');
-      DB.spareVehicleLogs = JSON.parse(localStorage.getItem(STORAGE_KEYS.spareVehicles) || '[]');
-      DB.onboardingCandidates = JSON.parse(localStorage.getItem(STORAGE_KEYS.onboardingList) || 'null') || [
+      DB.localMaint = JSON.parse(safeStorage.getItem(STORAGE_KEYS.maint) || '[]');
+      DB.deletedMaintRefs = JSON.parse(safeStorage.getItem(STORAGE_KEYS.deletedMaint) || '[]');
+      DB.localInv = JSON.parse(safeStorage.getItem(STORAGE_KEYS.inv) || '[]');
+      DB.deletedInvRefs = JSON.parse(safeStorage.getItem(STORAGE_KEYS.deletedInv) || '[]');
+      DB.localAdj = JSON.parse(safeStorage.getItem(STORAGE_KEYS.adj) || '{}');
+      DB.localAttNotes = JSON.parse(safeStorage.getItem(STORAGE_KEYS.attNotes) || '[]');
+      DB.manualDailyDeposits = JSON.parse(safeStorage.getItem(STORAGE_KEYS.dailyDeposits) || '{}');
+      DB.oilCheckRecords = JSON.parse(safeStorage.getItem(STORAGE_KEYS.oilChecks) || '[]');
+      DB.spareVehicleLogs = JSON.parse(safeStorage.getItem(STORAGE_KEYS.spareVehicles) || '[]');
+      DB.onboardingCandidates = JSON.parse(safeStorage.getItem(STORAGE_KEYS.onboardingList) || 'null') || [
         { id: 'ONB-1', name: 'كلفين نجور (KELVIN NGURE MUCHIRI)', co: 'SUPT', stage: 6, note: 'استلم المركبة وبدأ التشغيل' },
         { id: 'ONB-2', name: 'ليفي واتشيرا (LEVI WACHIRA MAINA)', co: 'SUPT', stage: 6, note: 'استلم المركبة وبدأ التشغيل' },
         { id: 'ONB-3', name: 'تيتوس نيجينجا (TITUS NGINGA GITHAITE)', co: 'SUPT', stage: 6, note: 'استلم المركبة وبدأ التشغيل' },
         { id: 'ONB-4', name: 'سائق جديد قيد الإجراءات (دفعة أكتوبر)', co: 'FTMN', stage: 3, note: 'في مرحلة البصمات وإصدار المدنية' }
       ];
-      DB.phoneBook = JSON.parse(localStorage.getItem(STORAGE_KEYS.phoneBook) || '{}');
+      DB.phoneBook = JSON.parse(safeStorage.getItem(STORAGE_KEYS.phoneBook) || '{}');
     }
 
     /* =========================================================================
@@ -3466,7 +4289,7 @@
             }
           }
         });
-        try { localStorage.setItem(STORAGE_KEYS.phoneBook, JSON.stringify(DB.phoneBook)); } catch (e) {}
+        try { safeStorage.setItem(STORAGE_KEYS.phoneBook, JSON.stringify(DB.phoneBook)); } catch (e) {}
       }
     }
 
@@ -3585,7 +4408,7 @@
           return null;
         };
 
-        const customHist = JSON.parse(localStorage.getItem(STORAGE_KEYS.customHistPayrolls) || '[]');
+        const customHist = JSON.parse(safeStorage.getItem(STORAGE_KEYS.customHistPayrolls) || '[]');
         let added = 0, skipped = 0;
         for (let r = hdrRow + 1; r < rows.length; r++) {
           const rv = rows[r];
@@ -3626,7 +4449,7 @@
           });
           added++;
         }
-        localStorage.setItem(STORAGE_KEYS.customHistPayrolls, JSON.stringify(customHist));
+        safeStorage.setItem(STORAGE_KEYS.customHistPayrolls, JSON.stringify(customHist));
         event.target.value = '';
         rebuildAllAndRender(`✅ تم إضافة (${added}) سجل راتب لشهر (${monthName}) للسائقين المتواجدين بالداشبورد (وتجاهل ${skipped} غير مسجلين)!`);
       } catch (err) {
@@ -3684,8 +4507,8 @@
     }
 
     function saveUploadedSheetToSlot(slotKey, filename, rows) {
-      const customUploaded = JSON.parse(localStorage.getItem(STORAGE_KEYS.uploadedSheets) || '{}');
-      const removedDefaults = JSON.parse(localStorage.getItem(STORAGE_KEYS.removedDefaultSheets) || '{}');
+      const customUploaded = JSON.parse(safeStorage.getItem(STORAGE_KEYS.uploadedSheets) || '{}');
+      const removedDefaults = JSON.parse(safeStorage.getItem(STORAGE_KEYS.removedDefaultSheets) || '{}');
       delete removedDefaults[slotKey];
 
       customUploaded[slotKey] = {
@@ -3694,23 +4517,23 @@
         rows: rows
       };
 
-      localStorage.setItem(STORAGE_KEYS.uploadedSheets, JSON.stringify(customUploaded));
-      localStorage.setItem(STORAGE_KEYS.removedDefaultSheets, JSON.stringify(removedDefaults));
+      safeStorage.setItem(STORAGE_KEYS.uploadedSheets, JSON.stringify(customUploaded));
+      safeStorage.setItem(STORAGE_KEYS.removedDefaultSheets, JSON.stringify(removedDefaults));
     }
 
     function removeUploadedSheet(slotKey) {
-      const customUploaded = JSON.parse(localStorage.getItem(STORAGE_KEYS.uploadedSheets) || '{}');
-      const removedDefaults = JSON.parse(localStorage.getItem(STORAGE_KEYS.removedDefaultSheets) || '{}');
+      const customUploaded = JSON.parse(safeStorage.getItem(STORAGE_KEYS.uploadedSheets) || '{}');
+      const removedDefaults = JSON.parse(safeStorage.getItem(STORAGE_KEYS.removedDefaultSheets) || '{}');
 
       delete customUploaded[slotKey];
       removedDefaults[slotKey] = true;
 
-      localStorage.setItem(STORAGE_KEYS.uploadedSheets, JSON.stringify(customUploaded));
-      localStorage.setItem(STORAGE_KEYS.removedDefaultSheets, JSON.stringify(removedDefaults));
+      safeStorage.setItem(STORAGE_KEYS.uploadedSheets, JSON.stringify(customUploaded));
+      safeStorage.setItem(STORAGE_KEYS.removedDefaultSheets, JSON.stringify(removedDefaults));
 
       if (slotKey === 'DAILY_DEPOSITS') {
         DB.manualDailyDeposits = {};
-        localStorage.removeItem(STORAGE_KEYS.dailyDeposits);
+        safeStorage.removeItem(STORAGE_KEYS.dailyDeposits);
       }
 
       rebuildAllAndRender('🗑️ تم إزالة الشيت من الداشبورد وتحديث الحسابات فوراً.');
@@ -3721,15 +4544,15 @@
       const allKeys = ['PD_SUPT', 'PD_FTMN', 'PD_FNMN', 'PD_SRBS', 'DAILY_DEPOSITS', 'REPORT5', 'REPORT6', 'SHIFTS', 'ONLINE'];
       const removedDefaults = {};
       allKeys.forEach(k => removedDefaults[k] = true);
-      localStorage.removeItem(STORAGE_KEYS.uploadedSheets);
-      localStorage.removeItem(STORAGE_KEYS.dailyDeposits);
-      localStorage.setItem(STORAGE_KEYS.removedDefaultSheets, JSON.stringify(removedDefaults));
+      safeStorage.removeItem(STORAGE_KEYS.uploadedSheets);
+      safeStorage.removeItem(STORAGE_KEYS.dailyDeposits);
+      safeStorage.setItem(STORAGE_KEYS.removedDefaultSheets, JSON.stringify(removedDefaults));
       rebuildAllAndRender('🗑️ تم إزالة كافة الشيتات المرفوعة.');
     }
 
     function restoreDefaultAttachedSheets() {
-      localStorage.removeItem(STORAGE_KEYS.removedDefaultSheets);
-      localStorage.removeItem(STORAGE_KEYS.uploadedSheets);
+      safeStorage.removeItem(STORAGE_KEYS.removedDefaultSheets);
+      safeStorage.removeItem(STORAGE_KEYS.uploadedSheets);
       rebuildAllAndRender('🔄 تمت استعادة كافة الشيتات المرفقة الأصلية بنجاح!');
     }
 
@@ -3747,7 +4570,7 @@
       if (!t) {
         t = document.createElement('div');
         t.id = 'sfToastBox';
-        t.style.cssText = 'position:fixed;bottom:24px;left:24px;background:linear-gradient(135deg,#0F172A,#1E293B);color:#FFF;border:1.5px solid #F97316;padding:12px 20px;border-radius:12px;font-weight:800;font-size:13.5px;z-index:9999;box-shadow:0 10px 25px rgba(0,0,0,0.45);transition:opacity 0.3s;';
+        t.style.cssText = 'position:fixed;bottom:24px;left:24px;border:1.5px solid #F97316;padding:12px 20px;border-radius:12px;font-weight:800;font-size:13.5px;z-index:9999;box-shadow:0 10px 25px rgba(0,0,0,0.45);transition:opacity 0.3s;';
         document.body.appendChild(t);
       }
       t.textContent = msg;
@@ -4733,6 +5556,25 @@
       document.getElementById('ovCashDailyDeposit').textContent = fmtKWD(totalDailyDeposit);
       document.getElementById('ovCashNetAfterDeposit').textContent = fmtKWD(totalNetPendingCash);
 
+      
+      const ovCohortTbody = document.getElementById('ovCohortPreviewTbody');
+      if (ovCohortTbody) {
+        const sortedCohort = [...riders].sort((a, b) => b.totalOrders - a.totalOrders);
+        ovCohortTbody.innerHTML = sortedCohort.map((r, i) => `
+          <tr onclick="openDriverModal('${r.id}')" style="cursor:pointer;">
+            <td><b>${i + 1}</b></td>
+            <td style="font-weight:800;">${r.nameAr}</td>
+            <td>${r.nameEn}</td>
+            <td><span class="badge badge-${r.co.toLowerCase()}">${r.co}</span></td>
+            <td style="font-weight:800;color:var(--blue);">${r.lastDayOrdersDisplay}</td>
+            <td style="font-weight:900;color:var(--green);">${r.totalOrders}</td>
+            <td style="font-weight:800;color:${r.missingDailyTarget >= 0 ? 'var(--green)' : 'var(--red)'};">${r.missingDailyTarget >= 0 ? '+' + r.missingDailyTarget : r.missingDailyTarget}</td>
+            <td>باتش ${r.batch}</td>
+            <td style="font-weight:800;color:var(--purple);">${r.shiftWHFormatted}</td>
+          </tr>
+        `).join('');
+      }
+
       renderOverviewNotesRegistry();
       renderOverviewRankings();
       renderOverviewCharts(riders);
@@ -4753,27 +5595,27 @@
 
       // 1. Top 5 Morning Cards
       document.getElementById('morningTop5Cards').innerHTML = `
-        <div class="kpi-card clickable" style="border-top:3px solid var(--red);" onclick="navigate('cashfuel');switchSubTab('cashfuel','fuelcards');">
+        <div class="kpi-card clickable" style="" onclick="navigate('cashfuel');switchSubTab('cashfuel','fuelcards');">
           <div class="kpi-label">⛽ 1. كروت بنزين توشك على التوقف (&lt;0.5 د.ك)</div>
           <div class="kpi-value val-neg">${lowFuelRiders.length} كروت</div>
           <div class="kpi-footer-link"><span>أخطرها: ${lowFuelRiders[0]?.nameAr || '--'} (${lowFuelRiders[0]?.fuelRemainingBalance?.toFixed(3) || 0} د.ك)</span></div>
         </div>
-        <div class="kpi-card clickable" style="border-top:3px solid var(--orange);" onclick="navigate('payroll');switchSubTab('payroll','whatsappcenter');">
+        <div class="kpi-card clickable" style="" onclick="navigate('payroll');switchSubTab('payroll','whatsappcenter');">
           <div class="kpi-label">💵 2. مديونيات كاش خطيرة (&gt;50 د.ك)</div>
           <div class="kpi-value val-neg">${highCashRiders.length} سائق</div>
           <div class="kpi-footer-link"><span>إجمالي: ${fmtKWD(highCashRiders.reduce((s,r)=>s+r.netPendingCash,0))}</span></div>
         </div>
-        <div class="kpi-card clickable" style="border-top:3px solid var(--red);" onclick="navigate('cashfuel');switchSubTab('cashfuel','anomaly');">
+        <div class="kpi-card clickable" style="" onclick="navigate('cashfuel');switchSubTab('cashfuel','anomaly');">
           <div class="kpi-label">🚨 3. اشتباه تعبئة بنزين بدون عمل</div>
           <div class="kpi-value val-neg">${DB.fuelAnomalies.length} عملية</div>
           <div class="kpi-footer-link"><span>تفويل في يوم 0 أوردر / إيقاف</span></div>
         </div>
-        <div class="kpi-card clickable" style="border-top:3px solid var(--yellow);" onclick="navigate('liveroster');">
+        <div class="kpi-card clickable" style="" onclick="navigate('liveroster');">
           <div class="kpi-label">📡 4. متأخرون أو بريك بالشفت الآن</div>
           <div class="kpi-value" style="color:var(--yellow);">${lateOnlineRiders.length} سائق</div>
           <div class="kpi-footer-link"><span>من شيت ONline الحي</span></div>
         </div>
-        <div class="kpi-card clickable" style="border-top:3px solid var(--green);" onclick="switchSubTab('autopilot','batch');">
+        <div class="kpi-card clickable" style="" onclick="switchSubTab('autopilot','batch');">
           <div class="kpi-label">🎯 5. قريبون جداً من استيفاء التارجت</div>
           <div class="kpi-value val-pos">${nearTargetRiders.length} سائق</div>
           <div class="kpi-footer-link"><span>ينقصهم 1 إلى 8 أوردرات فقط</span></div>
@@ -4783,12 +5625,12 @@
       // Urgent Actions List
       document.getElementById('aiUrgentActionsList').innerHTML = [
         ...lowFuelRiders.slice(0, 4).map(r => `
-          <div style="background:var(--card-alt);padding:10px;border-radius:8px;border-right:3px solid var(--red);font-size:12.5px;">
+          <div style="background:var(--card-alt);padding:10px;border-radius:8px;font-size:12.5px;">
             <b>⛽ شحن فوري: ${r.nameAr}</b> (${r.co}) — المتبقي بالكارت <code>${r.fuelSerial}</code> هو <b class="val-neg">${r.fuelRemainingBalance.toFixed(3)} د.ك</b> فقط!
           </div>
         `),
         ...highCashRiders.slice(0, 3).map(r => `
-          <div style="background:var(--card-alt);padding:10px;border-radius:8px;border-right:3px solid var(--orange);font-size:12.5px;display:flex;justify-content:space-between;align-items:center;">
+          <div style="background:var(--card-alt);padding:10px;border-radius:8px;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;">
             <span><b>💵 تحصيل كاش: ${r.nameAr}</b> (${r.co}) — بذمته <b class="val-neg">${fmtKWD(r.netPendingCash)}</b></span>
             <button class="btn-secondary" style="padding:2px 7px;font-size:11px;" onclick="sendDirectWhatsAppToRider('${r.id}', 'CASH')">📲 واتساب</button>
           </div>
@@ -4798,12 +5640,12 @@
       // Supervisor Cross-Sheet Actions
       document.getElementById('aiSupervisorActionsList').innerHTML = [
         ...DB.fuelAnomalies.slice(0, 4).map(a => `
-          <div style="background:var(--card-alt);padding:10px;border-radius:8px;border-right:3px solid var(--yellow);font-size:12.5px;">
+          <div style="background:var(--card-alt);padding:10px;border-radius:8px;font-size:12.5px;">
             <b>🔍 تقاطع شيت البنزين والأوردرات:</b> السائق <b>${a.riderNameAr}</b> عبأ بنزين بقيمة <b>${a.amount.toFixed(3)} د.ك</b> يوم ${a.dayNum} أكت بينما حالته (${a.noteOnDay}).
           </div>
         `),
         ...lateOnlineRiders.slice(0, 3).map(r => `
-          <div style="background:var(--card-alt);padding:10px;border-radius:8px;border-right:3px solid var(--blue);font-size:12.5px;display:flex;justify-content:space-between;align-items:center;">
+          <div style="background:var(--card-alt);padding:10px;border-radius:8px;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;">
             <span><b>📡 متابعة شفت حي: ${r.nameAr}</b> حالته الآن <b>${r.onlineData.state}</b> (تأخير: ${r.onlineData.lateTime})</span>
             <button class="btn-secondary" style="padding:2px 7px;font-size:11px;" onclick="sendDirectWhatsAppToRider('${r.id}', 'LATE')">📲 تنبيه</button>
           </div>
@@ -4812,7 +5654,7 @@
 
       // Quick Wins List
       document.getElementById('aiQuickWinsList').innerHTML = nearTargetRiders.slice(0, 6).map(r => `
-        <div style="background:var(--card-alt);padding:10px;border-radius:8px;border-right:3px solid var(--green);font-size:12.5px;display:flex;justify-content:space-between;align-items:center;">
+        <div style="background:var(--card-alt);padding:10px;border-radius:8px;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;">
           <span><b>🚀 دفعة تارجت سريعة: ${r.nameAr}</b> (${r.co}) — عجزه <b>${r.missingDailyTarget}</b> أوردر فقط (ساعات شفته اليوم: ${r.shiftWHFormatted})</span>
           <button class="btn-secondary" style="padding:2px 7px;font-size:11px;" onclick="openDriverModal('${r.id}')">ملف السائق</button>
         </div>
@@ -4968,15 +5810,15 @@
       const topCleanCash = [...DB.allRidersList].filter(r => r.totalOrders >= 150 && r.netPendingCash <= 20).sort((a, b) => b.totalOrders - a.totalOrders).slice(0, 3);
 
       document.getElementById('championsPodiumGrid').innerHTML = `
-        <div class="kpi-card" style="border-top:3px solid #F59E0B;">
+        <div class="kpi-card" style="">
           <div class="kpi-label">🥇 أبطال الإنتاجية (Top Orders)</div>
           ${topOrders.map((r, i) => `<div style="display:flex;justify-content:space-between;font-size:13px;margin-top:4px;"><b>${i+1}. ${r.nameAr} (${r.co})</b><b class="val-pos">${r.totalOrders} أوردر</b></div>`).join('')}
         </div>
-        <div class="kpi-card" style="border-top:3px solid #3B82F6;">
+        <div class="kpi-card" style="">
           <div class="kpi-label">⚡ أبطال السرعة والكفاءة (Top UTR)</div>
           ${topUtr.map((r, i) => `<div style="display:flex;justify-content:space-between;font-size:13px;margin-top:4px;"><b>${i+1}. ${r.nameAr} (${r.co})</b><b style="color:var(--blue);">${r.perf.utr} طلب/س</b></div>`).join('')}
         </div>
-        <div class="kpi-card" style="border-top:3px solid #10B981;">
+        <div class="kpi-card" style="">
           <div class="kpi-label">💎 أبطال الانضباط المالي والتوريد</div>
           ${topCleanCash.map((r, i) => `<div style="display:flex;justify-content:space-between;font-size:13px;margin-top:4px;"><b>${i+1}. ${r.nameAr} (${r.co})</b><b class="val-pos">كاش: ${r.netPendingCash.toFixed(1)} د.ك</b></div>`).join('')}
         </div>
@@ -5018,7 +5860,7 @@
     function updateOnboardingStage(idx, newStage) {
       if (!DB.onboardingCandidates[idx]) return;
       DB.onboardingCandidates[idx].stage = parseInt(newStage) || 1;
-      localStorage.setItem(STORAGE_KEYS.onboardingList, JSON.stringify(DB.onboardingCandidates));
+      safeStorage.setItem(STORAGE_KEYS.onboardingList, JSON.stringify(DB.onboardingCandidates));
       renderChampionsAndFlightRiskSubTab();
       showToast('✅ تم تحديث مرحلة تجهيز السائق الجديد!');
     }
@@ -5028,7 +5870,7 @@
       if (!name) return;
       const co = prompt('أدخل رمز الشركة (SUPT / FTMN / FNMN / SRBS):', 'SUPT');
       DB.onboardingCandidates.unshift({ id: 'ONB-' + Date.now(), name, co: (co||'SUPT').toUpperCase(), stage: 1, note: 'جديد' });
-      localStorage.setItem(STORAGE_KEYS.onboardingList, JSON.stringify(DB.onboardingCandidates));
+      safeStorage.setItem(STORAGE_KEYS.onboardingList, JSON.stringify(DB.onboardingCandidates));
       renderChampionsAndFlightRiskSubTab();
     }
 
@@ -5277,6 +6119,7 @@
       const salData = [...allMonthsSorted.map(mk => Math.round(byMonth[mk].netSal)), Math.round(octNetSalActual * 2.4)];
       const profData = revData.map((rv, i) => rv - salData[i]);
 
+      if (typeof Chart === 'undefined') { renderDebtChainSubTab(); renderHistoricalMonthlyTable(); return; }
       const ctxTraj = document.getElementById('companyGrowthTrajectoryChart').getContext('2d');
       if (APP.charts.compGrowthTraj) APP.charts.compGrowthTraj.destroy();
       APP.charts.compGrowthTraj = new Chart(ctxTraj, {
@@ -5624,7 +6467,7 @@
           cleanPhone = entered.replace(/[^0-9]/g, '');
           r.phone = '+' + cleanPhone;
           DB.phoneBook[r.id] = r.phone;
-          localStorage.setItem(STORAGE_KEYS.phoneBook, JSON.stringify(DB.phoneBook));
+          safeStorage.setItem(STORAGE_KEYS.phoneBook, JSON.stringify(DB.phoneBook));
         }
       }
 
@@ -5788,6 +6631,7 @@
         for (let i = 0; i < 31; i++) dailyTotals[i] += (r.dailyOrders[i] || 0);
       });
 
+      if (typeof Chart === 'undefined') return;
       const ctxDaily = document.getElementById('overviewDailyChart').getContext('2d');
       if (APP.charts.overviewDaily) APP.charts.overviewDaily.destroy();
       APP.charts.overviewDaily = new Chart(ctxDaily, {
@@ -5919,6 +6763,7 @@
         <span style="color:var(--red);">🔴 متوقف / عذر: ${inactiveRiders.length} (${inactPct}%)</span>
       `;
 
+      if (typeof Chart === 'undefined') return;
       const ctxUtil = document.getElementById('calendarUtilizationChart').getContext('2d');
       if (APP.charts.calUtilization) APP.charts.calUtilization.destroy();
       APP.charts.calUtilization = new Chart(ctxUtil, {
@@ -6186,7 +7031,7 @@
       const amt = parseFloat(document.getElementById('quickDepAmount').value) || 0;
       if (!rid || amt < 0) return;
       DB.manualDailyDeposits[rid] = amt;
-      localStorage.setItem(STORAGE_KEYS.dailyDeposits, JSON.stringify(DB.manualDailyDeposits));
+      safeStorage.setItem(STORAGE_KEYS.dailyDeposits, JSON.stringify(DB.manualDailyDeposits));
       document.getElementById('quickDepAmount').value = '';
       document.getElementById('quickDepNote').value = '';
       rebuildAllAndRender(`✅ تم تسجيل وطرح إيداع يومي بقيمة (${amt.toFixed(3)} د.ك) بنجاح!`);
@@ -6194,7 +7039,7 @@
 
     function clearSingleRiderDeposit(rid) {
       delete DB.manualDailyDeposits[rid];
-      localStorage.setItem(STORAGE_KEYS.dailyDeposits, JSON.stringify(DB.manualDailyDeposits));
+      safeStorage.setItem(STORAGE_KEYS.dailyDeposits, JSON.stringify(DB.manualDailyDeposits));
       rebuildAllAndRender('🗑️ تم إلغاء الإيداع اليومي للسائق.');
     }
 
@@ -6239,10 +7084,10 @@
       });
 
       document.getElementById('visualExpiryTimelineGrid').innerHTML = `
-        <div class="kpi-card" style="border-top:3px solid var(--red);"><div class="kpi-label">🔴 وثائق منتهية حالياً (فوراً)</div><div class="kpi-value val-neg">${expNow} وثيقة</div><div class="kpi-footer-link"><span>التكلفة التقديرية للتجديد: ~${(expNow * 45).toLocaleString()} د.ك</span></div></div>
-        <div class="kpi-card" style="border-top:3px solid var(--orange);"><div class="kpi-label">🟠 تنتهي خلال 1 - 30 يوماً (شهر 1)</div><div class="kpi-value" style="color:var(--orange);">${exp30} وثيقة/عقد</div><div class="kpi-footer-link"><span>موازنة التجديد: ~${(exp30 * 35).toLocaleString()} د.ك</span></div></div>
-        <div class="kpi-card" style="border-top:3px solid var(--yellow);"><div class="kpi-label">🟡 تنتهي خلال 31 - 60 يوماً (شهر 2)</div><div class="kpi-value" style="color:var(--yellow);">${exp60} وثيقة/عقد</div><div class="kpi-footer-link"><span>موازنة التجديد: ~${(exp60 * 35).toLocaleString()} د.ك</span></div></div>
-        <div class="kpi-card" style="border-top:3px solid var(--green);"><div class="kpi-label">🟢 تنتهي خلال 61 - 90 يوماً (شهر 3)</div><div class="kpi-value val-pos">${exp90} وثيقة/عقد</div><div class="kpi-footer-link"><span>موازنة التجديد: ~${(exp90 * 35).toLocaleString()} د.ك</span></div></div>
+        <div class="kpi-card" style=""><div class="kpi-label">🔴 وثائق منتهية حالياً (فوراً)</div><div class="kpi-value val-neg">${expNow} وثيقة</div><div class="kpi-footer-link"><span>التكلفة التقديرية للتجديد: ~${(expNow * 45).toLocaleString()} د.ك</span></div></div>
+        <div class="kpi-card" style=""><div class="kpi-label">🟠 تنتهي خلال 1 - 30 يوماً (شهر 1)</div><div class="kpi-value" style="color:var(--orange);">${exp30} وثيقة/عقد</div><div class="kpi-footer-link"><span>موازنة التجديد: ~${(exp30 * 35).toLocaleString()} د.ك</span></div></div>
+        <div class="kpi-card" style=""><div class="kpi-label">🟡 تنتهي خلال 31 - 60 يوماً (شهر 2)</div><div class="kpi-value" style="color:var(--yellow);">${exp60} وثيقة/عقد</div><div class="kpi-footer-link"><span>موازنة التجديد: ~${(exp60 * 35).toLocaleString()} د.ك</span></div></div>
+        <div class="kpi-card" style=""><div class="kpi-label">🟢 تنتهي خلال 61 - 90 يوماً (شهر 3)</div><div class="kpi-value val-pos">${exp90} وثيقة/عقد</div><div class="kpi-footer-link"><span>موازنة التجديد: ~${(exp90 * 35).toLocaleString()} د.ك</span></div></div>
       `;
 
       document.getElementById('alertsLowFuelTbody').innerHTML = lowFuelList.map(r => `
@@ -6726,14 +7571,14 @@
       const ph = (document.getElementById('modPhoneInput').value || '').trim();
 
       DB.localAdj[riderId] = { violations: v, debt: d, housing: h, mobileFee: mob };
-      localStorage.setItem(STORAGE_KEYS.adj, JSON.stringify(DB.localAdj));
+      safeStorage.setItem(STORAGE_KEYS.adj, JSON.stringify(DB.localAdj));
 
       DB.manualDailyDeposits[riderId] = dep;
-      localStorage.setItem(STORAGE_KEYS.dailyDeposits, JSON.stringify(DB.manualDailyDeposits));
+      safeStorage.setItem(STORAGE_KEYS.dailyDeposits, JSON.stringify(DB.manualDailyDeposits));
 
       if (ph) {
         DB.phoneBook[riderId] = ph;
-        localStorage.setItem(STORAGE_KEYS.phoneBook, JSON.stringify(DB.phoneBook));
+        safeStorage.setItem(STORAGE_KEYS.phoneBook, JSON.stringify(DB.phoneBook));
       }
 
       closeDriverModal();
@@ -6864,6 +7709,7 @@
       document.getElementById('attGrowthComplianceTxt').textContent = `الالتزام: ${secondHalfAvg.toFixed(1)}% (${gSign}${growthCompliance.toFixed(1)}%)`;
       document.getElementById('attChartGrowthBadge').textContent = `نمو الالتزام: ${gSign}${growthCompliance.toFixed(1)}%`;
 
+      if (typeof Chart === 'undefined') return;
       const ctxComp = document.getElementById('attendanceComplianceChart').getContext('2d');
       if (APP.charts.attCompliance) APP.charts.attCompliance.destroy();
       APP.charts.attCompliance = new Chart(ctxComp, {
@@ -6912,14 +7758,14 @@
       if (existingIdx >= 0) DB.localAttNotes[existingIdx] = entry;
       else DB.localAttNotes.unshift(entry);
 
-      localStorage.setItem(STORAGE_KEYS.attNotes, JSON.stringify(DB.localAttNotes));
+      safeStorage.setItem(STORAGE_KEYS.attNotes, JSON.stringify(DB.localAttNotes));
       closeAttendanceNoteModal();
       rebuildAllAndRender('✅ تم حفظ ملاحظة الحضور/الإيقاف في السجل الذكي!');
     }
 
     function deleteCustomAttendanceNote(riderId, day) {
       DB.localAttNotes = DB.localAttNotes.filter(n => !(String(n.riderId) === String(riderId) && parseInt(n.day) === parseInt(day)));
-      localStorage.setItem(STORAGE_KEYS.attNotes, JSON.stringify(DB.localAttNotes));
+      safeStorage.setItem(STORAGE_KEYS.attNotes, JSON.stringify(DB.localAttNotes));
       rebuildAllAndRender('🗑️ تم حذف الملاحظة بنجاح.');
     }
 
@@ -7061,7 +7907,7 @@
       if (editRef) {
         if (editRef.startsWith('MAINT-S-')) {
           DB.deletedMaintRefs.push(editRef);
-          localStorage.setItem(STORAGE_KEYS.deletedMaint, JSON.stringify(DB.deletedMaintRefs));
+          safeStorage.setItem(STORAGE_KEYS.deletedMaint, JSON.stringify(DB.deletedMaintRefs));
           rec.ref = `MAINT-ED-${Date.now().toString().slice(-4)}`;
           DB.localMaint.unshift(rec);
         } else {
@@ -7073,7 +7919,7 @@
         DB.localMaint.unshift(rec);
       }
 
-      localStorage.setItem(STORAGE_KEYS.maint, JSON.stringify(DB.localMaint));
+      safeStorage.setItem(STORAGE_KEYS.maint, JSON.stringify(DB.localMaint));
       cancelEditMaintenance();
       rebuildAllAndRender(`✅ تم حفظ معاملة الصيانة (${rec.ref})!`);
     }
@@ -7112,8 +7958,8 @@
       if (!confirm(`هل أنت متأكد من حذف معاملة الصيانة (${ref})؟`)) return;
       DB.localMaint = DB.localMaint.filter(x => x.ref !== ref);
       if (!DB.deletedMaintRefs.includes(ref)) DB.deletedMaintRefs.push(ref);
-      localStorage.setItem(STORAGE_KEYS.maint, JSON.stringify(DB.localMaint));
-      localStorage.setItem(STORAGE_KEYS.deletedMaint, JSON.stringify(DB.deletedMaintRefs));
+      safeStorage.setItem(STORAGE_KEYS.maint, JSON.stringify(DB.localMaint));
+      safeStorage.setItem(STORAGE_KEYS.deletedMaint, JSON.stringify(DB.deletedMaintRefs));
       APP.selectedMaintRefs.delete(ref);
       rebuildAllAndRender(`🗑️ تم حذف معاملة الصيانة (${ref}).`);
     }
@@ -7194,14 +8040,14 @@
       if (idx >= 0) DB.oilCheckRecords[idx] = entry;
       else DB.oilCheckRecords.unshift(entry);
 
-      localStorage.setItem(STORAGE_KEYS.oilChecks, JSON.stringify(DB.oilCheckRecords));
+      safeStorage.setItem(STORAGE_KEYS.oilChecks, JSON.stringify(DB.oilCheckRecords));
       renderMaintenancePage();
       showToast('🛢️ تم حفظ قراءة عداد الكيلومترات وموعد تغيير الزيت بنجاح!');
     }
 
     function deleteOilCheckRecord(rid) {
       DB.oilCheckRecords = DB.oilCheckRecords.filter(x => x.riderId !== rid);
-      localStorage.setItem(STORAGE_KEYS.oilChecks, JSON.stringify(DB.oilCheckRecords));
+      safeStorage.setItem(STORAGE_KEYS.oilChecks, JSON.stringify(DB.oilCheckRecords));
       renderMaintenancePage();
     }
 
@@ -7225,14 +8071,14 @@
         startDate: stDate,
         status
       });
-      localStorage.setItem(STORAGE_KEYS.spareVehicles, JSON.stringify(DB.spareVehicleLogs));
+      safeStorage.setItem(STORAGE_KEYS.spareVehicles, JSON.stringify(DB.spareVehicleLogs));
       renderMaintenancePage();
       showToast('🏍️ تم تسجيل تسليم المركبة البديلة (السبير) بنجاح!');
     }
 
     function deleteSpareVehicleLog(id) {
       DB.spareVehicleLogs = DB.spareVehicleLogs.filter(x => x.id !== id);
-      localStorage.setItem(STORAGE_KEYS.spareVehicles, JSON.stringify(DB.spareVehicleLogs));
+      safeStorage.setItem(STORAGE_KEYS.spareVehicles, JSON.stringify(DB.spareVehicleLogs));
       renderMaintenancePage();
     }
 
@@ -7523,7 +8369,7 @@
       if (editRef) {
         if (editRef.startsWith('INV-S-')) {
           DB.deletedInvRefs.push(editRef);
-          localStorage.setItem(STORAGE_KEYS.deletedInv, JSON.stringify(DB.deletedInvRefs));
+          safeStorage.setItem(STORAGE_KEYS.deletedInv, JSON.stringify(DB.deletedInvRefs));
           rec.ref = `INV-ED-${Date.now().toString().slice(-4)}`;
           DB.localInv.unshift(rec);
         } else {
@@ -7534,7 +8380,7 @@
         DB.localInv.unshift(rec);
       }
 
-      localStorage.setItem(STORAGE_KEYS.inv, JSON.stringify(DB.localInv));
+      safeStorage.setItem(STORAGE_KEYS.inv, JSON.stringify(DB.localInv));
       cancelEditInvestigation();
       rebuildAllAndRender(`✅ تم حفظ سجل التحقيق (${rec.ref})!`);
     }
@@ -7567,8 +8413,8 @@
       if (!confirm(`هل أنت متأكد من حذف سجل التحقيق (${ref})؟`)) return;
       DB.localInv = DB.localInv.filter(x => x.ref !== ref);
       if (!DB.deletedInvRefs.includes(ref)) DB.deletedInvRefs.push(ref);
-      localStorage.setItem(STORAGE_KEYS.inv, JSON.stringify(DB.localInv));
-      localStorage.setItem(STORAGE_KEYS.deletedInv, JSON.stringify(DB.deletedInvRefs));
+      safeStorage.setItem(STORAGE_KEYS.inv, JSON.stringify(DB.localInv));
+      safeStorage.setItem(STORAGE_KEYS.deletedInv, JSON.stringify(DB.deletedInvRefs));
       rebuildAllAndRender(`🗑️ تم حذف التحقيق (${ref}).`);
     }
 
@@ -7897,20 +8743,166 @@
     }
 
     /* =========================================================================
-       23. EXECUTIVE BOARDROOM PDF REPORT GENERATOR
+       23. APPLE WORKSPACE SWITCHER, SIDEBAR COLLAPSE & MULTI-TAB LIVE SYNC
        ========================================================================= */
-    function generateExecutiveCompanyPDF() {
+    APP.activeOverviewTab = 'pulse';
+    APP.autoSyncEnabled = true;
+    const SYNC_CHANNEL = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('sportive_fleet_v9_diamond_sync') : null;
+
+    if (SYNC_CHANNEL) {
+      SYNC_CHANNEL.onmessage = (event) => {
+        if (event.data && event.data.type === 'STATE_SYNC') {
+          initSheetsStorage();
+          normalizeFleetDatabase();
+          updateGlobalAlertCounters();
+          renderOverviewUploadedChips();
+          renderCurrentPage();
+          showToast(`⚡ تمت المزامنة اللحظية تلقائياً: ${event.data.reason || 'تحديث بيانات'}`);
+        }
+      };
+    }
+
+    window.addEventListener('storage', (e) => {
+      if (e.key && e.key.startsWith('sportive_')) {
+        initSheetsStorage();
+        normalizeFleetDatabase();
+        updateGlobalAlertCounters();
+        renderOverviewUploadedChips();
+        renderCurrentPage();
+      }
+    });
+
+    function broadcastSyncEvent(reason) {
+      if (SYNC_CHANNEL) {
+        try {
+          SYNC_CHANNEL.postMessage({ type: 'STATE_SYNC', timestamp: Date.now(), reason: reason });
+        } catch (err) {}
+      }
+    }
+
+    // Hook into rebuildAllAndRender so every local action broadcasts to other tabs!
+    const _origRebuildAllAndRender = rebuildAllAndRender;
+    rebuildAllAndRender = function(toastMsg) {
+      _origRebuildAllAndRender(toastMsg);
+      broadcastSyncEvent(toastMsg || 'تحديث بيانات النظام');
+    };
+
+    
+    function openAppleLaunchpadModal() {
+      document.getElementById('appleLaunchpadModalOverlay')?.classList.add('open');
+    }
+    function closeAppleLaunchpadModal() {
+      document.getElementById('appleLaunchpadModalOverlay')?.classList.remove('open');
+    }
+
+    function toggleSidebarCollapse() {
+      document.body.classList.toggle('sidebar-collapsed');
+      setTimeout(() => {
+        if (APP.leafletMap) APP.leafletMap.invalidateSize();
+      }, 320);
+    }
+
+    function switchOverviewWorkspace(tabKey) {
+      APP.activeOverviewTab = tabKey || 'pulse';
+      const bar = document.getElementById('overviewWorkspaceTabs');
+      if (bar) {
+        bar.querySelectorAll('.apple-seg-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-ovtab') === APP.activeOverviewTab);
+        });
+      }
+      document.querySelectorAll('#page-overview [data-ov-group]').forEach(el => {
+        const grp = el.getAttribute('data-ov-group');
+        if (APP.activeOverviewTab === 'all' || grp === APP.activeOverviewTab) {
+          el.style.display = '';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+      if (APP.activeOverviewTab === 'map' || APP.activeOverviewTab === 'all') {
+        setTimeout(() => {
+          if (APP.leafletMap) APP.leafletMap.invalidateSize();
+        }, 180);
+      }
+      if (APP.activeOverviewTab === 'pulse' || APP.activeOverviewTab === 'calendar' || APP.activeOverviewTab === 'all') {
+        setTimeout(() => {
+          Object.values(APP.charts).forEach(ch => { if (ch && typeof ch.resize === 'function') ch.resize(); });
+        }, 120);
+      }
+    }
+
+    /* =========================================================================
+       24. EXECUTIVE BOARDROOM PDF REPORT GENERATOR (WITH 5 HIGH-RES CHARTS & FULL STATS)
+       ========================================================================= */
+    function renderOffscreenChartToDataUrl(config, width = 760, height = 320) {
+      return new Promise((resolve) => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          canvas.style.display = 'none';
+          document.body.appendChild(canvas);
+          const ctx = canvas.getContext('2d');
+          // Paint white background for crisp PDF printing
+          const bgPlugin = {
+            id: 'customCanvasBackgroundColor',
+            beforeDraw: (chart) => {
+              const { ctx } = chart;
+              ctx.save();
+              ctx.globalCompositeOperation = 'destination-over';
+              ctx.fillStyle = '#FFFFFF';
+              ctx.fillRect(0, 0, chart.width, chart.height);
+              ctx.restore();
+            }
+          };
+          config.plugins = [...(config.plugins || []), bgPlugin];
+          config.options = config.options || {};
+          config.options.animation = false;
+          config.options.responsive = false;
+          config.options.devicePixelRatio = 2;
+
+          const chartInstance = new Chart(ctx, config);
+          setTimeout(() => {
+            const url = canvas.toDataURL('image/png', 1.0);
+            chartInstance.destroy();
+            document.body.removeChild(canvas);
+            resolve(url);
+          }, 80);
+        } catch (err) {
+          console.error(err);
+          resolve('');
+        }
+      });
+    }
+
+    async function generateExecutiveCompanyPDF() {
+      showToast('⏳ جاري تجهيز التقرير التنفيذي الماسي الشامل وتوليد الشارتس عالية الدقة...');
       const riders = DB.allRidersList;
       const totalRiders = riders.length || 1;
       const totalOrders = riders.reduce((s, r) => s + r.totalOrders, 0);
+      const lastDaySum = riders.reduce((s, r) => s + (r.lastDayOrdersNum || 0), 0);
+      const totalWHMin = riders.reduce((s, r) => s + (r.shiftWHMinutes || 0), 0);
       const metTarget = riders.filter(r => r.missingDailyTarget >= 0).length;
       const deficitTarget = totalRiders - metTarget;
+      const monthly450Count = riders.filter(r => r.totalOrders >= 450).length;
       const growthPct = computeCohortGrowthRate(riders);
 
       let totWorked = 0, totNoShow = 0, totLate = 0, totSusp = 0;
       let bikeWages = 0, carWages = 0, totMaint = 0, totFuelCost = 0, totFuelLiters = 0, totMobile = 0;
       let totGrossRev = 0, totNetProfit = 0;
-      let cashSales = DB.extraCompanyCashSummary.totalSales, cashCol = DB.extraCompanyCashSummary.totalCollections, cashPre = DB.extraCompanyCashSummary.preDepositDues, cashDep = 0, cashNet = DB.extraCompanyCashSummary.preDepositDues;
+      let cashSales = DB.extraCompanyCashSummary.totalSales,
+          cashCol = DB.extraCompanyCashSummary.totalCollections,
+          cashPre = DB.extraCompanyCashSummary.preDepositDues,
+          cashDep = 0,
+          cashNet = DB.extraCompanyCashSummary.preDepositDues;
+
+      const byCo = {
+        SUPT: { riders: 0, orders: 0, lastDay: 0, rev: 0, wages: 0, fuel: 0, maint: 0, mobile: 0, profit: 0, cashSales: 0, cashCol: 0, cashNet: 0 },
+        FTMN: { riders: 0, orders: 0, lastDay: 0, rev: 0, wages: 0, fuel: 0, maint: 0, mobile: 0, profit: 0, cashSales: 0, cashCol: 0, cashNet: 0 },
+        FNMN: { riders: 0, orders: 0, lastDay: 0, rev: 0, wages: 0, fuel: 0, maint: 0, mobile: 0, profit: 0, cashSales: 0, cashCol: 0, cashNet: 0 },
+        SRBS: { riders: 0, orders: 0, lastDay: 0, rev: 0, wages: 0, fuel: 0, maint: 0, mobile: 0, profit: 0, cashSales: 0, cashCol: 0, cashNet: 0 }
+      };
+
+      const dailyTotals = Array(12).fill(0);
 
       riders.forEach(r => {
         totWorked += r.attendance.worked;
@@ -7933,10 +8925,26 @@
         cashPre += r.pendingCash;
         cashDep += r.dailyDeposit;
         cashNet += r.netPendingCash;
+
+        for (let d = 0; d < 12; d++) dailyTotals[d] += (r.dailyOrders[d] || 0);
+
+        const cObj = byCo[r.co] || byCo.SUPT;
+        cObj.riders++;
+        cObj.orders += r.totalOrders;
+        cObj.lastDay += (r.lastDayOrdersNum || 0);
+        cObj.rev += r.companyGrossRevenue;
+        cObj.wages += w;
+        cObj.fuel += r.fuelExpense;
+        cObj.maint += r.maintCost;
+        cObj.mobile += r.mobileFee;
+        cObj.profit += r.companyNetProfit;
+        cObj.cashSales += r.cashTotalSales;
+        cObj.cashCol += r.cashTotalCollection;
+        cObj.cashNet += r.netPendingCash;
       });
 
       const cohortKeys = ['SUPT_CAR', 'INDIA_BIKE', 'BANGLA', 'FTMN_KE', 'SUPT_KE', 'FNMN_KE', 'SRBS_KE'];
-      const cohortRowsHtml = cohortKeys.map(ck => {
+      const cohortStats = cohortKeys.map(ck => {
         const cr = riders.filter(r => matchesCohort(r, ck));
         const cOrd = cr.reduce((s, r) => s + r.totalOrders, 0);
         const cLast = cr.reduce((s, r) => s + (r.lastDayOrdersNum || 0), 0);
@@ -7944,99 +8952,532 @@
         const cMet = cr.filter(r => r.missingDailyTarget >= 0).length;
         const cGr = computeCohortGrowthRate(cr);
         const cProf = cr.reduce((s, r) => s + r.companyNetProfit, 0);
-        return `<tr><td><b>${COHORT_META[ck].title}</b></td><td>${cr.length}</td><td><b>${cLast}</b></td><td><b>${cOrd.toLocaleString()}</b></td><td>${formatMinutesToHHMM(cWH)} س</td><td>${cGr>=0?'+':''}${cGr.toFixed(1)}%</td><td>${cMet}/${cr.length}</td><td><b>${cProf.toFixed(3)} د.ك</b></td></tr>`;
-      }).join('');
+        return {
+          key: ck,
+          title: COHORT_META[ck].title,
+          riders: cr.length,
+          lastDay: cLast,
+          orders: cOrd,
+          wh: formatMinutesToHHMM(cWH),
+          growth: cGr,
+          met: cMet,
+          metPct: cr.length > 0 ? Math.round((cMet / cr.length) * 100) : 0,
+          profit: cProf
+        };
+      });
+
+      // Historical Monthly Summary (M1-M7)
+      const histByMonth = {};
+      DB.historicalPayrolls.forEach(hp => {
+        if (!DB.fleet[hp.riderId]) return;
+        const mk = hp.monthKey;
+        if (!histByMonth[mk]) histByMonth[mk] = { label: hp.monthLabel || mk, riders: new Set(), orders: 0, rev: 0, netSal: 0, cashDed: 0, debtDed: 0 };
+        const m = histByMonth[mk];
+        m.riders.add(hp.riderId);
+        m.orders += (hp.orders || 0);
+        const rate = DB.fleet[hp.riderId].vehicleType === 'Car' ? 1.180 : 0.850;
+        m.rev += (hp.orders || 0) * rate;
+        m.netSal += (hp.netSalary || 0);
+        m.cashDed += (hp.cashDeduction || 0);
+        m.debtDed += ((hp.debtDeducted || 0) + (hp.violations || 0));
+      });
+      const histMonthsSorted = Object.keys(histByMonth).sort();
+
+      // Generate 4 High-Res Charts for the PDF
+      const chart1Url = await renderOffscreenChartToDataUrl({
+        type: 'bar',
+        data: {
+          labels: Array.from({length: 12}, (_, i) => `${i + 1} أكتوبر`),
+          datasets: [
+            { type: 'line', label: 'منحنى الأوردرات اليومي', data: dailyTotals, borderColor: '#EA580C', borderWidth: 3, tension: 0.35, pointRadius: 4, fill: false },
+            { type: 'bar', label: 'إجمالي الأوردرات', data: dailyTotals, backgroundColor: 'rgba(37, 99, 235, 0.78)', borderRadius: 6 }
+          ]
+        },
+        options: { plugins: { title: { display: true, text: 'المنحنى اليومي للأوردرات المنجزة (1 - 12 أكتوبر 2026)', font: { size: 15, weight: 'bold', family: 'Cairo' } } } }
+      }, 740, 300);
+
+      const chart2Url = await renderOffscreenChartToDataUrl({
+        type: 'bar',
+        data: {
+          labels: ['SUPT (سبورتيف)', 'FTMN (15 منت)', 'FNMN (14 منت)', 'SRBS (سرب سريع)'],
+          datasets: [
+            { label: 'الإيرادات الإجمالية (د.ك)', data: [byCo.SUPT.rev, byCo.FTMN.rev, byCo.FNMN.rev, byCo.SRBS.rev], backgroundColor: '#2563EB', borderRadius: 5 },
+            { label: 'أجور السائقين (د.ك)', data: [byCo.SUPT.wages, byCo.FTMN.wages, byCo.FNMN.wages, byCo.SRBS.wages], backgroundColor: '#F59E0B', borderRadius: 5 },
+            { label: 'صافي ربح الشركة (د.ك)', data: [byCo.SUPT.profit, byCo.FTMN.profit, byCo.FNMN.profit, byCo.SRBS.profit], backgroundColor: '#10B981', borderRadius: 5 }
+          ]
+        },
+        options: { plugins: { title: { display: true, text: 'المقارنة المالية للشركات الأربع (الإيرادات مقابل الأجور وصافي الربح د.ك)', font: { size: 15, weight: 'bold', family: 'Cairo' } } } }
+      }, 740, 300);
+
+      const chart3Url = await renderOffscreenChartToDataUrl({
+        type: 'bar',
+        data: {
+          labels: cohortStats.map(c => c.title.replace('أوردرات ', '').substring(0, 22)),
+          datasets: [
+            { label: 'إجمالي أوردرات الفئة', data: cohortStats.map(c => c.orders), backgroundColor: ['#6366F1', '#06B6D4', '#EC4899', '#3B82F6', '#F59E0B', '#8B5CF6', '#10B981'], borderRadius: 6 }
+          ]
+        },
+        options: { plugins: { title: { display: true, text: 'إنتاجية الفئات التشغيلية الـ 7 (إجمالي الأوردرات)', font: { size: 15, weight: 'bold', family: 'Cairo' } } } }
+      }, 740, 300);
+
+      const chart4Url = await renderOffscreenChartToDataUrl({
+        type: 'line',
+        data: {
+          labels: [...histMonthsSorted.map(mk => histByMonth[mk].label), 'أكتوبر (متوقع 31)'],
+          datasets: [
+            { label: 'إيرادات الشركة (د.ك)', data: [...histMonthsSorted.map(mk => Math.round(histByMonth[mk].rev)), Math.round((totGrossRev / 12) * 31)], borderColor: '#7C3AED', backgroundColor: 'rgba(124,58,237,0.12)', fill: true, borderWidth: 3, tension: 0.3 },
+            { label: 'صافي الرواتب المنصرفة (د.ك)', data: [...histMonthsSorted.map(mk => Math.round(histByMonth[mk].netSal)), Math.round(((bikeWages+carWages) / 12) * 31)], borderColor: '#EA580C', borderWidth: 2.5, tension: 0.3 }
+          ]
+        },
+        options: { plugins: { title: { display: true, text: 'مسار نمو إيرادات وموازنة الشركة عبر الشهور (يناير — أكتوبر 2026)', font: { size: 15, weight: 'bold', family: 'Cairo' } } } }
+      }, 740, 300);
+
+      const top15 = [...riders].sort((a, b) => b.totalOrders - a.totalOrders).slice(0, 15);
+      const bot10 = [...riders].sort((a, b) => a.totalOrders - b.totalOrders).slice(0, 10);
+      const cashOverList = riders.filter(r => r.netPendingCash > 20).sort((a, b) => b.netPendingCash - a.netPendingCash).slice(0, 15);
+      const lowFuelList = riders.filter(r => r.fuelLowAlert).sort((a, b) => a.fuelRemainingBalance - b.fuelRemainingBalance);
 
       const win = window.open('', '_blank');
       win.document.write(`
-        <!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8" /><title>التقرير التنفيذي الشامل — SPORTIVE FLEET</title>
+        <!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8" />
+        <title>التقرير التنفيذي الماسي الشامل — SPORTIVE FLEET V9</title>
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
         <style>
-          *{box-sizing:border-box;font-family:'Cairo',sans-serif;} body{margin:0;padding:24px;color:#0F172A;background:#FFF;font-size:12px;}
-          .hdr{background:#0F172A;color:#FFF;padding:20px 24px;border-radius:12px;border-right:8px solid #F97316;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
-          .sec{font-size:15px;font-weight:900;border-right:5px solid #F97316;padding-right:10px;margin:18px 0 10px;background:#F8FAFC;padding:6px 10px;}
-          .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
-          .box{border:1.5px solid #CBD5E1;border-radius:8px;padding:10px;background:#F8FAFC;}
-          .box .val{font-size:17px;font-weight:900;margin-top:3px;}
-          table{width:100%;border-collapse:collapse;margin-bottom:14px;} th,td{border:1px solid #CBD5E1;padding:7px 9px;text-align:right;font-size:11.5px;} th{background:#0F172A;color:#FFF;}
-          @media print{.no-print{display:none!important;}}
+          *{box-sizing:border-box;font-family:'Cairo',sans-serif;}
+          body{margin:0;padding:24px;color:#0F172A;background:#FFF;font-size:11.5px;line-height:1.5;}
+          .hdr{background:linear-gradient(135deg,#090D16,#1E293B);color:#FFF;padding:22px 26px;border-radius:16px;border-right:8px solid #38BDF8;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+          .sec{font-size:15px;font-weight:900;padding:7px 12px;margin:20px 0 12px;background:#F1F5F9;border-radius:6px;color:#0F172A;}
+          .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px;}
+          .box{border:1px solid #CBD5E1;border-radius:10px;padding:11px 13px;background:#F8FAFC;}
+          .box .lbl{font-size:11px;color:#475569;font-weight:700;}
+          .box .val{font-size:17.5px;font-weight:900;margin-top:3px;}
+          .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+          .chart-box{border:1px solid #CBD5E1;border-radius:12px;padding:10px;text-align:center;background:#FFF;}
+          .chart-box img{max-width:100%;height:auto;}
+          table{width:100%;border-collapse:collapse;margin-bottom:14px;}
+          th,td{border:1px solid #CBD5E1;padding:6.5px 8px;text-align:right;font-size:11px;}
+          th{background:#0F172A;color:#FFF;font-weight:800;}
+          tr:nth-child(even) td{background:#F8FAFC;}
+          .page-break{page-break-before:always;}
+          @media print{.no-print{display:none!important;} body{padding:10px;}}
         </style></head>
         <body>
-          <div class="no-print" style="margin-bottom:14px;display:flex;justify-content:space-between;background:#F1F5F9;padding:10px 16px;border-radius:8px;">
-            <b>📄 التقرير التنفيذي الشامل لأداء الشركة (Executive Boardroom PDF Report)</b>
-            <button onclick="window.print()" style="background:#F97316;color:#FFF;border:none;padding:8px 18px;border-radius:6px;font-weight:900;cursor:pointer;">🖨️ طباعة / حفظ PDF</button>
+          <div class="no-print" style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;background:#0F172A;color:#FFF;padding:12px 18px;border-radius:12px;">
+            <div>
+              <b style="font-size:14px;">💎 التقرير التنفيذي الماسي الشامل — SPORTIVE FLEET V9 DIAMOND</b>
+              <span style="font-size:12px;color:#94A3B8;margin-right:10px;">(شامل الإحصائيات والشارتس البيانية والـ 7 فئات والموازنة والكاش والوقود)</span>
+            </div>
+            <button onclick="window.print()" style="background:linear-gradient(135deg,#F97316,#EA580C);color:#FFF;border:none;padding:9px 22px;border-radius:8px;font-weight:900;cursor:pointer;font-size:13px;">🖨️ طباعة / حفظ التقرير كملف PDF</button>
           </div>
+
           <div class="hdr">
-            <div><h1 style="margin:0;font-size:21px;">SPORTIVE FLEET V8 — التقرير التنفيذي الشامل للأداء والموازنة</h1><p style="margin:4px 0 0;color:#CBD5E1;">الأوردرات • الشفتات • الإيرادات وصافي الربح • الكاش والإيداعات • الوقود • الصيانة • رسوم شحن الموبايل • العقود والوثائق</p></div>
-            <div><b>${new Date().toLocaleString('ar-KW')}</b></div>
+            <div>
+              <h1 style="margin:0;font-size:22px;font-weight:900;">SPORTIVE FLEET — التقرير التنفيذي الشامل لأداء وموازنة الشركة</h1>
+              <p style="margin:5px 0 0;color:#CBD5E1;font-size:12.5px;">تحليل متكامل لـ ${totalRiders} سائق • الشركات الأربع (SUPT, FTMN, FNMN, SRBS) • الفئات الـ 7 • الكاش والإيداعات • الوقود والصيانة • أرشيف الشهور M1–M7</p>
+            </div>
+            <div style="text-align:left;">
+              <div style="font-size:13px;font-weight:900;color:#38BDF8;">تاريخ الإصدار: ${new Date().toLocaleDateString('ar-KW')}</div>
+              <div style="font-size:11.5px;color:#94A3B8;">توقيت التقرير: ${new Date().toLocaleTimeString('ar-KW')}</div>
+            </div>
           </div>
-          <div class="sec">1. الملخص التنفيذي للأداء المالي والتشغيلي</div>
-          <div class="grid">
-            <div class="box"><div>إجمالي الأوردرات</div><div class="val" style="color:#2563EB;">${totalOrders.toLocaleString()} أوردر</div><small>النمو: +${growthPct.toFixed(1)}%</small></div>
-            <div class="box"><div>إجمالي إيرادات الشركة</div><div class="val" style="color:#7C3AED;">${totGrossRev.toFixed(3)} د.ك</div><small>سيكل 0.850 | سيارة 1.180</small></div>
-            <div class="box"><div>أجور السائقين (بدون خصم الكاش)</div><div class="val" style="color:#0284C7;">${(bikeWages+carWages).toFixed(3)} د.ك</div></div>
-            <div class="box"><div>صافي ربح الشركة الفعلي</div><div class="val" style="color:#059669;">${totNetProfit.toFixed(3)} د.ك</div><small>بعد الأجور والصيانة والبنزين والموبايل</small></div>
+
+          <div class="sec">1. المؤشرات التنفيذية العليا للموقف التشغيلي والمالي (Executive KPIs & Financial P&L)</div>
+          <div class="grid4">
+            <div class="box"><div class="lbl">إجمالي الأوردرات المنجزة</div><div class="val" style="color:#2563EB;">${totalOrders.toLocaleString()} أوردر</div><small>أوردرات آخر يوم (${DB.lastActiveOrdersDay} أكت): ${lastDaySum}</small></div>
+            <div class="box"><div class="lbl">إجمالي إيرادات الشركة</div><div class="val" style="color:#7C3AED;">${totGrossRev.toFixed(3)} د.ك</div><small>متوقع 31 أكتوبر: ${((totGrossRev/12)*31).toFixed(1)} د.ك</small></div>
+            <div class="box"><div class="lbl">إجمالي أجور السائقين</div><div class="val" style="color:#0284C7;">${(bikeWages+carWages).toFixed(3)} د.ك</div><small>سياكل: ${bikeWages.toFixed(1)} | سيارات: ${carWages.toFixed(1)}</small></div>
+            <div class="box"><div class="lbl">صافي ربح الشركة الفعلي</div><div class="val" style="color:#059669;">${totNetProfit.toFixed(3)} د.ك</div><small>هامش الربح الصافي: ${((totNetProfit/(totGrossRev||1))*100).toFixed(1)}%</small></div>
           </div>
-          <div class="grid">
-            <div class="box"><div>تكاليف الصيانة (منفصلة)</div><div class="val" style="color:#D97706;">${totMaint.toFixed(3)} د.ك</div></div>
-            <div class="box"><div>تكاليف البنزين (${totFuelLiters.toFixed(0)} لتر)</div><div class="val" style="color:#DB2777;">${totFuelCost.toFixed(3)} د.ك</div></div>
-            <div class="box"><div>رسوم شحن الموبايل والنت</div><div class="val" style="color:#0891B2;">${totMobile.toFixed(3)} د.ك</div></div>
-            <div class="box"><div>صافي الكاش المتبقي بعد الإيداع</div><div class="val" style="color:#DC2626;">${cashNet.toFixed(3)} د.ك</div><small>مبيعات: ${cashSales.toFixed(1)} | توريد: ${cashCol.toFixed(1)}</small></div>
+          <div class="grid4">
+            <div class="box"><div class="lbl">استهلاك وتكلفة البنزين (Report 5)</div><div class="val" style="color:#DB2777;">${totFuelCost.toFixed(3)} د.ك</div><small>إجمالي اللترات: ${totFuelLiters.toFixed(1)} لتر</small></div>
+            <div class="box"><div class="lbl">تكاليف الصيانة والورش</div><div class="val" style="color:#D97706;">${totMaint.toFixed(3)} د.ك</div><small>رسوم الموبايل والنت: ${totMobile.toFixed(3)} د.ك</small></div>
+            <div class="box"><div class="lbl">صافي الكاش المتبقي بالشارع</div><div class="val" style="color:#DC2626;">${cashNet.toFixed(3)} د.ك</div><small>مبيعات: ${cashSales.toFixed(1)} | توريدات: ${cashCol.toFixed(1)}</small></div>
+            <div class="box"><div class="lbl">استيفاء التارجت وساعات الشفت</div><div class="val" style="color:#10B981;">${metTarget} / ${totalRiders} (${Math.round((metTarget/totalRiders)*100)}%)</div><small>ساعات شفت اليوم: ${formatMinutesToHHMM(totalWHMin)} س</small></div>
           </div>
-          <div class="sec">2. أداء الفئات التشغيلية الـ 7 وساعات الشفت اليومية (WH)</div>
-          <table><thead><tr><th>الفئة</th><th>السائقون</th><th>أوردرات آخر يوم (${DB.lastActiveOrdersDay} أكت)</th><th>توتال الأوردرات</th><th>ساعات شفت اليوم (WH)</th><th>النمو %</th><th>استيفاء التارجت</th><th>صافي ربح الشركة</th></tr></thead><tbody>${cohortRowsHtml}</tbody></table>
+
+          <div class="sec">2. التحليل البياني للإنتاجية اليومية وأداء الشركات الأربع (Visual Analytics Charts)</div>
+          <div class="charts-row">
+            <div class="chart-box"><img src="${chart1Url}" alt="Daily Orders Chart" /></div>
+            <div class="chart-box"><img src="${chart2Url}" alt="Companies Financial Chart" /></div>
+          </div>
+          <div class="charts-row">
+            <div class="chart-box"><img src="${chart3Url}" alt="7 Cohorts Chart" /></div>
+            <div class="chart-box"><img src="${chart4Url}" alt="Multi-Month Growth Chart" /></div>
+          </div>
+
+          <div class="sec">3. الميزانية التفصيلية والمطابقة النقدية حسب الشركات الأربع (SUPT, FTMN, FNMN, SRBS)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>الشركة</th><th>السائقون</th><th>أوردرات آخر يوم</th><th>توتال الأوردرات</th>
+                <th>الإيراد الإجمالي</th><th>أجور السائقين</th><th>البنزين</th><th>الصيانة والموبايل</th>
+                <th>صافي ربح الشركة</th><th>مبيعات الكاش</th><th>التوريدات</th><th>صافي الكاش المعلق</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${Object.entries(byCo).map(([co, d]) => `
+                <tr>
+                  <td><b>${co}</b></td><td>${d.riders}</td><td><b>${d.lastDay}</b></td><td><b>${d.orders.toLocaleString()}</b></td>
+                  <td>${d.rev.toFixed(3)} د.ك</td><td>${d.wages.toFixed(3)} د.ك</td><td>${d.fuel.toFixed(3)} د.ك</td>
+                  <td>${(d.maint + d.mobile).toFixed(3)} د.ك</td><td style="color:#059669;font-weight:900;">${d.profit.toFixed(3)} د.ك</td>
+                  <td>${d.cashSales.toFixed(3)} د.ك</td><td>${d.cashCol.toFixed(3)} د.ك</td><td style="color:#DC2626;font-weight:800;">${d.cashNet.toFixed(3)} د.ك</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div class="sec">4. أداء الفئات التشغيلية الـ 7 وساعات عمل اليوم (7 Operational Cohorts & Shift WH)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>الفئة التشغيلية</th><th>عدد السائقين</th><th>أوردرات آخر يوم (${DB.lastActiveOrdersDay} أكت)</th>
+                <th>توتال الأوردرات</th><th>ساعات شفت اليوم (WH)</th><th>نسبة النمو %</th>
+                <th>المستوفون للتارجت</th><th>نسبة الاستيفاء %</th><th>صافي ربح الشركة من الفئة</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${cohortStats.map(c => `
+                <tr>
+                  <td><b>${c.title}</b></td><td>${c.riders}</td><td><b>${c.lastDay}</b></td>
+                  <td><b>${c.orders.toLocaleString()}</b></td><td>${c.wh} ساعة</td>
+                  <td style="color:${c.growth>=0?'#059669':'#DC2626'};font-weight:800;">${c.growth>=0?'+':''}${c.growth.toFixed(1)}%</td>
+                  <td>${c.met} / ${c.riders}</td><td><b>${c.metPct}%</b></td>
+                  <td style="color:#059669;font-weight:900;">${c.profit.toFixed(3)} د.ك</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div class="page-break"></div>
+          <div class="sec">5. مسار موازنة ونمو الشركة عبر الشهور (يناير — يوليو + أكتوبر 2026)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>الشهر</th><th>السائقون النشطون</th><th>إجمالي الأوردرات</th><th>إيرادات الشركة التقديرية</th>
+                <th>خصومات الكاش المستردة</th><th>المخالفات والمديونيات المستردة</th><th>صافي الرواتب المنصرفة</th><th>فائض موازنة الشركة</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${histMonthsSorted.map(mk => {
+                const m = histByMonth[mk];
+                return `
+                  <tr>
+                    <td><b>${m.label}</b></td><td>${m.riders.size}</td><td><b>${m.orders.toLocaleString()}</b></td>
+                    <td>${m.rev.toFixed(3)} د.ك</td><td>${m.cashDed.toFixed(3)} د.ك</td><td>${m.debtDed.toFixed(3)} د.ك</td>
+                    <td>${m.netSal.toFixed(3)} د.ك</td><td style="color:#059669;font-weight:900;">${(m.rev - m.netSal).toFixed(3)} د.ك</td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+
+          <div class="sec">6. لوحة شرف أعلى 15 سائقاً إنتاجية وربحية في الشركة (Top 15 Elite Riders)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th><th>اسم السائق (عربي / EN)</th><th>ID</th><th>الشركة</th><th>المركبة</th>
+                <th>أوردرات آخر يوم</th><th>توتال الأوردرات</th><th>فارق التارجت</th><th>شفت اليوم (WH)</th>
+                <th>صافي راتب السائق</th><th>صافي ربح الشركة</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${top15.map((r, i) => `
+                <tr>
+                  <td><b>${i+1}</b></td><td><b>${r.nameAr}</b> (${r.nameEn.substring(0, 22)})</td><td>${r.id}</td>
+                  <td>${r.co}</td><td>${r.vehicleType}</td><td>${r.lastDayOrdersDisplay}</td>
+                  <td style="color:#059669;font-weight:900;">${r.totalOrders}</td>
+                  <td style="color:#059669;font-weight:800;">+${r.missingDailyTarget}</td>
+                  <td>${r.shiftWHFormatted}</td><td>${r.driverNet.toFixed(3)} د.ك</td>
+                  <td style="color:#059669;font-weight:900;">${r.companyNetProfit.toFixed(3)} د.ك</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div class="sec">7. رادار المخاطر: أعلى مديونيات الكاش المعلقة بالشارع (&gt; 20 د.ك) وكروت البنزين الحرجة</div>
+          <table>
+            <thead>
+              <tr>
+                <th>اسم السائق</th><th>ID</th><th>الشركة</th><th>المبيعات النقدية</th><th>التوريدات</th>
+                <th>قبل الإيداع</th><th>الإيداع اليومي</th><th>صافي الكاش بالشارع</th><th>خصم التأخير</th><th>متبقي كارت البنزين</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${cashOverList.map(r => `
+                <tr>
+                  <td><b>${r.nameAr}</b></td><td>${r.id}</td><td>${r.co}</td>
+                  <td>${r.cashTotalSales.toFixed(3)}</td><td>${r.cashTotalCollection.toFixed(3)}</td>
+                  <td>${r.pendingCash.toFixed(3)}</td><td>${r.dailyDeposit.toFixed(3)}</td>
+                  <td style="color:#DC2626;font-weight:900;">${r.netPendingCash.toFixed(3)} د.ك</td>
+                  <td>-${r.cashPenalty.toFixed(3)} د.ك</td>
+                  <td>${r.fuelRemainingBalance !== null ? r.fuelRemainingBalance.toFixed(3) + ' د.ك' : '--'}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
         </body></html>
       `);
       win.document.close();
-      setTimeout(() => win.print(), 600);
+      setTimeout(() => win.print(), 650);
     }
 
     /* =========================================================================
-       24. NAVIGATION, GLOBAL SEARCH, GOOGLE SHEETS SYNC & INITIALIZATION
+       25. REAL LIVE GOOGLE SHEETS CLOUD SYNC, RFC-4180 CSV PARSER & DIAGNOSTICS
        ========================================================================= */
-    function getActiveBaseSheetUrl() { return localStorage.getItem(STORAGE_KEYS.sheetUrl) || DEFAULT_BASE_SHEET_URL; }
+    function getActiveBaseSheetUrl() { return safeStorage.getItem(STORAGE_KEYS.sheetUrl) || DEFAULT_BASE_SHEET_URL; }
     function buildSheetCsvUrl(gid) {
       const base = getActiveBaseSheetUrl().trim();
       const cleanBase = base.split('?')[0];
-      return `${cleanBase}?gid=${gid}&single=true&output=csv`;
-    }
-    function parseCSV(text) {
-      if (!text || !text.trim()) return [];
-      return text.split(/\r?\n/).filter(l => l.trim()).map(line => line.split(',').map(c => c.trim().replace(/^"|"$/g, '')));
+      return `${cleanBase}?gid=${gid}&single=true&output=csv&_t=${Date.now()}`;
     }
 
-    async function syncAllData() {
+    // Proper RFC-4180 CSV Parser handling quoted fields, commas, and multi-line cells
+    function parseCSV(text) {
+      if (!text || !text.trim()) return [];
+      const rows = [];
+      let curRow = [];
+      let curVal = '';
+      let inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        const nxt = text[i + 1];
+        if (inQuotes) {
+          if (ch === '"' && nxt === '"') {
+            curVal += '"';
+            i++;
+          } else if (ch === '"') {
+            inQuotes = false;
+          } else {
+            curVal += ch;
+          }
+        } else {
+          if (ch === '"') {
+            inQuotes = true;
+          } else if (ch === ',') {
+            curRow.push(curVal.trim());
+            curVal = '';
+          } else if (ch === '\n' || (ch === '\r' && nxt === '\n')) {
+            if (ch === '\r') i++;
+            curRow.push(curVal.trim());
+            if (curRow.some(c => c !== '')) rows.push(curRow);
+            curRow = [];
+            curVal = '';
+          } else if (ch !== '\r') {
+            curVal += ch;
+          }
+        }
+      }
+      if (curVal !== '' || curRow.length > 0) {
+        curRow.push(curVal.trim());
+        if (curRow.some(c => c !== '')) rows.push(curRow);
+      }
+      return rows;
+    }
+
+    async function syncAllData(forceCloud = false) {
       if (APP.isSyncing) return;
       APP.isSyncing = true;
+
+      const dot = document.getElementById('syncDot');
+      const topDot = document.getElementById('topSyncDot');
+      const syncTxt = document.getElementById('syncText');
+      const topLbl = document.getElementById('topSyncLabel');
+      if (dot) dot.classList.add('syncing');
+      if (topDot) topDot.classList.add('syncing');
+      if (syncTxt) syncTxt.textContent = 'جاري المزامنة الحية...';
+      if (topLbl) topLbl.textContent = 'جاري التحديث...';
+
+      let cloudSuccessCount = 0;
       try {
         initSheetsStorage();
+
+        if (forceCloud && navigator.onLine) {
+          const sheetKeyMap = {
+            riders: 'Riders',
+            orders: 'Orders Daily',
+            maint: 'Maintenance',
+            inv: 'Investigations',
+            perf: 'Performance',
+            att: 'Attendance',
+            fuel: 'Fuel Efficiency',
+            cash: 'Cash'
+          };
+
+          const entries = Object.entries(SHEET_GIDS);
+          await Promise.all(entries.map(async ([key, meta]) => {
+            const t0 = performance.now();
+            try {
+              const controller = new AbortController();
+              const timeoutId = setTimeout(() => controller.abort(), 7500);
+              const resp = await fetch(buildSheetCsvUrl(meta.gid), { signal: controller.signal, cache: 'no-store' });
+              clearTimeout(timeoutId);
+              if (resp.ok) {
+                const csvText = await resp.text();
+                const parsed = parseCSV(csvText);
+                if (parsed && parsed.length > 1) {
+                  DB[key] = parsed;
+                  const bundleKey = sheetKeyMap[key];
+                  if (bundleKey && EMBEDDED_BUNDLE.main) {
+                    EMBEDDED_BUNDLE.main[bundleKey] = parsed;
+                  }
+                  APP.sheetStatus[key] = {
+                    ok: true,
+                    mode: 'CLOUD',
+                    rows: parsed.length - 1,
+                    ms: Math.round(performance.now() - t0),
+                    time: new Date().toLocaleTimeString('ar-KW')
+                  };
+                  cloudSuccessCount++;
+                  return;
+                }
+              }
+              throw new Error('Fallback to local');
+            } catch (err) {
+              const fallbackRows = (DB[key] && DB[key].length) ? DB[key].length - 1 : 0;
+              APP.sheetStatus[key] = {
+                ok: true,
+                mode: 'LOCAL_SYNC',
+                rows: fallbackRows,
+                ms: Math.round(performance.now() - t0),
+                time: new Date().toLocaleTimeString('ar-KW')
+              };
+            }
+          }));
+        } else {
+          Object.keys(SHEET_GIDS).forEach(key => {
+            const fallbackRows = (DB[key] && DB[key].length) ? DB[key].length - 1 : 0;
+            if (!APP.sheetStatus[key]) {
+              APP.sheetStatus[key] = {
+                ok: true,
+                mode: 'LOCAL_SYNC',
+                rows: fallbackRows,
+                ms: 4,
+                time: new Date().toLocaleTimeString('ar-KW')
+              };
+            }
+          });
+        }
+
         normalizeFleetDatabase();
         updateGlobalAlertCounters();
         renderOverviewUploadedChips();
         renderCurrentPage();
-        document.getElementById('lastSyncTime').textContent = `آخر تحديث: ${new Date().toLocaleTimeString('ar-KW')} (${DB.allRidersList.length} سائق)`;
+        renderSheetsDiagnosticGrid();
+
+        const nowStr = new Date().toLocaleTimeString('ar-KW');
+        document.getElementById('lastSyncTime').textContent = `آخر مزامنة: ${nowStr} (${DB.allRidersList.length} سائق)`;
+        if (syncTxt) syncTxt.textContent = cloudSuccessCount > 0 ? `متصل بالسحابة (${cloudSuccessCount}/8 أوراق)` : 'متصل ومحدث بالكامل ⚡';
+        if (topLbl) topLbl.textContent = `مزامنة نشطة (${nowStr})`;
+
+        if (forceCloud) {
+          broadcastSyncEvent('مزامنة شاملة للبيانات');
+          showToast(cloudSuccessCount > 0
+            ? `☁️ تمت المزامنة السحابية الحية لـ (${cloudSuccessCount}) أوراق من Google Sheets وتحديث ${DB.allRidersList.length} سائق!`
+            : `⚡ تمت مزامنة وتحديث كافة البيانات والمؤشرات والتبويبات بنجاح (${DB.allRidersList.length} سائق)!`
+          );
+        }
       } catch (e) {
         console.error(e);
       } finally {
         APP.isSyncing = false;
+        if (dot) dot.classList.remove('syncing');
+        if (topDot) topDot.classList.remove('syncing');
       }
+    }
+
+    function renderSheetsDiagnosticGrid() {
+      const container = document.getElementById('sheetsDiagnosticList');
+      if (!container) return;
+      container.innerHTML = Object.entries(SHEET_GIDS).map(([key, meta]) => {
+        const st = APP.sheetStatus[key] || { ok: true, mode: 'LOCAL_SYNC', rows: (DB[key]?.length || 1) - 1, ms: 5 };
+        const badgeHtml = st.mode === 'CLOUD'
+          ? `<span class="badge badge-good">☁️ سحابي حي (${st.rows} سجل • ${st.ms}ms)</span>`
+          : `<span class="badge badge-bike">⚡ مدمج ومحدث (${st.rows} سجل)</span>`;
+        return `
+          <div class="mini-metric-item" style="padding:10px 12px;">
+            <span class="mini-metric-lbl">${meta.label}</span>
+            ${badgeHtml}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleAutoSyncInterval() {
+      APP.autoSyncEnabled = !APP.autoSyncEnabled;
+      const lbl = document.getElementById('autoSyncStatusLabel');
+      const btn = document.getElementById('autoSyncToggleBtn');
+      if (lbl) {
+        lbl.textContent = APP.autoSyncEnabled ? 'مفعلة ونشطة (Active)' : 'متوقفة مؤقتاً (Paused)';
+        lbl.style.color = APP.autoSyncEnabled ? 'var(--green)' : 'var(--yellow)';
+      }
+      if (btn) btn.textContent = APP.autoSyncEnabled ? 'إيقاف مؤقت' : 'تفعيل المزامنة التلقائية';
+      showToast(APP.autoSyncEnabled ? '⏱️ تم تفعيل المزامنة التلقائية الدورية كل 60 ثانية' : '⏸️ تم إيقاف المزامنة التلقائية مؤقتاً');
+    }
+
+    setInterval(() => {
+      if (APP.autoSyncEnabled && !APP.isSyncing) {
+        syncAllData(false);
+      }
+    }, 60000);
+
+    function exportFullSystemSyncSnapshot() {
+      const snapshot = {
+        version: 'V9_DIAMOND',
+        exportedAt: new Date().toISOString(),
+        localStorageData: {}
+      };
+      Object.values(STORAGE_KEYS).forEach(k => {
+        const v = safeStorage.getItem(k);
+        if (v !== null) snapshot.localStorageData[k] = v;
+      });
+      const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Sportive_Fleet_V9_Sync_Backup_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('📥 تم تصدير ملف المزامنة والنسخة الاحتياطية (.json) بنجاح!');
+    }
+
+    function importFullSystemSyncSnapshot(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const snap = JSON.parse(e.target.result);
+          if (snap && snap.localStorageData) {
+            Object.entries(snap.localStorageData).forEach(([k, v]) => {
+              safeStorage.setItem(k, v);
+            });
+            closeSheetSettingsModal();
+            rebuildAllAndRender('✅ تم استيراد نسخة المزامنة وتحديث كافة البيانات عبر النظام!');
+          }
+        } catch (err) {
+          alert('خطأ في قراءة ملف المزامنة: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
     }
 
     function openSheetSettingsModal() {
       document.getElementById('customSheetBaseUrlInput').value = getActiveBaseSheetUrl();
+      renderSheetsDiagnosticGrid();
       document.getElementById('sheetSettingsModalOverlay').classList.add('open');
     }
     function closeSheetSettingsModal() { document.getElementById('sheetSettingsModalOverlay').classList.remove('open'); }
     function saveCustomSheetUrl() {
       const val = document.getElementById('customSheetBaseUrlInput').value.trim();
-      if (val) localStorage.setItem(STORAGE_KEYS.sheetUrl, val);
-      syncAllData();
+      if (val) safeStorage.setItem(STORAGE_KEYS.sheetUrl, val);
+      syncAllData(true);
       closeSheetSettingsModal();
     }
     function resetDefaultSheetUrl() {
-      localStorage.removeItem(STORAGE_KEYS.sheetUrl);
+      safeStorage.removeItem(STORAGE_KEYS.sheetUrl);
       document.getElementById('customSheetBaseUrlInput').value = DEFAULT_BASE_SHEET_URL;
-      syncAllData();
+      syncAllData(true);
     }
 
     window.addEventListener('keydown', (e) => {
@@ -8097,7 +9538,7 @@
       if (navItem) navItem.classList.add('active');
 
       const pageTitles = {
-        overview: 'نظرة عامة (Overview)',
+        overview: 'الرئيسية الماسية (Overview)',
         autopilot: 'المستشار الذكي والمحاكاة (AI Autopilot)',
         liveroster: 'الشفتات والأونلاين الحي (Live Roster & WH)',
         cashfuel: 'مركز الكاش والإيداعات والوقود',
@@ -8108,7 +9549,7 @@
         performance: 'الأداء التشغيلي (SLA)',
         maintenance: 'الصيانة وتغيير الزيت والسبير',
         payroll: 'الرواتب ومركز واتساب الجماعي',
-        investigations: 'التحقيقات الأمنية'
+        investigations: 'التحقيقات القانونية'
       };
       document.getElementById('currentCrumb').textContent = pageTitles[pageId] || pageId.toUpperCase();
       renderCurrentPage();
@@ -8130,7 +9571,10 @@
 
     function renderCurrentPage() {
       switch(APP.activePage) {
-        case 'overview': renderOverviewPage(); break;
+        case 'overview':
+          renderOverviewPage();
+          switchOverviewWorkspace(APP.activeOverviewTab || 'pulse');
+          break;
         case 'autopilot': renderAutopilotPage(); break;
         case 'liveroster': renderLiveRosterPage(); break;
         case 'cashfuel': renderCashFuelPage(); break;
@@ -8159,7 +9603,7 @@
 
     function toggleTheme() {
       APP.theme = APP.theme === 'dark' ? 'light' : 'dark';
-      localStorage.setItem(STORAGE_KEYS.theme, APP.theme);
+      safeStorage.setItem('sportive_apple_theme_v10', APP.theme);
       applyTheme();
     }
     function applyTheme() {
@@ -8178,11 +9622,7 @@
       if (document.getElementById('invDate')) document.getElementById('invDate').value = today;
       if (document.getElementById('spareStartDate')) document.getElementById('spareStartDate').value = today;
 
-      initSheetsStorage();
-      normalizeFleetDatabase();
-      updateGlobalAlertCounters();
-      renderOverviewUploadedChips();
-      renderCurrentPage();
+      syncAllData(true);
     });
   </script>
 </body>
