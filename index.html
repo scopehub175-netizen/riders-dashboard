@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SPORTIVE FLEET - Enterprise Suite & Operations Hub</title>
+  <title>SPORTIVE FLEET - SmartHR Enterprise Operations Suite</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
     :root {
       --font: 'Cairo', 'Inter', system-ui, -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
-      --sw: 250px;
+      --sw: 255px;
       --bg: #F8FAFC;
       --card: #FFFFFF;
       --card-alt: #F1F5F9;
@@ -65,13 +65,12 @@
       line-height: 1.5;
     }
 
-    /* RTL Defaults */
+    /* RTL & LTR Layout */
     [dir="rtl"] body { direction: rtl; text-align: right; }
     [dir="rtl"] .sidebar { right: 0; left: auto; border-left: 1px solid var(--sb-h); border-right: none; }
     [dir="rtl"] .topbar { right: var(--sw); left: 0; }
     [dir="rtl"] .main { margin-right: var(--sw); margin-left: 0; }
     
-    /* LTR Support */
     [dir="ltr"] body { direction: ltr; text-align: left; }
     [dir="ltr"] .sidebar { left: 0; right: auto; border-right: 1px solid var(--border); border-left: none; }
     [dir="ltr"] .topbar { left: var(--sw); right: 0; }
@@ -92,42 +91,42 @@
     }
 
     .sidebar-brand {
-      padding: 20px 18px;
+      padding: 18px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
       border-bottom: 1px solid var(--sb-h);
     }
     .brand-logo {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, #2563EB, #8B5CF6);
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #F97316, #EA580C);
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
-      font-weight: 800;
+      font-weight: 900;
       color: #FFF;
-      box-shadow: 0 2px 8px rgba(37,99,235,0.4);
+      box-shadow: 0 2px 10px rgba(249,115,22,0.4);
     }
     .brand-title {
       font-size: 15px;
       font-weight: 800;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       color: #FFF;
       line-height: 1.2;
     }
     .brand-sub {
       font-size: 11px;
-      color: var(--text3);
+      color: #94A3B8;
       font-weight: 500;
     }
 
     .sidebar-nav {
       flex: 1;
       overflow-y: auto;
-      padding: 14px 10px;
+      padding: 12px 10px;
       display: flex;
       flex-direction: column;
       gap: 3px;
@@ -135,7 +134,7 @@
     .nav-label {
       font-size: 10.5px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       color: #64748B;
       padding: 10px 12px 4px;
       font-weight: 700;
@@ -143,7 +142,7 @@
     .nav-item {
       display: flex;
       align-items: center;
-      padding: 10px 14px;
+      padding: 9px 12px;
       border-radius: var(--r-sm);
       color: #94A3B8;
       text-decoration: none;
@@ -158,14 +157,27 @@
       color: #FFFFFF;
     }
     .nav-item.active {
-      background: var(--blue);
+      background: linear-gradient(135deg, #F97316, #EA580C);
       color: #FFFFFF;
       font-weight: 700;
+      box-shadow: 0 4px 12px rgba(249,115,22,0.25);
     }
     .nav-left {
       display: flex;
       align-items: center;
       gap: 10px;
+    }
+    .nav-badge-alert {
+      background: rgba(239, 68, 68, 0.2);
+      color: #F87171;
+      padding: 1px 7px;
+      border-radius: 12px;
+      font-size: 10.5px;
+      font-weight: 800;
+    }
+    .nav-item.active .nav-badge-alert {
+      background: #FFFFFF;
+      color: #EA580C;
     }
     .nav-submenu {
       display: none;
@@ -197,19 +209,19 @@
       color: #FFFFFF;
     }
     .nav-sub.active {
-      background: rgba(37, 99, 235, 0.25);
-      color: #60A5FA;
+      background: rgba(249, 115, 22, 0.2);
+      color: #FB923C;
       font-weight: 700;
     }
 
     .sidebar-footer {
-      padding: 14px 16px;
+      padding: 12px 16px;
       border-top: 1px solid var(--sb-h);
       font-size: 11px;
       color: #64748B;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
     .sync-status {
       display: flex;
@@ -228,6 +240,10 @@
       box-shadow: 0 0 6px var(--yellow);
       animation: pulse 1s infinite;
     }
+    .status-dot.error {
+      background: var(--red);
+      box-shadow: 0 0 6px var(--red);
+    }
     @keyframes pulse {
       0% { opacity: 0.4; }
       50% { opacity: 1; }
@@ -238,7 +254,7 @@
     .topbar {
       position: fixed;
       top: 0;
-      height: 54px;
+      height: 58px;
       background: var(--card);
       border-bottom: 1px solid var(--border);
       display: flex;
@@ -247,6 +263,7 @@
       padding: 0 20px;
       z-index: 90;
       box-shadow: var(--sh);
+      gap: 14px;
     }
     .breadcrumb {
       font-size: 13.5px;
@@ -255,15 +272,58 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      white-space: nowrap;
     }
     .breadcrumb span {
       color: var(--text3);
       font-weight: 400;
     }
+    .global-search-wrap {
+      position: relative;
+      flex: 1;
+      max-width: 380px;
+    }
+    .global-search-input {
+      width: 100%;
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 7px 14px 7px 68px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      outline: none;
+      transition: all 0.15s ease;
+    }
+    .global-search-input:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+    }
+    .search-kbd {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text2);
+      pointer-events: none;
+    }
+    [dir="ltr"] .global-search-input {
+      padding: 7px 68px 7px 14px;
+    }
+    [dir="ltr"] .search-kbd {
+      left: auto;
+      right: 10px;
+    }
+
     .topbar-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     .top-btn {
       background: var(--card-alt);
@@ -271,17 +331,18 @@
       color: var(--text);
       padding: 6px 12px;
       border-radius: 8px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
       transition: all 0.15s ease;
+      white-space: nowrap;
     }
     .top-btn:hover {
       background: var(--border);
-      color: var(--blue);
+      color: var(--orange);
     }
 
     /* MAIN VIEWPORT */
@@ -291,7 +352,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-top: 54px;
+      padding-top: 58px;
     }
     .content {
       padding: 20px;
@@ -300,7 +361,7 @@
       flex: 1;
     }
 
-    /* PAGE CONTAINERS */
+    /* PAGE SECTIONS */
     .page-section {
       display: none;
       animation: fadeIn 0.2s ease;
@@ -313,9 +374,62 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* SMARTHR WELCOME BANNER */
+    .smarthr-banner {
+      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+      border: 1px solid var(--border);
+      border-right: 5px solid var(--orange);
+      border-radius: var(--r);
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      box-shadow: var(--sh-md);
+      color: #FFF;
+    }
+    [dir="ltr"] .smarthr-banner {
+      border-right: 1px solid var(--border);
+      border-left: 5px solid var(--orange);
+    }
+    .banner-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #F97316, #EA580C);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 900;
+      color: #FFF;
+      box-shadow: 0 4px 12px rgba(249,115,22,0.35);
+      flex-shrink: 0;
+    }
+    .banner-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      color: #E2E8F0;
+    }
+    .banner-pill:hover {
+      background: rgba(249,115,22,0.25);
+      border-color: var(--orange);
+      color: #FFF;
+    }
+
     /* HEADINGS */
     .page-header {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -336,7 +450,7 @@
     /* KPI GRIDS */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
       gap: 12px;
       margin-bottom: 16px;
     }
@@ -344,44 +458,73 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--r);
-      padding: 16px;
+      padding: 15px 16px;
       box-shadow: var(--sh);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      position: relative;
     }
-    .kpi-card:hover {
+    .kpi-card.clickable {
+      cursor: pointer;
+    }
+    .kpi-card.clickable:hover {
       box-shadow: var(--sh-md);
       transform: translateY(-2px);
+      border-color: var(--orange);
+    }
+    .kpi-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .kpi-icon-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .kpi-trend-badge {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 12px;
     }
     .kpi-label {
       font-size: 11.5px;
       color: var(--text2);
       font-weight: 600;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      margin-bottom: 4px;
     }
     .kpi-value {
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 800;
       color: var(--text);
       line-height: 1.2;
     }
-    .kpi-sub {
+    .kpi-footer-link {
       font-size: 11px;
-      color: var(--text3);
-      margin-top: 6px;
+      color: var(--blue);
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
     }
 
     /* PROFIT GRADIENT CARDS */
     .profit-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
     .profit-card {
       border-radius: var(--r);
@@ -409,7 +552,7 @@
     .profit-card.grad-car { background: linear-gradient(135deg, #6366F1, #4338CA); }
     .profit-card.grad-total { background: linear-gradient(135deg, #10B981, #047857); }
     .profit-card.grad-maint { background: linear-gradient(135deg, #F59E0B, #B45309); }
-    .profit-card.grad-profit { background: linear-gradient(135deg, #10B981, #059669); }
+    .profit-card.grad-profit { background: linear-gradient(135deg, #059669, #065F46); }
     .profit-card.grad-mtd { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
 
     .profit-card .p-title {
@@ -429,7 +572,34 @@
       margin-top: 4px;
     }
 
-    /* FILTER BAR */
+    /* COHORT PILLS & FILTER BAR */
+    .cohort-pills-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .cohort-pill {
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .cohort-pill:hover {
+      border-color: var(--orange);
+      color: var(--text);
+    }
+    .cohort-pill.active {
+      background: var(--orange);
+      color: #FFF;
+      border-color: var(--orange);
+    }
+
     .filter-bar {
       background: var(--card);
       border: 1px solid var(--border);
@@ -471,24 +641,24 @@
       border: none;
       padding: 7px 14px;
       border-radius: var(--r-sm);
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: background 0.15s ease;
+      transition: opacity 0.15s ease;
     }
     .btn-action:hover {
-      background: #1D4ED8;
+      opacity: 0.9;
     }
     .btn-secondary {
       background: var(--card-alt);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 7px 14px;
+      padding: 6px 12px;
       border-radius: var(--r-sm);
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
@@ -499,7 +669,7 @@
       background: var(--border);
     }
 
-    /* TABLES AND WRAPPER */
+    /* TABLES */
     .tbl-wrap {
       overflow-x: auto;
       max-width: 100%;
@@ -520,7 +690,7 @@
     }
     thead th {
       background: var(--card-alt);
-      padding: 12px 14px;
+      padding: 11px 14px;
       font-size: 11.5px;
       font-weight: 700;
       color: var(--text2);
@@ -532,7 +702,7 @@
       transition: background 0.1s ease;
     }
     tbody tr:hover {
-      background: rgba(37, 99, 235, 0.03);
+      background: rgba(37, 99, 235, 0.04);
     }
     tbody td {
       padding: 10px 14px;
@@ -558,13 +728,13 @@
     .badge-srbs { background: rgba(16, 185, 129, 0.15); color: #059669; }
     .badge-bike { background: rgba(14, 165, 233, 0.15); color: #0284C7; }
     .badge-car { background: rgba(99, 102, 241, 0.15); color: #4F46E5; }
+    .badge-good { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+    .badge-failed { background: rgba(239, 68, 68, 0.15); color: #EF4444; }
 
     .val-pos { color: var(--green); font-weight: 800; }
     .val-neg { color: var(--red); font-weight: 800; }
 
-    /* =========================================================================
-       DYNAMIC RIDER CARD WITH INLINE 6 TABS
-       ========================================================================= */
+    /* FLEET RIDER CARDS WITH 6 INLINE TABS */
     .fleet-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -585,7 +755,7 @@
     }
     .rider-card:hover {
       box-shadow: var(--sh-md);
-      border-color: var(--blue);
+      border-color: var(--orange);
     }
     .card-header-row {
       display: flex;
@@ -615,6 +785,10 @@
       font-weight: 800;
       color: var(--text);
       line-height: 1.2;
+      cursor: pointer;
+    }
+    .card-name-ar:hover {
+      color: var(--orange);
     }
     .card-name-en {
       font-size: 11.5px;
@@ -627,6 +801,7 @@
       gap: 6px;
       align-items: center;
       margin-top: 2px;
+      flex-wrap: wrap;
     }
     .card-tags {
       display: flex;
@@ -635,7 +810,6 @@
       margin-bottom: 10px;
     }
 
-    /* IN-CARD INTERACTIVE TABS BAR */
     .card-tabs-bar {
       display: flex;
       gap: 4px;
@@ -665,12 +839,11 @@
       color: var(--text);
     }
     .card-tab-btn.active {
-      background: var(--blue);
+      background: var(--orange);
       color: #FFF;
-      border-color: var(--blue);
+      border-color: var(--orange);
     }
 
-    /* CARD DYNAMIC CONTENT PANELS */
     .card-tab-panel {
       min-height: 175px;
       display: flex;
@@ -678,7 +851,6 @@
       justify-content: space-between;
     }
 
-    /* Dual Profit Box (Driver vs Company) */
     .profit-dual-box {
       background: var(--card-alt);
       border-radius: var(--r-sm);
@@ -706,7 +878,6 @@
       margin-top: 2px;
     }
 
-    /* Grid for Metrics */
     .mini-metrics-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -730,10 +901,10 @@
       color: var(--text);
     }
 
-    /* Expiry alerts */
-    .expiry-red { color: #EF4444; font-weight: 800; background: rgba(239, 68, 68, 0.1); padding: 2px 6px; border-radius: 4px; }
-    .expiry-yellow { color: #F59E0B; font-weight: 700; background: rgba(245, 158, 11, 0.1); padding: 2px 6px; border-radius: 4px; }
-    .expiry-green { color: #10B981; font-weight: 600; }
+    /* Expiry Status Classes */
+    .expiry-red { color: #EF4444; font-weight: 800; background: rgba(239, 68, 68, 0.12); padding: 2px 6px; border-radius: 4px; font-size: 10.5px; }
+    .expiry-yellow { color: #F59E0B; font-weight: 700; background: rgba(245, 158, 11, 0.12); padding: 2px 6px; border-radius: 4px; font-size: 10.5px; }
+    .expiry-green { color: #10B981; font-weight: 600; font-size: 10.5px; }
 
     /* MODAL */
     .modal-overlay {
@@ -742,7 +913,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.72);
       backdrop-filter: blur(4px);
       display: none;
       align-items: center;
@@ -759,7 +930,7 @@
       border: 1px solid var(--border);
       border-radius: var(--r);
       width: 100%;
-      max-width: 860px;
+      max-width: 880px;
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: var(--sh-lg);
@@ -798,7 +969,7 @@
       padding: 20px;
     }
 
-    /* FORMS */
+    /* FORMS & AUTOCOMPLETE */
     .form-box {
       background: var(--card);
       border: 1px solid var(--border);
@@ -809,7 +980,7 @@
     }
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 14px;
       margin-bottom: 16px;
     }
@@ -834,7 +1005,7 @@
       outline: none;
     }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      border-color: var(--blue);
+      border-color: var(--orange);
     }
     .autocomplete-dropdown {
       position: absolute;
@@ -844,24 +1015,23 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--r-sm);
-      box-shadow: var(--sh-md);
-      max-height: 200px;
+      box-shadow: var(--sh-lg);
+      max-height: 280px;
       overflow-y: auto;
-      z-index: 50;
+      z-index: 200;
       display: none;
     }
     .autocomplete-item {
-      padding: 8px 12px;
+      padding: 9px 12px;
       cursor: pointer;
       font-size: 12.5px;
       border-bottom: 1px solid var(--border);
     }
     .autocomplete-item:hover {
       background: var(--card-alt);
-      color: var(--blue);
+      color: var(--orange);
     }
 
-    /* MAINTENANCE PHOTO THUMBNAIL */
     .maint-thumb {
       width: 40px;
       height: 40px;
@@ -873,10 +1043,10 @@
     }
     .maint-thumb:hover {
       transform: scale(1.15);
-      border-color: var(--blue);
+      border-color: var(--orange);
     }
 
-    /* CHARTS CONTAINER */
+    /* CHARTS & MAP */
     .charts-grid {
       display: grid;
       grid-template-columns: 2fr 1fr;
@@ -902,7 +1072,6 @@
       width: 100%;
     }
 
-    /* MAP AND CALENDAR */
     .map-calendar-grid {
       display: grid;
       grid-template-columns: 1.5fr 1fr;
@@ -945,9 +1114,9 @@
       align-items: center;
     }
     .cal-day-cell.selected {
-      background: var(--blue);
+      background: var(--orange);
       color: #FFF;
-      border-color: var(--blue);
+      border-color: var(--orange);
     }
     .cal-badge {
       font-size: 9px;
@@ -959,10 +1128,9 @@
     }
     .cal-day-cell.selected .cal-badge {
       background: #FFF;
-      color: var(--blue);
+      color: var(--orange);
     }
 
-    /* NOTES REGISTRY CARD */
     .notes-box {
       background: var(--card);
       border: 1px solid var(--border);
@@ -978,58 +1146,63 @@
   <!-- SIDEBAR NAVIGATION -->
   <aside class="sidebar">
     <div class="sidebar-brand">
-      <div class="brand-logo">S</div>
+      <div class="brand-logo">SF</div>
       <div>
         <div class="brand-title">SPORTIVE FLEET</div>
-        <div class="brand-sub">نظام إدارة الأسطول والعمليات</div>
+        <div class="brand-sub">SmartHR Operations Hub</div>
       </div>
     </div>
 
     <div class="sidebar-nav">
-      <div class="nav-label">القائمة الرئيسية</div>
-      <div class="nav-item active" onclick="navigate('overview')">
+      <div class="nav-label">مركز القيادة (Main Menu)</div>
+      <div class="nav-item active" id="nav-overview" onclick="navigate('overview')">
         <div class="nav-left"><span>📊</span><span>نظرة عامة (Overview)</span></div>
       </div>
 
+      <div class="nav-item" id="nav-alerts" onclick="navigate('alerts')">
+        <div class="nav-left"><span>🚨</span><span>رادار المخاطر والتنبيهات</span></div>
+        <span class="nav-badge-alert" id="sidebarAlertCount">0</span>
+      </div>
+
       <!-- Orders Submenu -->
-      <div class="nav-item" onclick="toggleOrdersMenu()">
+      <div class="nav-item" id="nav-orders" onclick="toggleOrdersMenu()">
         <div class="nav-left"><span>📦</span><span>الأوردرات (Orders)</span></div>
         <span id="ordersChevron">▼</span>
       </div>
       <div class="nav-submenu" id="ordersSubmenu">
-        <div class="nav-sub" onclick="navigateOrders('SUPT')"><span>🔹</span><span>SUPT (Sportive)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('ALL')"><span>🌐</span><span>تقرير شامل (All Companies)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('SUPT')"><span>🔸</span><span>SUPT (Sportive)</span></div>
         <div class="nav-sub" onclick="navigateOrders('FTMN')"><span>🔹</span><span>FTMN (15 Min)</span></div>
-        <div class="nav-sub" onclick="navigateOrders('FNMN')"><span>🔹</span><span>FNMN (14 Min)</span></div>
-        <div class="nav-sub" onclick="navigateOrders('SRBS')"><span>🔹</span><span>SRBS (Sarb Saree)</span></div>
-        <div class="nav-sub" onclick="navigateOrders('ALL')"><span>🌐</span><span>تقرير شامل (All Report)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('FNMN')"><span>🟣</span><span>FNMN (14 Min)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('SRBS')"><span>🟢</span><span>SRBS (Sarb Saree)</span></div>
       </div>
 
-      <div class="nav-item" onclick="navigate('fleet')">
-        <div class="nav-left"><span>🚗</span><span>إدارة الأسطول (Fleet)</span></div>
+      <div class="nav-item" id="nav-fleet" onclick="navigate('fleet')">
+        <div class="nav-left"><span>🚗</span><span>إدارة الأسطول (Fleet 360°)</span></div>
       </div>
-      <div class="nav-item" onclick="navigate('attendance')">
-        <div class="nav-left"><span>📅</span><span>الحضور والغياب (Attendance)</span></div>
+      <div class="nav-item" id="nav-attendance" onclick="navigate('attendance')">
+        <div class="nav-left"><span>📅</span><span>الحضور والعقود (Attendance)</span></div>
       </div>
-      <div class="nav-item" onclick="navigate('performance')">
-        <div class="nav-left"><span>📈</span><span>الأداء التشغيلي (Performance)</span></div>
+      <div class="nav-item" id="nav-performance" onclick="navigate('performance')">
+        <div class="nav-left"><span>📈</span><span>الأداء ومستوى الخدمة (SLA)</span></div>
       </div>
-      <div class="nav-item" onclick="navigate('maintenance')">
+      <div class="nav-item" id="nav-maintenance" onclick="navigate('maintenance')">
         <div class="nav-left"><span>🔧</span><span>الصيانة والورش (Maintenance)</span></div>
       </div>
-      <div class="nav-item" onclick="navigate('payroll')">
+      <div class="nav-item" id="nav-payroll" onclick="navigate('payroll')">
         <div class="nav-left"><span>💰</span><span>الرواتب والعمولات (Payroll)</span></div>
       </div>
-      <div class="nav-item" onclick="navigate('investigations')">
-        <div class="nav-left"><span>🔍</span><span>التحقيقات الأمنية (Investigations)</span></div>
+      <div class="nav-item" id="nav-investigations" onclick="navigate('investigations')">
+        <div class="nav-left"><span>🔍</span><span>التحقيقات الأمنية (Legal)</span></div>
       </div>
     </div>
 
     <div class="sidebar-footer">
       <div class="sync-status">
         <div class="status-dot" id="syncDot"></div>
-        <span id="syncText">تحديث حي (60 ثانية)</span>
+        <span id="syncText">جاري الاتصال بجوجل شيت...</span>
       </div>
-      <div style="font-size:10px;color:#94A3B8;" id="lastSyncTime">آخر مزامنة: الآن</div>
+      <div style="font-size:10px;color:#94A3B8;" id="lastSyncTime">آخر مزامنة: --</div>
     </div>
   </aside>
 
@@ -1038,10 +1211,23 @@
     <div class="breadcrumb" id="topBreadcrumb">
       Sportive Fleet <span>/</span> <b id="currentCrumb">نظرة عامة</b>
     </div>
+
+    <!-- Global Search Bar -->
+    <div class="global-search-wrap">
+      <input type="text" id="globalCommandInput" class="global-search-input"
+             placeholder="🔍 ابحث عن أي سائق، رقم وظيفي، رقم لوحة، أو منطقة..."
+             autocomplete="off" oninput="handleGlobalSearch(this.value)" />
+      <kbd class="search-kbd">CTRL + /</kbd>
+      <div id="globalSearchDropdown" class="autocomplete-dropdown"></div>
+    </div>
+
     <div class="topbar-actions">
-      <div class="live-clock" id="liveClock" style="font-size:12px;font-weight:600;color:var(--text2);">--:--:--</div>
+      <div id="liveClock" style="font-size:12px;font-weight:700;color:var(--text2);">--:--:--</div>
+      <button class="top-btn" style="border-color:var(--orange);color:var(--orange);" onclick="openSheetSettingsModal()">
+        <span>🔗</span> <span>ربط جوجل شيت</span>
+      </button>
       <button class="top-btn" onclick="triggerManualSync()">
-        <span id="refreshIcon">🔄</span> <span>تحديث البيانات</span>
+        <span id="refreshIcon">🔄</span> <span>مزامنة الآن</span>
       </button>
       <button class="top-btn" onclick="toggleLanguage()">
         <span>🌐</span> <span id="langBtnText">English</span>
@@ -1058,48 +1244,143 @@
 
       <!-- ================= PAGE 1: OVERVIEW ================= -->
       <section id="page-overview" class="page-section active">
-        <div class="page-header">
-          <div>
-            <h1 class="page-title">لوحة المؤشرات التنفيذية (Executive Overview)</h1>
-            <p class="page-desc">تحليل متكامل للأداء التشغيلي، الأرباح، الرواتب، وتوزيع الأوردرات اليومية في الكويت.</p>
+
+        <!-- SmartHR Welcome & Actionable Alerts Banner -->
+        <div class="smarthr-banner">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div class="banner-avatar">SF</div>
+            <div>
+              <h2 style="font-size:17px;font-weight:800;color:#FFF;">مرحباً بك في مركز القيادة التنفيذي — Sportive Fleet 👋</h2>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;" id="bannerAlertPills">
+                <span class="banner-pill" onclick="navigate('alerts')">💵 كاش متجاوز (&gt;20 د.ك): <b id="bnrCashCount" style="color:#F87171;">0</b></span>
+                <span class="banner-pill" onclick="navigate('alerts')">🪪 وثائق وعقود حرجة: <b id="bnrDocsCount" style="color:#FBBF24;">0</b></span>
+                <span class="banner-pill" onclick="navigate('performance')">📉 رسوب UTR/AVP: <b id="bnrSlaCount" style="color:#F87171;">0</b></span>
+                <span class="banner-pill" onclick="document.getElementById('notesBoxSection').scrollIntoView({behavior:'smooth'})">📋 ملاحظات حوادث/إيقاف: <b id="bnrNotesCount" style="color:#60A5FA;">0</b></span>
+              </div>
+            </div>
           </div>
-          <div id="overviewDayFilterBadge" style="display:none;background:var(--blue);color:#FFF;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;align-items:center;gap:6px;">
-            <span>يوم مفلتر: <span id="filteredDayText">--</span></span>
-            <span style="cursor:pointer;" onclick="clearCalendarFilter()">✕</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-action" style="background:var(--orange);" onclick="navigate('alerts')">🚨 رادار المخاطر</button>
+            <button class="btn-action" style="background:var(--blue);" onclick="navigate('maintenance')">🔧 + أمر صيانة</button>
+            <button class="btn-action" style="background:var(--red);" onclick="navigate('investigations')">🔍 + فتح تحقيق</button>
           </div>
         </div>
 
-        <!-- Row 1: KPI Cards (6) -->
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">لوحة المؤشرات التنفيذية (Executive Overview)</h1>
+            <p class="page-desc">تحليل حي ومباشر من جوجل شيت للأوردرات، التارجت التراكمي اليومي، الأرباح، وتوزيع المجموعات التشغيلية الـ 7 في الكويت.</p>
+          </div>
+          <div id="overviewDayFilterBadge" style="display:none;background:var(--orange);color:#FFF;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;align-items:center;gap:8px;">
+            <span>📅 يوم مفلتر: <span id="filteredDayText">--</span></span>
+            <span style="cursor:pointer;font-weight:900;" onclick="clearCalendarFilter()">✕ إلغاء</span>
+          </div>
+        </div>
+
+        <!-- SmartHR Segmented Fleet Status & 7 Operational Cohorts Bar -->
+        <div class="kpi-card" style="margin-bottom:16px;padding:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+            <h3 style="font-size:13.5px;font-weight:800;">📊 شريط حالة الأسطول والمجموعات التشغيلية الـ 7 (SmartHR Cohort Filter)</h3>
+            <span style="font-size:11.5px;color:var(--text2);">انقر على أي مجموعة لتصفية المؤشرات والترتيب فوراً:</span>
+          </div>
+
+          <div class="cohort-pills-bar" id="overviewCohortPills">
+            <button class="cohort-pill active" data-cohort="ALL" onclick="selectCohort('ALL')">🌐 الكل</button>
+            <button class="cohort-pill" data-cohort="SRBS_KE" onclick="selectCohort('SRBS_KE')">🟢 كينين سرب سريع (SRBS)</button>
+            <button class="cohort-pill" data-cohort="FNMN_KE" onclick="selectCohort('FNMN_KE')">🟣 كينين فورتين منت (FNMN)</button>
+            <button class="cohort-pill" data-cohort="SUPT_KE" onclick="selectCohort('SUPT_KE')">🔸 كينين سبورتيف (SUPT)</button>
+            <button class="cohort-pill" data-cohort="FTMN_KE" onclick="selectCohort('FTMN_KE')">🔹 كينين ففتين منت (FTMN)</button>
+            <button class="cohort-pill" data-cohort="SUPT_CAR" onclick="selectCohort('SUPT_CAR')">🚗 سيارات سبورتيف</button>
+            <button class="cohort-pill" data-cohort="BANGLA" onclick="selectCohort('BANGLA')">🇧🇩 أوردرات البنغاليين</button>
+            <button class="cohort-pill" data-cohort="INDIA_BIKE" onclick="selectCohort('INDIA_BIKE')">🇮🇳 سياكل الهنود</button>
+          </div>
+
+          <!-- Segmented Bar -->
+          <div style="height:12px;width:100%;background:var(--card-alt);border-radius:20px;overflow:hidden;display:flex;margin-bottom:8px;">
+            <div id="segBarGreen" style="width:50%;background:#10B981;transition:width 0.3s;" title="محقق للتارجت التراكمي"></div>
+            <div id="segBarYellow" style="width:35%;background:#F59E0B;transition:width 0.3s;" title="عجز تارجت"></div>
+            <div id="segBarRed" style="width:15%;background:#EF4444;transition:width 0.3s;" title="حوادث / إيقاف / صيانة"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text2);flex-wrap:wrap;gap:10px;">
+            <span>🟢 <b>محقق للتارجت التراكمي (≥0):</b> <span id="segTxtGreen">--</span></span>
+            <span>🟡 <b>عجز عن التارجت اليومي (&lt;0):</b> <span id="segTxtYellow">--</span></span>
+            <span>🔴 <b>حوادث / إيقاف / صيانة مسجلة:</b> <span id="segTxtRed">--</span></span>
+            <span>💵 <b>إجمالي الكاش المعلق بالشارع:</b> <b class="val-neg" id="segTxtCash">0.000 د.ك</b></span>
+          </div>
+        </div>
+
+        <!-- Row 1: SmartHR Clickable KPI Cards (6) -->
         <div class="kpi-grid">
-          <div class="kpi-card">
-            <div class="kpi-label">📦 إجمالي الأوردرات</div>
-            <div class="kpi-value" id="ovTotalOrders">0</div>
-            <div class="kpi-sub">عبر جميع الشركات الـ 4</div>
+          <div class="kpi-card clickable" onclick="navigateOrders('ALL')">
+            <div>
+              <div class="kpi-top-row">
+                <div class="kpi-icon-circle" style="background:rgba(37,99,235,0.15);color:#2563EB;">📦</div>
+                <span class="kpi-trend-badge" style="background:rgba(16,185,129,0.15);color:#10B981;">مزامنة حية</span>
+              </div>
+              <div class="kpi-label">إجمالي الأوردرات المنجزة</div>
+              <div class="kpi-value" id="ovTotalOrders">0</div>
+            </div>
+            <div class="kpi-footer-link"><span>عرض شيت الأوردرات</span><span>←</span></div>
           </div>
-          <div class="kpi-card">
-            <div class="kpi-label">👥 إجمالي السائقين</div>
-            <div class="kpi-value" id="ovTotalRiders">0</div>
-            <div class="kpi-sub">النشطين في قاعدة البيانات</div>
+
+          <div class="kpi-card clickable" onclick="navigate('fleet')">
+            <div>
+              <div class="kpi-top-row">
+                <div class="kpi-icon-circle" style="background:rgba(139,92,246,0.15);color:#8B5CF6;">👥</div>
+                <span class="kpi-trend-badge" style="background:rgba(139,92,246,0.15);color:#8B5CF6;" id="ovActivePerfBadge">شامل الأسطول</span>
+              </div>
+              <div class="kpi-label">إجمالي السائقين (الأسطول)</div>
+              <div class="kpi-value" id="ovTotalRiders">0</div>
+            </div>
+            <div class="kpi-footer-link"><span>إدارة الأسطول 360°</span><span>←</span></div>
           </div>
-          <div class="kpi-card">
-            <div class="kpi-label">📊 متوسط أوردر/سائق</div>
-            <div class="kpi-value" id="ovAvgOrders">0.0</div>
-            <div class="kpi-sub">المعدل الشهري للأسطول</div>
+
+          <div class="kpi-card clickable" onclick="navigate('performance')">
+            <div>
+              <div class="kpi-top-row">
+                <div class="kpi-icon-circle" style="background:rgba(14,165,233,0.15);color:#0284C7;">📊</div>
+                <span class="kpi-trend-badge" style="background:rgba(14,165,233,0.15);color:#0284C7;" id="ovMedianBadge">الوسيط: 0</span>
+              </div>
+              <div class="kpi-label">متوسط أوردر / سائق</div>
+              <div class="kpi-value" id="ovAvgOrders">0.0</div>
+            </div>
+            <div class="kpi-footer-link"><span>تحليل الأداء التشغيلي</span><span>←</span></div>
           </div>
-          <div class="kpi-card">
-            <div class="kpi-label">🎯 حقق التارجت (≥450)</div>
-            <div class="kpi-value val-pos" id="ovAboveTarget">0</div>
-            <div class="kpi-sub">مؤهلين للبونص</div>
+
+          <div class="kpi-card clickable" onclick="navigateOrders('ALL')">
+            <div>
+              <div class="kpi-top-row">
+                <div class="kpi-icon-circle" style="background:rgba(16,185,129,0.15);color:#10B981;">🎯</div>
+                <span class="kpi-trend-badge" style="background:rgba(16,185,129,0.15);color:#10B981;" id="ovAboveTargetPct">0%</span>
+              </div>
+              <div class="kpi-label">مستوفى التارجت التراكمي</div>
+              <div class="kpi-value val-pos" id="ovAboveTarget">0</div>
+            </div>
+            <div class="kpi-footer-link"><span id="ovMonthly450Sub">تارجت 450 الشهري: 0</span><span>←</span></div>
           </div>
-          <div class="kpi-card">
-            <div class="kpi-label">⚠️ دون التارجت (&lt;450)</div>
-            <div class="kpi-value val-neg" id="ovBelowTarget">0</div>
-            <div class="kpi-sub">عجز عن تحقيق الهدف</div>
+
+          <div class="kpi-card clickable" onclick="navigate('alerts')">
+            <div>
+              <div class="kpi-top-row">
+                <div class="kpi-icon-circle" style="background:rgba(239,68,68,0.15);color:#EF4444;">⚠️</div>
+                <span class="kpi-trend-badge" style="background:rgba(239,68,68,0.15);color:#EF4444;" id="ovBelowTargetPct">0%</span>
+              </div>
+              <div class="kpi-label">عجز عن التارجت اليومي (&lt;0)</div>
+              <div class="kpi-value val-neg" id="ovBelowTarget">0</div>
+            </div>
+            <div class="kpi-footer-link"><span>فحص قائمة العجز</span><span>←</span></div>
           </div>
-          <div class="kpi-card">
-            <div class="kpi-label">👑 السائق الأكثر إنجازاً</div>
-            <div class="kpi-value" style="font-size:15px;" id="ovTopPerformer">--</div>
-            <div class="kpi-sub" id="ovTopPerformerOrders">0 أوردر</div>
+
+          <div class="kpi-card clickable" id="ovTopPerformerCard">
+            <div>
+              <div class="kpi-top-row">
+                <div class="kpi-icon-circle" style="background:rgba(245,158,11,0.15);color:#F59E0B;">👑</div>
+                <span class="kpi-trend-badge" style="background:rgba(245,158,11,0.15);color:#F59E0B;" id="ovTopPerformerOrders">0 أوردر</span>
+              </div>
+              <div class="kpi-label">السائق الأول في المجموعة</div>
+              <div class="kpi-value" style="font-size:14.5px;" id="ovTopPerformer">--</div>
+            </div>
+            <div class="kpi-footer-link"><span>فتح ملف السائق</span><span>←</span></div>
           </div>
         </div>
 
@@ -1135,37 +1416,51 @@
           </div>
           <div class="profit-card grad-profit">
             <div>
-              <div class="p-title">🏢 صافي ربح الشركة</div>
+              <div class="p-title">🏢 صافي ربح الشركة الفعلي</div>
               <div class="p-val" id="ovCompanyProfit">0.000 KWD</div>
             </div>
             <div class="p-desc">بعد خصم الرواتب والصيانة والوقود</div>
           </div>
           <div class="profit-card grad-mtd">
             <div>
-              <div class="p-title">📅 ربح الشركة المقدر للشهر</div>
-              <div class="p-val" id="ovMtdProfit">0.000 KWD</div>
+              <div class="p-title">📅 إجمالي إيرادات الأوردرات</div>
+              <div class="p-val" id="ovGrossRevenue">0.000 KWD</div>
             </div>
-            <div class="p-desc">بناءً على تسعيرة 0.850 و 1.180 د.ك</div>
+            <div class="p-desc">بتسعيرة 0.850 سيكل و 1.180 سيارة</div>
           </div>
         </div>
 
-        <!-- Row 3: Daily Notes Registry & Top 10 -->
-        <div class="notes-box">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-            <h3 style="font-size:14.5px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;">
-              <span>📋</span> <span>سجل الملاحظات اليومية التشغيلية (Daily Operational Notes Registry)</span>
-            </h3>
-            <span class="badge" style="background:#2563EB22;color:var(--blue);" id="notesCountBadge">0 ملاحظة مسجلة</span>
+        <!-- Row 3: Daily Notes Registry with One-Click Auto-Workflow Actions -->
+        <div class="notes-box" id="notesBoxSection">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+            <div>
+              <h3 style="font-size:14.5px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;">
+                <span>📋</span> <span>سجل الملاحظات اليومية الذكي (Auto-Workflow Operational Notes)</span>
+              </h3>
+              <p style="font-size:11.5px;color:var(--text2);">انقر على زر الإجراء بجانب أي ملاحظة لتحويلها فوراً إلى أمر صيانة أو تحقيق رسمي بتعبئة تلقائية</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <select class="filter-select" id="notesTypeFilter" onchange="renderOverviewNotesRegistry()">
+                <option value="ALL">كل الملاحظات</option>
+                <option value="حادث">🚨 حوادث</option>
+                <option value="ايقاف">🛑 إيقافات</option>
+                <option value="صيانة">🔧 صيانة مركبة/موبايل</option>
+                <option value="مرضي">🏥 إجازات مرضية</option>
+                <option value="تحقيق">🔍 تحقيقات وغياب</option>
+              </select>
+              <span class="badge" style="background:rgba(249,115,22,0.15);color:var(--orange);" id="notesCountBadge">0 ملاحظة</span>
+            </div>
           </div>
-          <div class="tbl-wrap" style="max-height:220px;overflow-y:auto;margin-bottom:0;">
-            <table style="min-width:600px;">
+          <div class="tbl-wrap" style="max-height:250px;overflow-y:auto;margin-bottom:0;">
+            <table style="min-width:680px;">
               <thead>
                 <tr>
                   <th>اسم السائق</th>
                   <th>الرقم الوظيفي</th>
                   <th>الشركة</th>
                   <th>اليوم</th>
-                  <th>نص الملاحظة المسجلة بشيت الأوردرات</th>
+                  <th>نص الملاحظة بشيت الأوردرات</th>
+                  <th>إجراء الربط الفوري (One-Click Action)</th>
                 </tr>
               </thead>
               <tbody id="overviewNotesTbody"></tbody>
@@ -1173,7 +1468,7 @@
           </div>
         </div>
 
-        <!-- Top 10 & Bottom 10 Performers with Filters -->
+        <!-- Top 10 & Bottom 10 Performers -->
         <div class="filter-bar">
           <div class="filter-group">
             <span class="filter-label">نوع المركبة:</span>
@@ -1210,11 +1505,11 @@
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
           <div class="kpi-card" style="padding:14px;">
-            <h3 style="font-size:13.5px;font-weight:800;color:var(--green);margin-bottom:10px;">🏆 أعلى 10 سائقين إنجازاً</h3>
+            <h3 style="font-size:13.5px;font-weight:800;color:var(--green);margin-bottom:10px;">🏆 أعلى 10 سائقين إنجازاً (انقر لفتح ملف السائق)</h3>
             <div id="topRankList" style="display:flex;flex-direction:column;gap:6px;"></div>
           </div>
           <div class="kpi-card" style="padding:14px;">
-            <h3 style="font-size:13.5px;font-weight:800;color:var(--red);margin-bottom:10px;">⚠️ أقل 10 سائقين إنجازاً</h3>
+            <h3 style="font-size:13.5px;font-weight:800;color:var(--red);margin-bottom:10px;">⚠️ أقل 10 سائقين إنجازاً (انقر لفتح ملف السائق)</h3>
             <div id="botRankList" style="display:flex;flex-direction:column;gap:6px;"></div>
           </div>
         </div>
@@ -1222,13 +1517,13 @@
         <!-- Charts Grid -->
         <div class="charts-grid">
           <div class="chart-card">
-            <h3 style="font-size:13.5px;font-weight:700;margin-bottom:10px;">📈 حركة الأوردرات اليومية (أكتوبر 2026)</h3>
+            <h3 style="font-size:13.5px;font-weight:700;margin-bottom:10px;">📈 حركة الأوردرات اليومية الفعلية (أكتوبر 2026)</h3>
             <div class="chart-body">
               <canvas id="overviewDailyChart"></canvas>
             </div>
           </div>
           <div class="chart-card">
-            <h3 style="font-size:13.5px;font-weight:700;margin-bottom:10px;">🏢 توزيع الأوردرات حسب الشركات</h3>
+            <h3 style="font-size:13.5px;font-weight:700;margin-bottom:10px;">🏢 توزيع الأوردرات حسب الشركات الـ 4</h3>
             <div class="chart-body">
               <canvas id="overviewCompanyChart"></canvas>
             </div>
@@ -1239,7 +1534,7 @@
         <div class="map-calendar-grid">
           <div class="chart-card">
             <h3 style="font-size:13.5px;font-weight:700;margin-bottom:4px;">🗺️ خريطة مناطق التوصيل في الكويت</h3>
-            <p style="font-size:11px;color:var(--text2);margin-bottom:10px;">توزيع كثافة الأوردرات وأعداد السائقين عبر مراكز التشغيل الرئيسية</p>
+            <p style="font-size:11px;color:var(--text2);margin-bottom:10px;">توزيع كثافة الأوردرات وأعداد السائقين في العارضية، حولي، الجهراء، وصباح السالم</p>
             <svg class="kuwait-map-svg" viewBox="0 0 600 450">
               <defs>
                 <linearGradient id="mapBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -1247,7 +1542,6 @@
                   <stop offset="100%" stop-color="#0F172A" stop-opacity="0.4"/>
                 </linearGradient>
               </defs>
-              <!-- Geographic Kuwait Shape -->
               <path d="M 120 180 C 140 100, 210 60, 310 50 C 370 45, 410 70, 440 100 C 470 120, 460 160, 430 180 C 410 195, 430 220, 470 230 C 510 240, 520 280, 510 350 C 500 400, 430 420, 340 410 C 240 400, 150 340, 110 270 Z" 
                     fill="url(#mapBgGrad)" stroke="#38BDF8" stroke-width="2.5" stroke-dasharray="4 2" />
               <polygon points="380,35 440,30 460,75 410,90" fill="url(#mapBgGrad)" stroke="#38BDF8" stroke-width="1.5" />
@@ -1258,8 +1552,8 @@
 
           <div class="chart-card">
             <div style="display:flex;justify-content:space-between;align-items:center;">
-              <h3 style="font-size:13.5px;font-weight:700;">📅 تقويم أكتوبر 2026</h3>
-              <button class="btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="clearCalendarFilter()">عرض الكل</button>
+              <h3 style="font-size:13.5px;font-weight:700;">📅 تقويم أكتوبر 2026 التفاعلي</h3>
+              <button class="btn-secondary" style="padding:2px 8px;font-size:11px;" onclick="clearCalendarFilter()">عرض الشهر كاملاً</button>
             </div>
             <p style="font-size:11.5px;color:var(--text2);margin-top:2px;">انقر على أي يوم لتصفية بيانات الداشبورد لليوم المحدد:</p>
             <div class="calendar-grid">
@@ -1276,16 +1570,103 @@
         </div>
       </section>
 
+      <!-- ================= PAGE: RISK & ALERTS RADAR ================= -->
+      <section id="page-alerts" class="page-section">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">🚨 رادار المخاطر والتنبيهات المبكرة (Risk & Compliance Radar)</h1>
+            <p class="page-desc">متابعة فورية لتجاوزات الكاش (&gt;20 د.ك)، انتهاء العقود والبطاقات المدنية، ورسوب مؤشرات الأداء.</p>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">💵 سائقون متجاوزون لحد الكاش (&gt;20 د.ك)</div>
+            <div class="kpi-value val-neg" id="alCashOverCount">0</div>
+            <div class="kpi-footer-link"><span id="alCashTotalVal">إجمالي: 0.000 د.ك</span></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">🪪 وثائق رسمية منتهية أو تنتهي قريباً</div>
+            <div class="kpi-value" style="color:var(--yellow);" id="alDocsExpCount">0</div>
+            <div class="kpi-footer-link"><span>مدنية / رخصة / إذن عمل / صحة</span></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">📄 عقود تنتهي خلال 30 يوماً</div>
+            <div class="kpi-value" style="color:var(--orange);" id="alContractExpCount">0</div>
+            <div class="kpi-footer-link"><span>من شيت Attendance</span></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">📉 سائقون بحالة Failed في UTR</div>
+            <div class="kpi-value val-neg" id="alUtrFailCount">0</div>
+            <div class="kpi-footer-link"><span>ضعف معدل توصيل الساعة</span></div>
+          </div>
+        </div>
+
+        <div class="notes-box">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:10px;color:var(--red);">💵 1. رادار الكاش المعلق بالشارع (المتجاوزون لحد 20.000 د.ك مرتبون تنازلياً)</h3>
+          <div class="tbl-wrap" style="max-height:320px;overflow-y:auto;margin-bottom:0;">
+            <table>
+              <thead>
+                <tr>
+                  <th>اسم السائق</th>
+                  <th>الرقم الوظيفي</th>
+                  <th>الشركة</th>
+                  <th>المشرف (AM)</th>
+                  <th>الكاش المحتجز</th>
+                  <th>تجاوز الحد بـ</th>
+                  <th>غرامة الكاش المقررة</th>
+                  <th>إجراء سريع</th>
+                </tr>
+              </thead>
+              <tbody id="alertsCashTbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="notes-box">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:10px;color:var(--yellow);">🪪 2. رادار صلاحية الوثائق الرسمية وعقود السائقين</h3>
+          <div class="tbl-wrap" style="max-height:340px;overflow-y:auto;margin-bottom:0;">
+            <table>
+              <thead>
+                <tr>
+                  <th>اسم السائق</th>
+                  <th>الرقم الوظيفي</th>
+                  <th>الشركة</th>
+                  <th>نهاية العقد (Contract)</th>
+                  <th>البطاقة المدنية</th>
+                  <th>رخصة القيادة</th>
+                  <th>إذن العمل</th>
+                  <th>كرت الصحة</th>
+                  <th>دفتر المركبة</th>
+                </tr>
+              </thead>
+              <tbody id="alertsDocsTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <!-- ================= PAGES 2-5: ORDERS ================= -->
       <section id="page-orders" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title"><span id="ordersPageCompanyTitle">SUPT</span> - لوحة متابعة الأوردرات اليومية</h1>
-            <p class="page-desc">تفاصيل الأوردرات اليومية، تتبع التارجت والعجز اليومي لكل سائق.</p>
+            <h1 class="page-title"><span id="ordersPageCompanyTitle">ALL</span> - لوحة متابعة الأوردرات والتارجت</h1>
+            <p class="page-desc">تفاصيل الأوردرات اليومية، التارجت التراكمي اليومي (`Missing Daily Target`)، والمتبقي للتارجت الشهري (`RTT`).</p>
           </div>
-          <button class="btn-secondary" onclick="exportOrdersCSV()">
+          <button class="btn-action" onclick="exportOrdersCSV()">
             <span>📤</span> <span>تصدير CSV</span>
           </button>
+        </div>
+
+        <div class="cohort-pills-bar" id="ordersCohortPills">
+          <button class="cohort-pill active" data-cohort="ALL" onclick="selectCohort('ALL')">🌐 الكل</button>
+          <button class="cohort-pill" data-cohort="SRBS_KE" onclick="selectCohort('SRBS_KE')">🟢 كينين سرب سريع (SRBS)</button>
+          <button class="cohort-pill" data-cohort="FNMN_KE" onclick="selectCohort('FNMN_KE')">🟣 كينين فورتين منت (FNMN)</button>
+          <button class="cohort-pill" data-cohort="SUPT_KE" onclick="selectCohort('SUPT_KE')">🔸 كينين سبورتيف (SUPT)</button>
+          <button class="cohort-pill" data-cohort="FTMN_KE" onclick="selectCohort('FTMN_KE')">🔹 كينين ففتين منت (FTMN)</button>
+          <button class="cohort-pill" data-cohort="SUPT_CAR" onclick="selectCohort('SUPT_CAR')">🚗 سيارات سبورتيف</button>
+          <button class="cohort-pill" data-cohort="BANGLA" onclick="selectCohort('BANGLA')">🇧🇩 أوردرات البنغاليين</button>
+          <button class="cohort-pill" data-cohort="INDIA_BIKE" onclick="selectCohort('INDIA_BIKE')">🇮🇳 سياكل الهنود</button>
         </div>
 
         <div class="filter-bar">
@@ -1297,6 +1678,8 @@
               <option value="2">باتش 2</option>
               <option value="3">باتش 3</option>
               <option value="4">باتش 4</option>
+              <option value="5">باتش 5</option>
+              <option value="6">باتش 6</option>
             </select>
           </div>
           <div class="filter-group">
@@ -1326,13 +1709,15 @@
           <table id="ordersTable">
             <thead>
               <tr>
-                <th>اسم السائق</th>
+                <th>اسم السائق (EN)</th>
                 <th>الاسم بالعربي</th>
                 <th>الرقم الوظيفي</th>
                 <th>الشركة</th>
+                <th>الباتش</th>
                 <th>إجمالي الأوردرات</th>
-                <th>Missing Daily Target (عجز التارجت)</th>
-                <th>حالة التارجت</th>
+                <th>فارق التارجت اليومي (Missing Target)</th>
+                <th>المتبقي للـ 450 (RTT)</th>
+                <th>حالة التارجت التراكمي</th>
                 <th>إجراءات</th>
               </tr>
             </thead>
@@ -1345,7 +1730,7 @@
       <section id="page-fleet" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">إدارة الأسطول والسائقين (Fleet Management)</h1>
+            <h1 class="page-title">إدارة الأسطول والسائقين 360° (Fleet Management)</h1>
             <p class="page-desc">كروت تفاعلية لكل سائق تحتوي على 6 تبويبات ديناميكية، حساب فوري لصافي دخل السائق وربح الشركة.</p>
           </div>
           <button class="btn-action" onclick="exportFleetCSV()">
@@ -1353,11 +1738,21 @@
           </button>
         </div>
 
-        <!-- Filter Bar -->
+        <div class="cohort-pills-bar" id="fleetCohortPills">
+          <button class="cohort-pill active" data-cohort="ALL" onclick="selectCohort('ALL')">🌐 الكل</button>
+          <button class="cohort-pill" data-cohort="SRBS_KE" onclick="selectCohort('SRBS_KE')">🟢 كينين سرب سريع (SRBS)</button>
+          <button class="cohort-pill" data-cohort="FNMN_KE" onclick="selectCohort('FNMN_KE')">🟣 كينين فورتين منت (FNMN)</button>
+          <button class="cohort-pill" data-cohort="SUPT_KE" onclick="selectCohort('SUPT_KE')">🔸 كينين سبورتيف (SUPT)</button>
+          <button class="cohort-pill" data-cohort="FTMN_KE" onclick="selectCohort('FTMN_KE')">🔹 كينين ففتين منت (FTMN)</button>
+          <button class="cohort-pill" data-cohort="SUPT_CAR" onclick="selectCohort('SUPT_CAR')">🚗 سيارات سبورتيف</button>
+          <button class="cohort-pill" data-cohort="BANGLA" onclick="selectCohort('BANGLA')">🇧🇩 أوردرات البنغاليين</button>
+          <button class="cohort-pill" data-cohort="INDIA_BIKE" onclick="selectCohort('INDIA_BIKE')">🇮🇳 سياكل الهنود</button>
+        </div>
+
         <div class="filter-bar">
           <div style="flex:1;min-width:220px;">
             <input type="text" class="filter-input" style="width:100%;" id="fleetSearchInput" 
-                   placeholder="بحث بالاسم، الرقم الوظيفي، أو الاسم بالعربي..." oninput="renderFleetPage()" />
+                   placeholder="بحث بالاسم، الرقم الوظيفي، اللوحة، أو الاسم بالعربي..." oninput="renderFleetPage()" />
           </div>
           <div class="filter-group">
             <select class="filter-select" id="fleetCoFilter" onchange="renderFleetPage()">
@@ -1391,6 +1786,8 @@
               <option value="2">باتش 2</option>
               <option value="3">باتش 3</option>
               <option value="4">باتش 4</option>
+              <option value="5">باتش 5</option>
+              <option value="6">باتش 6</option>
             </select>
           </div>
           <button class="btn-secondary" onclick="resetFleetFilters()">
@@ -1401,7 +1798,6 @@
           </span>
         </div>
 
-        <!-- RIDER CARDS GRID -->
         <div class="fleet-grid" id="fleetGrid"></div>
       </section>
 
@@ -1410,29 +1806,29 @@
         <div class="page-header">
           <div>
             <h1 class="page-title">الحضور والغياب والعقود (Attendance & Contracts)</h1>
-            <p class="page-desc">شفتات العمل، الغيابات، التأخيرات، الإيقافات، والأيام بدون حجز شفتات.</p>
+            <p class="page-desc">متابعة شفتات العمل، الغيابات، التأخيرات، الإيقافات، وتنبيهات انتهاء عقود السائقين.</p>
           </div>
         </div>
 
         <div class="kpi-grid">
           <div class="kpi-card">
-            <div class="kpi-label">✅ أيام العمل (Worked)</div>
+            <div class="kpi-label">✅ إجمالي أيام العمل (Worked)</div>
             <div class="kpi-value val-pos" id="attKpiWorked">0</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-label">❌ الغيابات (No Show)</div>
+            <div class="kpi-label">❌ إجمالي الغيابات (No Show)</div>
             <div class="kpi-value val-neg" id="attKpiNoShow">0</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-label">🟡 التأخيرات (Late)</div>
+            <div class="kpi-label">🟡 إجمالي التأخيرات (Late)</div>
             <div class="kpi-value" style="color:var(--yellow);" id="attKpiLate">0</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-label">🔴 الإيقافات (Suspended)</div>
+            <div class="kpi-label">🔴 إجمالي الإيقافات (Suspended)</div>
             <div class="kpi-value" style="color:var(--purple);" id="attKpiSuspended">0</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-label">⚪ بدون شفتات (No Shift)</div>
+            <div class="kpi-label">⚪ أيام بدون شفت (No Shift)</div>
             <div class="kpi-value" style="color:var(--text2);" id="attKpiNoShift">0</div>
           </div>
         </div>
@@ -1450,7 +1846,7 @@
         <div class="page-header">
           <div>
             <h1 class="page-title">الأداء التشغيلي ومستويات الخدمة (Performance SLA)</h1>
-            <p class="page-desc">مؤشرات AVP، معدل UTR، الساعات المفقودة، ونسب قبول الطلبات.</p>
+            <p class="page-desc">مؤشرات AVP %، معدل UTR (طلب/ساعة)، الساعات المفقودة، ونسب قبول الطلبات مع التلوين التلقائي لحالات الرسوب.</p>
           </div>
         </div>
 
@@ -1463,12 +1859,15 @@
                 <th>الشركة</th>
                 <th>الباتش</th>
                 <th>أيام العمل</th>
+                <th>الساعات المخططة</th>
                 <th>الساعات الفعلية</th>
                 <th>AVP %</th>
                 <th>حالة AVP</th>
                 <th>معدل UTR</th>
+                <th>حالة UTR</th>
                 <th>نسبة القبول</th>
-                <th>نسبة فشل التوصيل</th>
+                <th>حالة القبول</th>
+                <th>فشل التوصيل</th>
                 <th>طلبات محولة</th>
                 <th>طلبات مفقودة</th>
               </tr>
@@ -1483,11 +1882,10 @@
         <div class="page-header">
           <div>
             <h1 class="page-title">الصيانة وإصلاحات الأسطول (Maintenance & Workshops)</h1>
-            <p class="page-desc">تسجيل فواتير الورش، إمكانية رفع صور الفواتير، وحساب تكلفة الصيانة.</p>
+            <p class="page-desc">تسجيل فواتير الورش، إمكانية رفع صور الفواتير، والربط المباشر مع مستحقات السائق وربح الشركة.</p>
           </div>
         </div>
 
-        <!-- New Record Form with Photo Upload -->
         <div class="form-box">
           <h3 style="font-size:15px;font-weight:800;margin-bottom:14px;">+ تسجيل حركة صيانة جديدة مع صورة الفاتورة</h3>
           <form id="maintRecordForm" onsubmit="handleCreateMaintenance(event)">
@@ -1528,7 +1926,7 @@
               </div>
               <div class="form-group">
                 <label>اسم الورشة</label>
-                <input type="text" id="maintWorkshop" placeholder="مثال: ورشة الشويخ" required />
+                <input type="text" id="maintWorkshop" placeholder="مثال: ورشة الشويخ / العارضية" required />
               </div>
               <div class="form-group">
                 <label>📷 صورة الفاتورة أو العطل (اختياري)</label>
@@ -1543,7 +1941,7 @@
               <label>تقرير الصيانة وموجز العطل</label>
               <textarea id="maintIssueSummary" rows="2" placeholder="وصف تفصيلي للإصلاح والقطع المستبدلة..." required></textarea>
             </div>
-            <button type="submit" class="btn-action">
+            <button type="submit" class="btn-action" style="background:var(--orange);">
               <span>💾</span> <span>حفظ سجل الصيانة</span>
             </button>
           </form>
@@ -1576,7 +1974,7 @@
         <div class="page-header">
           <div>
             <h1 class="page-title">محرك الرواتب والعمولات (Payroll & Wage Engine)</h1>
-            <p class="page-desc">احتساب دقيق لعمولات السائقين وخصومات عجز التارجت (Missing Daily Target) وربح الشركة.</p>
+            <p class="page-desc">احتساب دقيق لعمولات السائقين وخصومات عجز التارجت (`Missing Daily Target`) وغرامات الكاش وصافي ربح الشركة.</p>
           </div>
           <button class="btn-action" onclick="exportPayrollCSV()">
             <span>📤</span> <span>تصدير مسير الرواتب (CSV)</span>
@@ -1641,18 +2039,19 @@
                   <option value="احمد مرعي">احمد مرعي</option>
                   <option value="عمر">عمر</option>
                   <option value="عماد">عماد</option>
+                  <option value="Abdelrazek">Abdelrazek</option>
                 </select>
               </div>
               <div class="form-group">
                 <label>موضوع وسبب التحقيق</label>
-                <input type="text" id="invTopic" placeholder="مثال: تأخير تسليم الكاش، شكوى عميل..." required />
+                <input type="text" id="invTopic" placeholder="مثال: تأخير تسليم الكاش، إيقاف، غياب..." required />
               </div>
             </div>
             <div class="form-group" style="margin-bottom:16px;">
               <label>الإجراء المتخذ ونتيجة التحقيق</label>
               <textarea id="invActionTaken" rows="2" placeholder="القرارات والخصومات أو الإنذارات..." required></textarea>
             </div>
-            <button type="submit" class="btn-action">
+            <button type="submit" class="btn-action" style="background:var(--red);">
               <span>💾</span> <span>حفظ سجل التحقيق</span>
             </button>
           </form>
@@ -1681,7 +2080,7 @@
   </main>
 
   <!-- ================= POPUP MODALS ================= -->
-  <!-- 1. FULL DETAILS MODAL FOR RIDER -->
+  <!-- 1. FULL 360° DETAILS MODAL FOR RIDER -->
   <div class="modal-overlay" id="driverModalOverlay">
     <div class="modal-box">
       <div class="modal-header">
@@ -1709,47 +2108,99 @@
     </div>
   </div>
 
+  <!-- 3. GOOGLE SHEETS CONNECTION & DIAGNOSTICS MODAL -->
+  <div class="modal-overlay" id="sheetSettingsModalOverlay">
+    <div class="modal-box" style="max-width:650px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-size:16px;font-weight:800;">🔗 إعدادات وفحص الربط الحي مع Google Sheets</h3>
+          <p style="font-size:12px;color:var(--text2);">أي تعديل تجريه في جوجل شيت ينعكس تلقائياً في الداش بورد</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeSheetSettingsModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:var(--card-alt);padding:14px;border-radius:10px;border:1px solid var(--border);margin-bottom:16px;">
+          <label style="font-size:12px;font-weight:700;color:var(--text);display:block;margin-bottom:6px;">الرابط الأساسي لشيت جوجل المنشور (Published URL):</label>
+          <input type="text" id="customSheetBaseUrlInput" class="filter-input" style="width:100%;direction:ltr;text-align:left;font-size:12px;" />
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <button class="btn-action" style="background:var(--orange);" onclick="saveCustomSheetUrl()">💾 حفظ الرابط ومزامنة البيانات الآن</button>
+            <button class="btn-secondary" onclick="resetDefaultSheetUrl()">🔄 استعادة الرابط الافتراضي</button>
+          </div>
+        </div>
+
+        <h4 style="font-size:13px;font-weight:800;margin-bottom:8px;">حالة الاتصال بالأوراق الـ 8 داخل Google Sheets:</h4>
+        <div id="sheetsDiagnosticList" class="mini-metrics-grid" style="margin-bottom:14px;"></div>
+
+        <div style="font-size:11.5px;color:var(--text2);line-height:1.6;background:rgba(37,99,235,0.08);padding:12px;border-radius:8px;border:1px solid rgba(37,99,235,0.2);">
+          <b>💡 كيف يعمل الربط التلقائي؟</b><br/>
+          1. تم تزويد الداش بورد بمحرك جلب ثلاثي المراحل يعمل سواء فتحت الملف على جهازك أو رفعته على <b>GitHub Pages</b>.<br/>
+          2. عند تعديل أي رقم في جوجل شيت، يتم تحديثه تلقائياً كل 60 ثانية أو فوراً عند الضغط على زر <b>مزامنة الآن</b>.
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
     /* =========================================================================
        1. DATA CONFIGURATION & LIVE GOOGLE SHEETS CSV ENDPOINTS
        ========================================================================= */
-    const BASE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTc5sFosqCuYPsG1lwVaTqRsNmrFbSchwrUG-udsG2IaAxsDLQzi-Oc_O5Ia7MR-jkYDnoRWBLPV5uS/pub';
-    const SHEETS = {
-      riders: BASE_SHEET_URL + '?gid=749488308&single=true&output=csv',
-      orders: BASE_SHEET_URL + '?gid=1908654568&single=true&output=csv',
-      maint:  BASE_SHEET_URL + '?gid=1538389934&single=true&output=csv',
-      inv:    BASE_SHEET_URL + '?gid=1143649460&single=true&output=csv',
-      perf:   BASE_SHEET_URL + '?gid=783739237&single=true&output=csv',
-      att:    BASE_SHEET_URL + '?gid=394915287&single=true&output=csv',
-      fuel:   BASE_SHEET_URL + '?gid=1499843653&single=true&output=csv',
-      cash:   BASE_SHEET_URL + '?gid=1563969829&single=true&output=csv',
-    };
+    const DEFAULT_BASE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTc5sFosqCuYPsG1lwVaTqRsNmrFbSchwrUG-udsG2IaAxsDLQzi-Oc_O5Ia7MR-jkYDnoRWBLPV5uS/pub';
 
     const STORAGE_KEYS = {
-      maint: 'sportive_maint_v4',
-      inv: 'sportive_inv_v4',
-      adj: 'sportive_adj_v4',
+      maint: 'sportive_maint_v6',
+      inv: 'sportive_inv_v6',
+      adj: 'sportive_adj_v6',
       theme: 'sportive_theme',
       lang: 'sportive_lang',
+      sheetUrl: 'sportive_custom_sheet_url_v6',
+      cachedCsv: 'sportive_cached_csv_v6'
     };
 
-    /* App Global State */
+    const SHEET_GIDS = {
+      riders: { gid: '749488308', label: '1. السائقين (Riders)' },
+      orders: { gid: '1908654568', label: '2. الأوردرات (Orders Daily)' },
+      maint:  { gid: '1538389934', label: '3. الصيانة (Maintenance)' },
+      inv:    { gid: '1143649460', label: '4. التحقيقات (Investigations)' },
+      perf:   { gid: '783739237', label: '5. الأداء (Performance)' },
+      att:    { gid: '394915287', label: '6. الحضور (Attendance)' },
+      fuel:   { gid: '1499843653', label: '7. الوقود (Fuel Efficiency)' },
+      cash:   { gid: '1563969829', label: '8. الكاش (Cash)' },
+    };
+
+    function getActiveBaseSheetUrl() {
+      return localStorage.getItem(STORAGE_KEYS.sheetUrl) || DEFAULT_BASE_SHEET_URL;
+    }
+
+    function buildSheetCsvUrl(gid) {
+      const base = getActiveBaseSheetUrl().trim();
+      // If user pasted a regular /edit Google Sheet link, convert it to export CSV format
+      if (base.includes('/spreadsheets/d/') && !base.includes('/d/e/')) {
+        const match = base.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+        if (match && match[1]) {
+          return `https://docs.google.com/spreadsheets/d/${match[1]}/gviz/tq?tqx=out:csv&gid=${gid}`;
+        }
+      }
+      const cleanBase = base.split('?')[0];
+      return `${cleanBase}?gid=${gid}&single=true&output=csv`;
+    }
+
     const APP = {
       lang: localStorage.getItem(STORAGE_KEYS.lang) || 'ar',
       theme: localStorage.getItem(STORAGE_KEYS.theme) || 'dark',
       activePage: 'overview',
-      activeOrdersCO: 'SUPT',
+      activeOrdersCO: 'ALL',
+      activeCohort: 'ALL',
       overviewDayFilter: null,
       isSyncing: false,
-      cardTabState: {}, // Stores active tab for each rider card: riderId -> 'payslip' | 'orders' | 'perf' | 'att' | 'assets' | 'wallet'
+      sheetStatus: {},
+      cardTabState: {},
       charts: {
         overviewDaily: null,
         overviewCompany: null,
       }
     };
 
-    /* Database State */
     const DB = {
       riders: [],
       orders: [],
@@ -1759,14 +2210,13 @@
       att: [],
       fuel: [],
       cash: [],
-      fleet: {},        // Keyed by rider ID
+      fleet: {},
       allRidersList: [],
       localMaint: [],
       localInv: [],
       localAdj: {},
     };
 
-    /* Kuwait Geographic Zone Centers */
     const KUWAIT_ZONES = {
       'Jahra': { x: 210, y: 150, color: '#38BDF8', labelAr: 'الجهراء' },
       'Shuwaikh': { x: 340, y: 175, color: '#2563EB', labelAr: 'الشويخ' },
@@ -1780,19 +2230,63 @@
     };
 
     /* =========================================================================
-       2. UTF-8 TEXT DECODER FOR LIVE CSV FETCHING (CRITICAL FIX)
+       2. TRIPLE-LAYER GOOGLE SHEETS LIVE FETCH ENGINE (SOLVES CORS & /PUB BUG)
        ========================================================================= */
-    async function fetchCSV(url) {
+    function isValidCsvResponse(text) {
+      if (!text || text.trim().length < 10) return false;
+      const t = text.trim().substring(0, 120).toLowerCase();
+      if (t.startsWith('<!doctype') || t.startsWith('<html') || t.includes('<title>error')) return false;
+      return true;
+    }
+
+    async function fetchCSV(key, gid) {
+      const url = buildSheetCsvUrl(gid);
+
+      // Layer 1: Direct Clean Fetch (No &_t= parameter that breaks Google /pub URLs!)
       try {
-        const resp = await fetch(url + '&_t=' + Date.now());
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        const buffer = await resp.arrayBuffer();
-        const text = new TextDecoder('utf-8').decode(buffer);
-        return text;
-      } catch (err) {
-        console.warn('CSV Fetch Error:', url, err);
-        return '';
+        const resp = await fetch(url, { cache: 'no-store' });
+        if (resp.ok) {
+          const buffer = await resp.arrayBuffer();
+          const text = new TextDecoder('utf-8').decode(buffer);
+          if (isValidCsvResponse(text)) {
+            APP.sheetStatus[key] = { ok: true, mode: 'مباشر (Direct)', rows: text.split('\n').length };
+            return text;
+          }
+        }
+      } catch (e) {
+        // Proceed to Layer 2 if opened via local file:// or blocked by browser CORS
       }
+
+      // Layer 2: CORS Proxy 1 (AllOrigins Raw) for local file:// desktop opening
+      try {
+        const proxyUrl1 = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+        const resp = await fetch(proxyUrl1, { cache: 'no-store' });
+        if (resp.ok) {
+          const buffer = await resp.arrayBuffer();
+          const text = new TextDecoder('utf-8').decode(buffer);
+          if (isValidCsvResponse(text)) {
+            APP.sheetStatus[key] = { ok: true, mode: 'جسر محلي (Proxy 1)', rows: text.split('\n').length };
+            return text;
+          }
+        }
+      } catch (e) {}
+
+      // Layer 3: CORS Proxy 2 (CorsProxy.io)
+      try {
+        const proxyUrl2 = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+        const resp = await fetch(proxyUrl2, { cache: 'no-store' });
+        if (resp.ok) {
+          const buffer = await resp.arrayBuffer();
+          const text = new TextDecoder('utf-8').decode(buffer);
+          if (isValidCsvResponse(text)) {
+            APP.sheetStatus[key] = { ok: true, mode: 'جسر محلي (Proxy 2)', rows: text.split('\n').length };
+            return text;
+          }
+        }
+      } catch (e) {}
+
+      APP.sheetStatus[key] = { ok: false, mode: 'فشل الاتصال', rows: 0 };
+      return '';
     }
 
     function parseCSV(text) {
@@ -1823,14 +2317,103 @@
     }
 
     /* =========================================================================
-       3. WAGE & PROFIT CALCULATION ENGINE
+       3. HELPER UTILITIES & BUG FIXES
+       ========================================================================= */
+    function resolveKuwaitZone(rawZone) {
+      const z = (rawZone || '').toLowerCase().trim();
+      if (z.includes('hawal')) return 'Hawally';
+      if (z.includes('subah') || z.includes('sabah')) return 'Sabah Al Salem';
+      if (z.includes('jahra')) return 'Jahra';
+      if (z.includes('shuwaikh')) return 'Shuwaikh';
+      if (z.includes('salmiya')) return 'Salmiya';
+      if (z.includes('rumaith')) return 'Rumaithiya';
+      if (z.includes('fahaheel')) return 'Fahaheel';
+      if (z.includes('ahmadi')) return 'Ahmadi';
+      return 'Ardya';
+    }
+
+    function parseFlexibleDate(dateStr) {
+      if (!dateStr) return null;
+      const s = String(dateStr).trim();
+      const dmyMatch = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+      if (dmyMatch) {
+        return new Date(parseInt(dmyMatch[3]), parseInt(dmyMatch[2]) - 1, parseInt(dmyMatch[1]));
+      }
+      const d = new Date(s);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    function getExpiryDaysLeft(dateStr) {
+      const d = parseFlexibleDate(dateStr);
+      if (!d) return null;
+      return Math.ceil((d.getTime() - Date.now()) / (1000 * 3600 * 24));
+    }
+
+    function formatExpirySpan(dateStr) {
+      if (!dateStr) return '<span style="color:var(--text3);">غير محدد</span>';
+      const d = parseFlexibleDate(dateStr);
+      if (!d) return `<span style="color:var(--text2);">${dateStr}</span>`;
+      const diffDays = Math.ceil((d.getTime() - Date.now()) / (1000 * 3600 * 24));
+      const cleanDate = d.toISOString().split('T')[0];
+      if (diffDays <= 0) return `<span class="expiry-red">منتهي (${cleanDate})</span>`;
+      if (diffDays <= 30) return `<span class="expiry-red">${cleanDate} (${diffDays} يوم)</span>`;
+      if (diffDays <= 90) return `<span class="expiry-yellow">${cleanDate} (${diffDays} يوم)</span>`;
+      return `<span class="expiry-green">${cleanDate}</span>`;
+    }
+
+    function fmtPercent(val, defaultStr = '0%') {
+      if (val === undefined || val === null || val === '' || val === '-') return defaultStr;
+      const s = String(val).trim();
+      if (s.includes('%')) return s;
+      const num = parseFloat(s);
+      if (isNaN(num)) return defaultStr;
+      const pct = (num <= 1.0 && num > 0) ? (num * 100) : num;
+      return pct.toFixed(1) + '%';
+    }
+
+    function renderStatusBadge(statusText) {
+      const s = (statusText || '-').trim();
+      const isFailed = s.toLowerCase().includes('fail');
+      const isGood = s.toLowerCase().includes('good');
+      const cls = isFailed ? 'badge-failed' : (isGood ? 'badge-good' : '');
+      return `<span class="badge ${cls}">${s}</span>`;
+    }
+
+    function matchesCohort(r, cohort) {
+      if (!cohort || cohort === 'ALL') return true;
+      const nat = (r.nationality || '').toLowerCase();
+      const isKenya = nat.includes('kenya');
+      const isBangla = nat.includes('bangla');
+      const isIndia = nat.includes('india');
+      const isBike = r.vehicleType === 'Bike';
+      const isCar = r.vehicleType === 'Car';
+
+      switch (cohort) {
+        case 'SRBS_KE': return r.co === 'SRBS' && isKenya;
+        case 'FNMN_KE': return r.co === 'FNMN' && isKenya;
+        case 'SUPT_KE': return r.co === 'SUPT' && isKenya;
+        case 'FTMN_KE': return r.co === 'FTMN' && isKenya;
+        case 'SUPT_CAR': return r.co === 'SUPT' && isCar;
+        case 'BANGLA': return isBangla;
+        case 'INDIA_BIKE': return isIndia && isBike;
+        default: return true;
+      }
+    }
+
+    function selectCohort(cohort) {
+      APP.activeCohort = cohort;
+      document.querySelectorAll('.cohort-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-cohort') === cohort);
+      });
+      renderCurrentPage();
+    }
+
+    /* =========================================================================
+       4. WAGE & PROFIT CALCULATION ENGINE
        ========================================================================= */
     function calcRiderWages(total, missingDailyTarget, nat, vehicleType, batch) {
       const t = Math.max(0, parseInt(total) || 0);
       const rawMissing = parseFloat(missingDailyTarget);
-      // Missing deficit orders only if the number in Missing Daily Target column is negative (< 0)
-      // "ايضا الاوردرات التي موجود في خانة عجز التارجت لو كانت بالموجب فلا تخصم من السائق"
-      // "عجز التارجت اذا كان الاوردرات موجودة بالسالب فتخصم من السائق بسعر الاوردر حسب الشرائح الاتية فيما عدا سائقي السياكل الجنسية الكينية"
       const missingCount = (!isNaN(rawMissing) && rawMissing < 0) ? Math.abs(rawMissing) : 0;
 
       const n = (nat || '').toLowerCase();
@@ -1841,7 +2424,6 @@
 
       let base = 0, bonus = 0, penalty = 0, tierLabel = '';
 
-      // 1. Kenyan Biker Tiers (لا يسري خصم التارجت على سائقي السيكل الكينيين)
       if (n.includes('kenya') && isBike) {
         if (t === 0) { base = 0; tierLabel = 'بدون أوردرات'; }
         else if (t <= 400) { base = t * 0.337; tierLabel = 'الشريحة 1 (0.337 د.ك)'; }
@@ -1849,32 +2431,28 @@
         else if (t <= 499) { base = t * 0.350; tierLabel = 'الشريحة 3 (0.350 د.ك)'; }
         else if (t <= 599) { base = t * 0.400; tierLabel = 'الشريحة 4 (0.400 د.ك)'; }
         else { base = t * 0.500; tierLabel = 'الشريحة 5 (0.500 د.ك)'; }
-        penalty = 0; // لا يسري خصم التارجت على سائقي السيكل الكينيين
+        penalty = 0;
       }
-      // 2. Indian Biker (سعر الأوردر = 0.500 د.ك، بعد التارجت 450 = 0.750 د.ك، خصم العجز = 0.500 د.ك)
       else if (n.includes('india') && isBike) {
         base = Math.min(t, 450) * 0.500;
         if (t > 450) bonus = (t - 450) * 0.750;
         penalty = missingCount * 0.500;
-        tierLabel = t >= 450 ? 'حقق التارجت (+0.750 د.ك)' : (missingCount > 0 ? `عجز تارجت (-0.500×${missingCount})` : 'التارجت مستوفى');
+        tierLabel = t >= 450 ? 'حقق التارجت (+0.750 د.ك)' : (missingCount > 0 ? `عجز تارجت (-0.500×${missingCount})` : 'التارجت اليومي مستوفى');
       }
-      // 3. Indian Car (سعر الأوردر = 0.600 د.ك، بعد التارجت = 0.750 د.ك، خصم العجز = 0.600 د.ك)
       else if (n.includes('india') && isCar) {
         base = Math.min(t, 450) * 0.600;
         if (t > 450) bonus = (t - 450) * 0.750;
         penalty = missingCount * 0.600;
-        tierLabel = t >= 450 ? 'حقق التارجت (+0.750 د.ك)' : (missingCount > 0 ? `عجز تارجت (-0.600×${missingCount})` : 'التارجت مستوفى');
+        tierLabel = t >= 450 ? 'حقق التارجت (+0.750 د.ك)' : (missingCount > 0 ? `عجز تارجت (-0.600×${missingCount})` : 'التارجت اليومي مستوفى');
       }
-      // 4. Bangladeshi & Ethiopian Car (سعر الأوردر = 0.333 د.ك، بعد 450 حسب الباتش، خصم العجز = 0.350 د.ك)
       else if ((n.includes('bangla') || n.includes('ethiop')) && isCar) {
         base = Math.min(t, 450) * 0.333;
         const bRates = { 1: 1.000, 2: 0.900, 3: 0.800, 4: 0.500 };
         const rateExtra = bRates[b] || 0.500;
         if (t > 450) bonus = (t - 450) * rateExtra;
         penalty = missingCount * 0.350;
-        tierLabel = t >= 450 ? `حقق التارجت (باتش ${b}: +${rateExtra} د.ك)` : (missingCount > 0 ? `عجز تارجت (-0.350×${missingCount})` : 'التارجت مستوفى');
+        tierLabel = t >= 450 ? `حقق التارجت (باتش ${b}: +${rateExtra} د.ك)` : (missingCount > 0 ? `عجز تارجت (-0.350×${missingCount})` : 'التارجت اليومي مستوفى');
       }
-      // Default fallback
       else {
         base = t * 0.337;
         penalty = 0;
@@ -1896,12 +2474,12 @@
     }
 
     /* =========================================================================
-       4. DATA SYNCHRONIZATION & NORMALIZATION
+       5. DATA SYNCHRONIZATION & CACHE PERSISTENCE
        ========================================================================= */
     async function syncAllData() {
       if (APP.isSyncing) return;
       APP.isSyncing = true;
-      updateSyncStatusUI(true);
+      updateSyncStatusUI('syncing');
 
       try {
         DB.localMaint = JSON.parse(localStorage.getItem(STORAGE_KEYS.maint) || '[]');
@@ -1909,61 +2487,102 @@
         DB.localAdj = JSON.parse(localStorage.getItem(STORAGE_KEYS.adj) || '{}');
 
         const [ridersCSV, ordersCSV, maintCSV, invCSV, perfCSV, attCSV, fuelCSV, cashCSV] = await Promise.all([
-          fetchCSV(SHEETS.riders),
-          fetchCSV(SHEETS.orders),
-          fetchCSV(SHEETS.maint),
-          fetchCSV(SHEETS.inv),
-          fetchCSV(SHEETS.perf),
-          fetchCSV(SHEETS.att),
-          fetchCSV(SHEETS.fuel),
-          fetchCSV(SHEETS.cash)
+          fetchCSV('riders', SHEET_GIDS.riders.gid),
+          fetchCSV('orders', SHEET_GIDS.orders.gid),
+          fetchCSV('maint',  SHEET_GIDS.maint.gid),
+          fetchCSV('inv',    SHEET_GIDS.inv.gid),
+          fetchCSV('perf',   SHEET_GIDS.perf.gid),
+          fetchCSV('att',    SHEET_GIDS.att.gid),
+          fetchCSV('fuel',   SHEET_GIDS.fuel.gid),
+          fetchCSV('cash',   SHEET_GIDS.cash.gid)
         ]);
 
-        DB.riders = parseCSV(ridersCSV);
-        DB.orders = parseCSV(ordersCSV);
-        DB.maint = parseCSV(maintCSV);
-        DB.inv = parseCSV(invCSV);
-        DB.perf = parseCSV(perfCSV);
-        DB.att = parseCSV(attCSV);
-        DB.fuel = parseCSV(fuelCSV);
-        DB.cash = parseCSV(cashCSV);
+        // Save last successful fetch in localStorage so offline opening also works
+        const cached = JSON.parse(localStorage.getItem(STORAGE_KEYS.cachedCsv) || '{}');
+        const finalRiders = ridersCSV || cached.riders || '';
+        const finalOrders = ordersCSV || cached.orders || '';
+        const finalMaint  = maintCSV  || cached.maint  || '';
+        const finalInv    = invCSV    || cached.inv    || '';
+        const finalPerf   = perfCSV   || cached.perf   || '';
+        const finalAtt    = attCSV    || cached.att    || '';
+        const finalFuel   = fuelCSV   || cached.fuel   || '';
+        const finalCash   = cashCSV   || cached.cash   || '';
+
+        if (ridersCSV && ordersCSV) {
+          try {
+            localStorage.setItem(STORAGE_KEYS.cachedCsv, JSON.stringify({
+              riders: finalRiders, orders: finalOrders, maint: finalMaint, inv: finalInv,
+              perf: finalPerf, att: finalAtt, fuel: finalFuel, cash: finalCash
+            }));
+          } catch (e) {}
+        }
+
+        DB.riders = parseCSV(finalRiders);
+        DB.orders = parseCSV(finalOrders);
+        DB.maint  = parseCSV(finalMaint);
+        DB.inv    = parseCSV(finalInv);
+        DB.perf   = parseCSV(finalPerf);
+        DB.att    = parseCSV(finalAtt);
+        DB.fuel   = parseCSV(finalFuel);
+        DB.cash   = parseCSV(finalCash);
 
         normalizeFleetDatabase();
+        updateGlobalAlertCounters();
         renderCurrentPage();
+        renderSheetDiagnosticsList();
 
-        document.getElementById('lastSyncTime').textContent = 'آخر مزامنة: ' + new Date().toLocaleTimeString();
+        if (DB.allRidersList.length > 0) {
+          updateSyncStatusUI('ok');
+          document.getElementById('lastSyncTime').textContent = `آخر مزامنة: ${new Date().toLocaleTimeString()} (${DB.allRidersList.length} سائق)`;
+        } else {
+          updateSyncStatusUI('error');
+        }
       } catch (err) {
         console.error('Data Sync Error:', err);
+        updateSyncStatusUI('error');
       } finally {
         APP.isSyncing = false;
-        updateSyncStatusUI(false);
       }
     }
 
-    function updateSyncStatusUI(isSyncing) {
+    function updateSyncStatusUI(state) {
       const dot = document.getElementById('syncDot');
       const text = document.getElementById('syncText');
       const refIcon = document.getElementById('refreshIcon');
-      if (isSyncing) {
+      if (state === 'syncing') {
         dot.className = 'status-dot syncing';
-        text.textContent = 'جاري المزامنة...';
+        text.textContent = 'جاري سحب البيانات من جوجل شيت...';
         refIcon.style.animation = 'pulse 0.8s infinite';
-      } else {
+      } else if (state === 'ok') {
         dot.className = 'status-dot';
-        text.textContent = 'تحديث حي (60 ثانية)';
+        text.textContent = '✅ متصل بحساب جوجل شيت (تحديث تلقائي)';
+        refIcon.style.animation = 'none';
+      } else {
+        dot.className = 'status-dot error';
+        text.textContent = '⚠️ تعذر الاتصال (انقر على ربط جوجل شيت)';
         refIcon.style.animation = 'none';
       }
+    }
+
+    function findRiderInFleet(id, nameEn) {
+      const cleanId = String(id || '').replace(/\.0$/, '').trim();
+      if (cleanId && DB.fleet[cleanId]) return DB.fleet[cleanId];
+      if (nameEn) {
+        const cleanName = nameEn.trim().toLowerCase();
+        return Object.values(DB.fleet).find(f => f.nameEn.toLowerCase() === cleanName);
+      }
+      return null;
     }
 
     function normalizeFleetDatabase() {
       DB.fleet = {};
       DB.allRidersList = [];
 
-      // 1. Process Riders Sheet
+      // 1. Process Master Riders Sheet
       if (DB.riders.length > 1) {
         for (let i = 1; i < DB.riders.length; i++) {
           const r = DB.riders[i];
-          const id = (r[2] || '').trim();
+          const id = String(r[2] || '').replace(/\.0$/, '').trim();
           if (!id) continue;
 
           const vehType = (r[6] || '').trim();
@@ -1973,7 +2592,7 @@
             id: id,
             nameEn: (r[0] || '').trim(),
             nameAr: (r[1] || '').trim() || (r[0] || '').trim(),
-            batch: (r[3] || '').trim() || '1',
+            batch: (r[3] || '').trim() || '4',
             nationality: (r[4] || '').trim() || 'Kenya',
             co: ((r[5] || '').trim() || 'SUPT').toUpperCase(),
             vehicleType: isCar ? 'Car' : 'Bike',
@@ -1981,8 +2600,10 @@
             plateNum: (r[7] || '').trim(),
             vehicleModel: (r[8] || '').trim(),
             zone: 'Ardya',
+            am: 'Abdelrazek',
+            contractEndDate: '',
+            contractExpireStatus: '',
 
-            // Legal & Identifiers
             expIqama: (r[9] || '').trim(),
             expLicense: (r[10] || '').trim(),
             expWorkPermit: (r[11] || '').trim(),
@@ -1992,16 +2613,13 @@
             passportNum: (r[15] || '').trim(),
             civilId: (r[16] || '').trim(),
 
-            // Operational Metrics
             totalOrders: 0,
             missingDailyTarget: 0,
+            rtt: -450,
             dailyOrders: Array(31).fill(0),
             dailyNotes: {},
 
-            // Performance (15 key items)
             perf: {},
-
-            // Attendance
             attendance: {
               worked: 0,
               noShow: 0,
@@ -2011,13 +2629,11 @@
               dailyStatus: Array(31).fill(''),
             },
 
-            // Financial
             fuelCard: '',
             fuelExpense: 0,
             pendingCash: 0,
             undepositedCash: 0,
 
-            // Maintenance & Inv
             maintCount: 0,
             maintCost: 0,
             invCount: 0,
@@ -2027,16 +2643,15 @@
         }
       }
 
-      // 2. Orders Sheet & Daily Notes & Missing Daily Target
+      // 2. Process Orders Sheet (Excluding summary total row where ID & Name are empty)
       if (DB.orders.length > 1) {
         for (let i = 1; i < DB.orders.length; i++) {
           const r = DB.orders[i];
-          const id = (r[2] || '').trim();
-          let rider = DB.fleet[id];
-          if (!rider) {
-            const nameEn = (r[0] || '').trim();
-            rider = Object.values(DB.fleet).find(f => f.nameEn === nameEn);
-          }
+          const nameEn = (r[0] || '').trim();
+          const id = String(r[2] || '').replace(/\.0$/, '').trim();
+          if (!nameEn && !id) continue;
+
+          let rider = findRiderInFleet(id, nameEn);
           if (rider) {
             let sumOrders = 0;
             for (let day = 1; day <= 31; day++) {
@@ -2051,22 +2666,25 @@
               }
             }
             const totalCol = parseInt(r[35]);
-            rider.totalOrders = !isNaN(totalCol) && totalCol > 0 ? totalCol : sumOrders;
-            // Col 36 is Missing Daily Target
+            rider.totalOrders = (!isNaN(totalCol) && totalCol >= 0) ? totalCol : sumOrders;
             const missCol = parseFloat(r[36]);
             rider.missingDailyTarget = !isNaN(missCol) ? missCol : 0;
+            const rttCol = parseFloat(r[37]);
+            rider.rtt = !isNaN(rttCol) ? rttCol : (rider.totalOrders - 450);
           }
         }
       }
 
-      // 3. Performance Sheet -> UPDATE BATCH & 15 KEY METRICS
+      // 3. Process Performance Sheet
       if (DB.perf.length > 1) {
         for (let i = 1; i < DB.perf.length; i++) {
           const r = DB.perf[i];
-          const id = (r[1] || '').trim();
-          const rider = DB.fleet[id] || Object.values(DB.fleet).find(f => f.nameEn === (r[2] || '').trim());
+          const id = String(r[1] || '').replace(/\.0$/, '').trim();
+          const nameEn = (r[2] || '').trim();
+          if (!id && !nameEn) continue;
+
+          let rider = findRiderInFleet(id, nameEn);
           if (rider) {
-            // Update Batch from Performance Tab
             const perfBatch = (r[4] || '').trim();
             if (perfBatch) rider.batch = perfBatch;
 
@@ -2078,31 +2696,38 @@
               plannedHours: r[8] || '0',
               actualHours: r[9] || '0',
               lostHours: r[10] || '0',
-              avpPct: r[11] || '0%',
+              avpPct: fmtPercent(r[11], '0%'),
               avpStatus: r[12] || 'Good',
               avgHoursDay: r[13] || '0.0',
               avgShiftDuration: r[14] || '0.0',
               breakHours: r[15] || '0',
-              breakDurationPct: r[16] || '0%',
+              breakDurationPct: fmtPercent(r[16], '0%'),
               lateShifts: r[19] || '0',
               noShowShifts: r[21] || '0',
               utr: r[24] || '0.00',
-              deliveriesFailRate: r[26] || '0%',
+              utrStatus: r[25] || '-',
+              deliveriesFailRate: fmtPercent(r[26], '0%'),
               manualUndispatches: r[29] || '0',
               lostOrders: r[30] || '0',
-              acceptanceRate: r[31] || '100%',
+              acceptanceRate: fmtPercent(r[31], '100%'),
+              acceptanceStatus: r[32] || 'Good',
             };
           }
         }
       }
 
-      // 4. Attendance Sheet
+      // 4. Process Attendance Sheet
       if (DB.att.length > 2) {
         for (let i = 2; i < DB.att.length; i++) {
           const r = DB.att[i];
-          const id = (r[0] || '').trim();
-          const rider = DB.fleet[id] || Object.values(DB.fleet).find(f => f.nameEn === (r[1] || '').trim());
+          const id = String(r[0] || '').replace(/\.0$/, '').trim();
+          const nameEn = (r[1] || '').trim();
+          const rider = findRiderInFleet(id, nameEn);
           if (rider) {
+            if (r[3]) rider.am = (r[3] || '').trim();
+            if (r[5]) rider.contractEndDate = String(r[5]).split(' ')[0];
+            if (r[6]) rider.contractExpireStatus = (r[6] || '').trim();
+
             rider.attendance.worked = parseInt(r[7]) || 0;
             rider.attendance.noShow = parseInt(r[8]) || 0;
             rider.attendance.suspended = parseInt(r[9]) || 0;
@@ -2119,8 +2744,7 @@
       if (DB.fuel.length > 1) {
         for (let i = 1; i < DB.fuel.length; i++) {
           const r = DB.fuel[i];
-          const id = (r[2] || '').trim();
-          const rider = DB.fleet[id] || Object.values(DB.fleet).find(f => f.nameEn === (r[0] || '').trim());
+          const rider = findRiderInFleet(r[2], r[0]);
           if (rider) {
             rider.fuelCard = (r[3] || '').trim();
             rider.fuelExpense = parseFloat(r[4]) || 0;
@@ -2128,57 +2752,62 @@
         }
       }
 
-      // 6. Cash Sheet (Pending Cash & Undeposited Cash Deduction)
+      // 6. Cash Sheet
       if (DB.cash.length > 1) {
         for (let i = 1; i < DB.cash.length; i++) {
           const r = DB.cash[i];
-          const id = (r[2] || '').trim();
-          const rider = DB.fleet[id] || Object.values(DB.fleet).find(f => f.nameEn === (r[0] || '').trim());
+          const rider = findRiderInFleet(r[2], r[0]);
           if (rider) {
             const cashVal = parseFloat(r[3]) || 0;
             rider.pendingCash = cashVal;
-            rider.undepositedCash = cashVal; // Cash withheld by driver
+            rider.undepositedCash = cashVal;
           }
         }
       }
 
-      // 7. Maintenance Sheet & LocalStorage
+      // 7. Maintenance Sheet
       if (DB.maint.length > 1) {
         for (let i = 1; i < DB.maint.length; i++) {
           const r = DB.maint[i];
-          const id = (r[3] || '').trim();
+          const id = String(r[3] || '').replace(/\.0$/, '').trim();
           const nameEn = (r[0] || '').trim();
-          const rider = DB.fleet[id] || Object.values(DB.fleet).find(f => f.nameEn === nameEn);
-          const zone = (r[2] || '').trim();
+          const rider = findRiderInFleet(id, nameEn);
+          const rawZone = (r[2] || '').trim();
+          const mappedZone = resolveKuwaitZone(rawZone);
           const cost = parseFloat(r[12]) || 0;
+          const summary = (r[11] || '').trim();
 
-          const record = {
-            ref: `MAINT-S-${i}`,
-            riderName: nameEn,
-            riderId: id,
-            co: (r[5] || '').trim(),
-            vehiclePlate: (r[7] || '').trim(),
-            vehicleModel: (r[8] || '').trim(),
-            zone: zone || 'Ardya',
-            startDate: (r[9] || '').trim(),
-            endDate: (r[10] || '').trim(),
-            summary: (r[11] || '').trim(),
-            cost: cost,
-            photo: null,
-            source: 'Sheet'
-          };
+          if (rider && rawZone) {
+            rider.zone = mappedZone;
+          }
 
-          if (rider) {
-            if (zone && zone !== 'Unknown') rider.zone = zone;
-            rider.maintCount++;
-            rider.maintCost += cost;
-            rider.maintRecords.push(record);
+          if (cost > 0 || summary) {
+            const record = {
+              ref: `MAINT-S-${i}`,
+              riderName: rider ? rider.nameAr : nameEn,
+              riderId: id,
+              co: (r[5] || '').trim(),
+              vehiclePlate: (r[7] || '').trim(),
+              vehicleModel: (r[8] || '').trim(),
+              zone: mappedZone,
+              startDate: (r[9] || '').trim(),
+              endDate: (r[10] || '').trim(),
+              summary: summary,
+              cost: cost,
+              photo: null,
+              source: 'Sheet'
+            };
+            if (rider) {
+              rider.maintCount++;
+              rider.maintCost += cost;
+              rider.maintRecords.push(record);
+            }
           }
         }
       }
 
       DB.localMaint.forEach(m => {
-        const rider = DB.fleet[m.riderId] || Object.values(DB.fleet).find(f => f.nameEn === m.riderName);
+        const rider = findRiderInFleet(m.riderId, m.riderName);
         if (rider) {
           rider.maintCount++;
           rider.maintCost += (parseFloat(m.cost) || 0);
@@ -2190,18 +2819,20 @@
       if (DB.inv.length > 1) {
         for (let i = 1; i < DB.inv.length; i++) {
           const r = DB.inv[i];
-          const id = (r[2] || '').trim();
-          const nameEn = (r[0] || '').trim();
-          const rider = DB.fleet[id] || Object.values(DB.fleet).find(f => f.nameEn === nameEn);
+          const topic = (r[6] || '').trim();
+          const actionTaken = (r[8] || '').trim();
+          if (!topic && !actionTaken) continue;
+
+          const rider = findRiderInFleet(r[2], r[0]);
           const record = {
             ref: `INV-S-${i}`,
-            riderName: nameEn,
-            riderId: id,
+            riderName: rider ? rider.nameAr : (r[0] || '').trim(),
+            riderId: String(r[2] || '').trim(),
             co: (r[4] || '').trim(),
             date: (r[5] || '').trim(),
-            topic: (r[6] || '').trim(),
+            topic: topic,
             investigator: (r[7] || '').trim(),
-            actionTaken: (r[8] || '').trim(),
+            actionTaken: actionTaken,
             source: 'Sheet'
           };
           if (rider) {
@@ -2212,7 +2843,7 @@
       }
 
       DB.localInv.forEach(inv => {
-        const rider = DB.fleet[inv.riderId] || Object.values(DB.fleet).find(f => f.nameEn === inv.riderName);
+        const rider = findRiderInFleet(inv.riderId, inv.riderName);
         if (rider) {
           rider.invCount++;
           rider.invRecords.push(inv);
@@ -2236,31 +2867,140 @@
         r.debt = parseFloat(adj.debt) || 0;
         r.housing = parseFloat(adj.housing) || 0;
 
-        // Driver Earned (Gross pay before deductions)
         r.driverEarned = r.baseSalary + r.bonus;
-
-        // Driver Net Due
-        // اي مصاريف صيانة تخصم من ربح الشركة وتضاف لمستحقات السائق
         r.driverNet = r.driverEarned - r.missingPenalty + r.maintCost - r.violations - r.debt - r.cashPenalty - r.undepositedCash + r.housing;
 
-        // Company Profit Calculation
-        // Order rate for company: Bike = 0.850 KWD, Car = 1.180 KWD
         const orderRateCompany = r.vehicleType === 'Car' ? 1.180 : 0.850;
         r.companyGrossRevenue = r.totalOrders * orderRateCompany;
-        // Company costs on this rider: driverEarned + maintCost + fuelExpense
         r.companyCosts = r.driverEarned + r.maintCost + r.fuelExpense;
         r.companyNetProfit = r.companyGrossRevenue - r.companyCosts;
 
-        // Default card active tab
         if (!APP.cardTabState[r.id]) {
           APP.cardTabState[r.id] = 'payslip';
         }
       });
     }
 
+    function updateGlobalAlertCounters() {
+      let cashOverCount = 0;
+      let docsCritCount = 0;
+      let slaFailCount = 0;
+      let notesCount = 0;
+
+      DB.allRidersList.forEach(r => {
+        if (r.pendingCash > 20) cashOverCount++;
+        const hasDocAlert = [r.expIqama, r.expLicense, r.expWorkPermit, r.expHealthCard, r.expVehicleDoc].some(d => {
+          const days = getExpiryDaysLeft(d);
+          return days !== null && days <= 60;
+        });
+        if (hasDocAlert || r.contractExpireStatus) docsCritCount++;
+        if ((r.perf.utrStatus || '').toLowerCase().includes('fail') || (r.perf.avpStatus || '').toLowerCase().includes('fail')) {
+          slaFailCount++;
+        }
+        notesCount += Object.keys(r.dailyNotes).length;
+      });
+
+      document.getElementById('bnrCashCount').textContent = cashOverCount + ' سائق';
+      document.getElementById('bnrDocsCount').textContent = docsCritCount + ' سائق';
+      document.getElementById('bnrSlaCount').textContent = slaFailCount + ' سائق';
+      document.getElementById('bnrNotesCount').textContent = notesCount + ' حالة';
+      document.getElementById('sidebarAlertCount').textContent = cashOverCount + docsCritCount;
+    }
+
     /* =========================================================================
-       5. NAVIGATION & CONTROLLERS
+       6. GOOGLE SHEETS SETTINGS MODAL & DIAGNOSTICS
        ========================================================================= */
+    function openSheetSettingsModal() {
+      document.getElementById('customSheetBaseUrlInput').value = getActiveBaseSheetUrl();
+      renderSheetDiagnosticsList();
+      document.getElementById('sheetSettingsModalOverlay').classList.add('open');
+    }
+
+    function closeSheetSettingsModal() {
+      document.getElementById('sheetSettingsModalOverlay').classList.remove('open');
+    }
+
+    function renderSheetDiagnosticsList() {
+      const container = document.getElementById('sheetsDiagnosticList');
+      if (!container) return;
+      container.innerHTML = Object.entries(SHEET_GIDS).map(([key, info]) => {
+        const st = APP.sheetStatus[key] || { ok: false, mode: 'قيد الفحص...', rows: 0 };
+        return `
+          <div class="mini-metric-item">
+            <span>${info.label}:</span>
+            <span class="badge ${st.ok ? 'badge-good' : 'badge-failed'}">
+              ${st.ok ? `✅ متصل (${st.rows} صف)` : '❌ غير متصل'}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function saveCustomSheetUrl() {
+      const val = document.getElementById('customSheetBaseUrlInput').value.trim();
+      if (!val) return;
+      localStorage.setItem(STORAGE_KEYS.sheetUrl, val);
+      syncAllData();
+      alert('تم حفظ الرابط وجاري مزامنة البيانات الحية من جوجل شيت!');
+    }
+
+    function resetDefaultSheetUrl() {
+      localStorage.removeItem(STORAGE_KEYS.sheetUrl);
+      document.getElementById('customSheetBaseUrlInput').value = DEFAULT_BASE_SHEET_URL;
+      syncAllData();
+    }
+
+    /* =========================================================================
+       7. GLOBAL COMMAND SEARCH (CTRL + /) & NAVIGATION
+       ========================================================================= */
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+        e.preventDefault();
+        const input = document.getElementById('globalCommandInput');
+        if (input) input.focus();
+      }
+    });
+
+    function handleGlobalSearch(query) {
+      const dd = document.getElementById('globalSearchDropdown');
+      const q = (query || '').toLowerCase().trim();
+      if (q.length < 1) { dd.style.display = 'none'; return; }
+
+      const matches = DB.allRidersList.filter(r =>
+        r.nameAr.toLowerCase().includes(q) ||
+        r.nameEn.toLowerCase().includes(q) ||
+        r.id.toLowerCase().includes(q) ||
+        (r.plateNum && r.plateNum.toLowerCase().includes(q)) ||
+        (r.zone && r.zone.toLowerCase().includes(q))
+      ).slice(0, 10);
+
+      if (matches.length === 0) {
+        dd.innerHTML = `<div class="autocomplete-item" style="color:var(--text3);">لا توجد نتائج مطابقة لـ "${query}"</div>`;
+      } else {
+        dd.innerHTML = matches.map(r => `
+          <div class="autocomplete-item" style="display:flex;justify-content:space-between;align-items:center;"
+               onclick="openDriverModal('${r.id}'); document.getElementById('globalSearchDropdown').style.display='none';">
+            <div>
+              <b>${r.nameAr}</b> <small style="color:var(--text2);">(${r.nameEn})</small><br/>
+              <small style="color:var(--text3);">ID: ${r.id} • اللوحة: ${r.plateNum || 'N/A'} • المنطقة: ${r.zone}</small>
+            </div>
+            <div style="text-align:left;">
+              <span class="badge badge-${r.co.toLowerCase()}">${r.co}</span>
+              <div style="font-size:11px;font-weight:800;color:var(--green);margin-top:2px;">${r.totalOrders} أوردر</div>
+            </div>
+          </div>
+        `).join('');
+      }
+      dd.style.display = 'block';
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.global-search-wrap')) {
+        const dd = document.getElementById('globalSearchDropdown');
+        if (dd) dd.style.display = 'none';
+      }
+    });
+
     function navigate(pageId) {
       APP.activePage = pageId;
       document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
@@ -2269,11 +3009,13 @@
 
       document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-sub').forEach(el => el.classList.remove('active'));
+      const navItem = document.getElementById('nav-' + pageId);
+      if (navItem) navItem.classList.add('active');
 
       const pageTitles = {
-        overview: 'نظرة عامة', fleet: 'إدارة الأسطول', attendance: 'الحضور والغياب',
-        performance: 'الأداء التشغيلي', maintenance: 'الصيانة والورش', payroll: 'الرواتب والعمولات',
-        investigations: 'التحقيقات الأمنية'
+        overview: 'نظرة عامة', alerts: 'رادار المخاطر والتنبيهات', fleet: 'إدارة الأسطول 360°',
+        attendance: 'الحضور والعقود', performance: 'الأداء التشغيلي (SLA)',
+        maintenance: 'الصيانة والورش', payroll: 'الرواتب والعمولات', investigations: 'التحقيقات الأمنية'
       };
       document.getElementById('currentCrumb').textContent = pageTitles[pageId] || pageId.toUpperCase();
 
@@ -2283,7 +3025,6 @@
 
     function toggleOrdersMenu() {
       document.getElementById('ordersSubmenu').classList.toggle('open');
-      document.getElementById('ordersChevron').classList.toggle('open');
     }
 
     function navigateOrders(co) {
@@ -2300,6 +3041,7 @@
     function renderCurrentPage() {
       switch(APP.activePage) {
         case 'overview': renderOverviewPage(); break;
+        case 'alerts': renderAlertsPage(); break;
         case 'orders': renderOrdersPage(); break;
         case 'fleet': renderFleetPage(); break;
         case 'attendance': renderAttendancePage(); break;
@@ -2311,21 +3053,31 @@
     }
 
     /* =========================================================================
-       6. PAGE 1: OVERVIEW RENDERING
+       8. PAGE 1: OVERVIEW RENDERING
        ========================================================================= */
     function renderOverviewPage() {
       const dayFilter = APP.overviewDayFilter;
-      const riders = DB.allRidersList;
+      const riders = DB.allRidersList.filter(r => matchesCohort(r, APP.activeCohort));
 
-      let totalOrders = 0, aboveTarget = 0, belowTarget = 0;
-      let bikePayroll = 0, carPayroll = 0, totalFuel = 0, totalMaint = 0;
+      let totalOrders = 0, aboveDailyTarget = 0, belowDailyTarget = 0, monthly450Count = 0;
+      let incidentRiders = 0;
+      let bikePayroll = 0, carPayroll = 0, totalFuel = 0, totalMaint = 0, totalPendingCash = 0;
       let totalCompanyRevenue = 0;
       let bestRider = null, maxOrders = -1;
+      const orderValues = [];
 
       riders.forEach(r => {
         const orders = dayFilter ? (r.dailyOrders[dayFilter - 1] || 0) : r.totalOrders;
         totalOrders += orders;
-        if (orders >= (dayFilter ? 15 : 450)) aboveTarget++; else belowTarget++;
+        orderValues.push(orders);
+
+        if (dayFilter) {
+          if (orders >= 15) aboveDailyTarget++; else belowDailyTarget++;
+        } else {
+          if (r.missingDailyTarget >= 0) aboveDailyTarget++; else belowDailyTarget++;
+        }
+        if (r.totalOrders >= 450) monthly450Count++;
+        if (Object.keys(r.dailyNotes).length > 0) incidentRiders++;
 
         if (orders > maxOrders) {
           maxOrders = orders;
@@ -2338,61 +3090,109 @@
 
         totalFuel += r.fuelExpense;
         totalMaint += r.maintCost;
+        totalPendingCash += r.pendingCash;
 
         const rate = r.vehicleType === 'Car' ? 1.180 : 0.850;
         totalCompanyRevenue += orders * rate;
       });
 
       const totalRiders = riders.length;
-      const avgOrders = totalRiders > 0 ? (totalOrders / totalRiders).toFixed(1) : 0;
+      const avgOrders = totalRiders > 0 ? (totalOrders / totalRiders).toFixed(1) : '0.0';
+      orderValues.sort((a, b) => a - b);
+      const medianOrders = totalRiders > 0 ? orderValues[Math.floor(totalRiders / 2)] : 0;
+
       const totalPayroll = bikePayroll + carPayroll;
       const totalMaintFuelCost = totalMaint + totalFuel;
       const companyNetProfit = totalCompanyRevenue - totalPayroll - totalFuel;
 
+      const abovePct = totalRiders > 0 ? Math.round((aboveDailyTarget / totalRiders) * 100) : 0;
+      const belowPct = totalRiders > 0 ? Math.round((belowDailyTarget / totalRiders) * 100) : 0;
+      const incPct = totalRiders > 0 ? Math.round((incidentRiders / totalRiders) * 100) : 0;
+
       document.getElementById('ovTotalOrders').textContent = totalOrders.toLocaleString();
       document.getElementById('ovTotalRiders').textContent = totalRiders;
       document.getElementById('ovAvgOrders').textContent = avgOrders;
-      document.getElementById('ovAboveTarget').textContent = aboveTarget;
-      document.getElementById('ovBelowTarget').textContent = belowTarget;
+      document.getElementById('ovMedianBadge').textContent = `الوسيط: ${medianOrders}`;
+      document.getElementById('ovAboveTarget').textContent = `${aboveDailyTarget} / ${totalRiders}`;
+      document.getElementById('ovAboveTargetPct').textContent = `${abovePct}%`;
+      document.getElementById('ovMonthly450Sub').textContent = `تجاوز 450 الشهري: ${monthly450Count}`;
+      document.getElementById('ovBelowTarget').textContent = `${belowDailyTarget} / ${totalRiders}`;
+      document.getElementById('ovBelowTargetPct').textContent = `${belowPct}%`;
       document.getElementById('ovTopPerformer').textContent = bestRider ? bestRider.nameAr : '--';
       document.getElementById('ovTopPerformerOrders').textContent = bestRider ? `${maxOrders} أوردر` : '0 أوردر';
+      if (bestRider) {
+        document.getElementById('ovTopPerformerCard').onclick = () => openDriverModal(bestRider.id);
+      }
+
+      document.getElementById('segBarGreen').style.width = `${abovePct}%`;
+      document.getElementById('segBarYellow').style.width = `${Math.max(0, belowPct - incPct)}%`;
+      document.getElementById('segBarRed').style.width = `${incPct}%`;
+      document.getElementById('segTxtGreen').textContent = `${aboveDailyTarget} سائق (${abovePct}%)`;
+      document.getElementById('segTxtYellow').textContent = `${belowDailyTarget} سائق (${belowPct}%)`;
+      document.getElementById('segTxtRed').textContent = `${incidentRiders} سائق (${incPct}%)`;
+      document.getElementById('segTxtCash').textContent = fmtKWD(totalPendingCash);
 
       document.getElementById('ovBikePayroll').textContent = fmtKWD(bikePayroll);
       document.getElementById('ovCarPayroll').textContent = fmtKWD(carPayroll);
       document.getElementById('ovTotalPayroll').textContent = fmtKWD(totalPayroll);
       document.getElementById('ovMaintFuelCost').textContent = fmtKWD(totalMaintFuelCost);
       document.getElementById('ovCompanyProfit').textContent = fmtKWD(companyNetProfit);
-      document.getElementById('ovMtdProfit').textContent = fmtKWD(companyNetProfit * 0.95);
+      document.getElementById('ovGrossRevenue').textContent = fmtKWD(totalCompanyRevenue);
 
       renderOverviewNotesRegistry();
       renderOverviewRankings();
-      renderOverviewCharts();
-      renderKuwaitMap();
-      renderOctoberCalendar();
+      renderOverviewCharts(riders);
+      renderKuwaitMap(riders);
+      renderOctoberCalendar(riders);
     }
 
     function renderOverviewNotesRegistry() {
       const tbody = document.getElementById('overviewNotesTbody');
+      const filterType = document.getElementById('notesTypeFilter').value;
       let noteCount = 0;
       let rowsHtml = '';
 
-      DB.allRidersList.forEach(r => {
+      DB.allRidersList.filter(r => matchesCohort(r, APP.activeCohort)).forEach(r => {
         Object.entries(r.dailyNotes).forEach(([day, note]) => {
+          if (filterType !== 'ALL' && !note.includes(filterType)) return;
           noteCount++;
+          const isMaint = note.includes('حادث') || note.includes('صيانة');
+          const actionBtn = isMaint
+            ? `<button class="btn-action" style="background:var(--orange);padding:3px 9px;font-size:11px;" onclick="triggerActionFromNote('${r.id}', ${day}, '${note.replace(/'/g, '')}')">🔧 + أمر صيانة فوري</button>`
+            : `<button class="btn-action" style="background:var(--red);padding:3px 9px;font-size:11px;" onclick="triggerActionFromNote('${r.id}', ${day}, '${note.replace(/'/g, '')}')">🔍 + إحالة للتحقيق</button>`;
+
           rowsHtml += `
             <tr>
-              <td style="font-weight:700;">${r.nameAr} <small style="color:var(--text3);">(${r.nameEn})</small></td>
+              <td style="font-weight:700;cursor:pointer;" onclick="openDriverModal('${r.id}')">${r.nameAr} <small style="color:var(--text3);">(${r.nameEn})</small></td>
               <td><code>${r.id}</code></td>
               <td><span class="badge badge-${r.co.toLowerCase()}">${r.co}</span></td>
-              <td style="font-weight:700;color:var(--blue);">${day} أكتوبر</td>
-              <td style="color:var(--text);font-weight:600;">${note}</td>
+              <td style="font-weight:700;color:var(--orange);">${day} أكتوبر</td>
+              <td style="font-weight:700;">${note}</td>
+              <td>${actionBtn}</td>
             </tr>
           `;
         });
       });
 
       document.getElementById('notesCountBadge').textContent = `${noteCount} ملاحظة مسجلة`;
-      tbody.innerHTML = rowsHtml || '<tr><td colspan="5" style="text-align:center;padding:16px;color:var(--text3);">لا توجد ملاحظات نصية مسجلة في شيت الأوردرات.</td></tr>';
+      tbody.innerHTML = rowsHtml || '<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--text3);">لا توجد ملاحظات نصية مطابقة للفلتر.</td></tr>';
+    }
+
+    function triggerActionFromNote(riderId, day, noteText) {
+      const r = DB.fleet[riderId];
+      if (!r) return;
+      const n = noteText.trim();
+      if (n.includes('صيانة') || n.includes('حادث')) {
+        navigate('maintenance');
+        selectRiderForMaint(riderId);
+        document.getElementById('maintIssueSummary').value = `تحويل تلقائي من ملاحظات الأوردرات ليوم ${day} أكتوبر: ${n}`;
+        document.getElementById('maintEntryDate').value = `2026-10-${String(day).padStart(2, '0')}T09:00`;
+      } else {
+        navigate('investigations');
+        selectRiderForInv(riderId);
+        document.getElementById('invTopic').value = `ملاحظة تشغيلية بيوم ${day} أكتوبر (${n})`;
+        document.getElementById('invDate').value = `2026-10-${String(day).padStart(2, '0')}`;
+      }
     }
 
     function renderOverviewRankings() {
@@ -2400,7 +3200,7 @@
       const nat = document.getElementById('rfNat').value;
       const co = document.getElementById('rfCO').value;
 
-      let list = [...DB.allRidersList];
+      let list = DB.allRidersList.filter(r => matchesCohort(r, APP.activeCohort));
       if (veh !== 'ALL') list = list.filter(r => r.vehicleType === veh);
       if (nat !== 'ALL') list = list.filter(r => r.nationality.toLowerCase().includes(nat.toLowerCase()));
       if (co !== 'ALL') list = list.filter(r => r.co === co);
@@ -2415,7 +3215,7 @@
           <div style="display:flex;align-items:center;gap:8px;">
             <b style="color:var(--green);">${i + 1}.</b>
             <span>${r.nameAr}</span>
-            <small style="color:var(--text3);">(${r.co})</small>
+            <small style="color:var(--text3);">(${r.co} • فائض: +${r.missingDailyTarget})</small>
           </div>
           <b style="color:var(--green);font-size:13px;">${r.totalOrders}</b>
         </div>
@@ -2426,7 +3226,7 @@
           <div style="display:flex;align-items:center;gap:8px;">
             <b style="color:var(--red);">${i + 1}.</b>
             <span>${r.nameAr}</span>
-            <small style="color:var(--text3);">(${r.co})</small>
+            <small style="color:var(--text3);">(${r.co} • عجز: ${r.missingDailyTarget})</small>
           </div>
           <b style="color:var(--red);font-size:13px;">${r.totalOrders}</b>
         </div>
@@ -2440,10 +3240,9 @@
       renderOverviewRankings();
     }
 
-    function renderOverviewCharts() {
-      // 1. Daily Orders Trend Line Chart
+    function renderOverviewCharts(riders) {
       const dailyTotals = Array(31).fill(0);
-      DB.allRidersList.forEach(r => {
+      riders.forEach(r => {
         for (let i = 0; i < 31; i++) dailyTotals[i] += (r.dailyOrders[i] || 0);
       });
 
@@ -2453,16 +3252,16 @@
       APP.charts.overviewDaily = new Chart(ctxDaily, {
         type: 'line',
         data: {
-          labels: Array.from({length: 31}, (_, i) => `${i + 1}`),
+          labels: Array.from({length: 31}, (_, i) => `${i + 1} أكت`),
           datasets: [{
-            label: 'إجمالي الأوردرات',
+            label: 'إجمالي الأوردرات اليومية',
             data: dailyTotals,
-            borderColor: '#2563EB',
-            backgroundColor: 'rgba(37, 99, 235, 0.15)',
+            borderColor: '#F97316',
+            backgroundColor: 'rgba(249, 115, 22, 0.15)',
             fill: true,
             tension: 0.35,
             borderWidth: 2.5,
-            pointRadius: 2.5,
+            pointRadius: 3,
           }]
         },
         options: {
@@ -2476,9 +3275,8 @@
         }
       });
 
-      // 2. Company Donut Chart
       const coCounts = { SUPT: 0, FTMN: 0, FNMN: 0, SRBS: 0 };
-      DB.allRidersList.forEach(r => { if (coCounts[r.co] !== undefined) coCounts[r.co] += r.totalOrders; });
+      riders.forEach(r => { if (coCounts[r.co] !== undefined) coCounts[r.co] += r.totalOrders; });
 
       const ctxCo = document.getElementById('overviewCompanyChart').getContext('2d');
       if (APP.charts.overviewCompany) APP.charts.overviewCompany.destroy();
@@ -2502,7 +3300,7 @@
       });
     }
 
-    function renderKuwaitMap() {
+    function renderKuwaitMap(riders) {
       const group = document.getElementById('mapZonesGroup');
       const legend = document.getElementById('mapLegend');
       group.innerHTML = '';
@@ -2511,9 +3309,8 @@
       const zoneData = {};
       Object.keys(KUWAIT_ZONES).forEach(z => zoneData[z] = { riders: 0, orders: 0 });
 
-      DB.allRidersList.forEach(r => {
-        const matched = Object.keys(KUWAIT_ZONES).find(k => k.toLowerCase() === (r.zone || '').toLowerCase());
-        const target = matched || 'Ardya';
+      riders.forEach(r => {
+        const target = KUWAIT_ZONES[r.zone] ? r.zone : 'Ardya';
         zoneData[target].riders++;
         zoneData[target].orders += r.totalOrders;
       });
@@ -2523,44 +3320,44 @@
 
       Object.entries(KUWAIT_ZONES).forEach(([name, z]) => {
         const data = zoneData[name];
-        const radius = Math.max(14, Math.min(36, (data.orders / maxOrders) * 36));
+        const radius = data.riders > 0 ? Math.max(14, Math.min(38, (data.orders / maxOrders) * 38)) : 8;
 
-        // SVG circle
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         circle.setAttribute('cx', z.x);
         circle.setAttribute('cy', z.y);
         circle.setAttribute('r', radius);
         circle.setAttribute('fill', z.color);
-        circle.setAttribute('fill-opacity', '0.75');
+        circle.setAttribute('fill-opacity', data.riders > 0 ? '0.8' : '0.25');
         circle.setAttribute('stroke', '#FFFFFF');
         circle.setAttribute('stroke-width', '1.5');
         group.appendChild(circle);
 
-        // Zone label
         const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         txt.setAttribute('x', z.x);
-        txt.setAttribute('y', z.y - radius - 4);
+        txt.setAttribute('y', z.y - radius - 5);
         txt.setAttribute('fill', '#FFFFFF');
-        txt.setAttribute('font-size', '10.5');
+        txt.setAttribute('font-size', '11');
         txt.setAttribute('font-weight', '700');
         txt.setAttribute('text-anchor', 'middle');
-        txt.textContent = z.labelAr;
+        txt.textContent = `${z.labelAr} (${data.riders})`;
         group.appendChild(txt);
 
-        legend.innerHTML += `
-          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);">
-            <div style="width:8px;height:8px;border-radius:50%;background:${z.color};"></div>
-            <span><b>${z.labelAr}</b>: ${data.riders} سائق (${data.orders.toLocaleString()} أوردر)</span>
-          </div>
-        `;
+        if (data.riders > 0) {
+          legend.innerHTML += `
+            <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text);">
+              <div style="width:9px;height:9px;border-radius:50%;background:${z.color};"></div>
+              <span><b>${z.labelAr}</b>: ${data.riders} سائق (${data.orders.toLocaleString()} أوردر)</span>
+            </div>
+          `;
+        }
       });
     }
 
-    function renderOctoberCalendar() {
+    function renderOctoberCalendar(riders) {
       const container = document.getElementById('calendarDaysContainer');
       container.innerHTML = '';
       const dailyTotals = Array(31).fill(0);
-      DB.allRidersList.forEach(r => {
+      riders.forEach(r => {
         for (let i = 0; i < 31; i++) dailyTotals[i] += (r.dailyOrders[i] || 0);
       });
 
@@ -2595,7 +3392,70 @@
     }
 
     /* =========================================================================
-       7. PAGE 2-5: ORDERS RENDERING
+       9. PAGE: RISK & ALERTS RADAR RENDERING
+       ========================================================================= */
+    function renderAlertsPage() {
+      const cashOverList = DB.allRidersList.filter(r => r.pendingCash > 20).sort((a, b) => b.pendingCash - a.pendingCash);
+      const totalOverCash = cashOverList.reduce((acc, r) => acc + r.pendingCash, 0);
+
+      const docsAlertList = DB.allRidersList.filter(r => {
+        const hasDoc = [r.expIqama, r.expLicense, r.expWorkPermit, r.expHealthCard, r.expVehicleDoc].some(Boolean);
+        return hasDoc || r.contractExpireStatus;
+      });
+
+      const contractExpCount = DB.allRidersList.filter(r => r.contractExpireStatus).length;
+      const utrFailCount = DB.allRidersList.filter(r => (r.perf.utrStatus || '').toLowerCase().includes('fail')).length;
+
+      document.getElementById('alCashOverCount').textContent = `${cashOverList.length} سائق`;
+      document.getElementById('alCashTotalVal').textContent = `إجمالي الكاش المحتجز: ${fmtKWD(totalOverCash)}`;
+      document.getElementById('alDocsExpCount').textContent = `${docsAlertList.length} سائق`;
+      document.getElementById('alContractExpCount').textContent = `${contractExpCount} عقد`;
+      document.getElementById('alUtrFailCount').textContent = `${utrFailCount} سائق`;
+
+      document.getElementById('alertsCashTbody').innerHTML = cashOverList.map(r => `
+        <tr>
+          <td style="font-weight:800;cursor:pointer;" onclick="openDriverModal('${r.id}')">${r.nameAr} <small style="color:var(--text3);">(${r.nameEn})</small></td>
+          <td><code>${r.id}</code></td>
+          <td><span class="badge badge-${r.co.toLowerCase()}">${r.co}</span></td>
+          <td>${r.am || 'Abdelrazek'}</td>
+          <td class="val-neg" style="font-size:13.5px;">${fmtKWD(r.pendingCash)}</td>
+          <td style="color:var(--orange);font-weight:800;">+${fmtKWD(r.pendingCash - 20)}</td>
+          <td class="val-neg">-${fmtKWD(r.cashPenalty)}</td>
+          <td>
+            <button class="btn-secondary" style="padding:3px 8px;font-size:11px;" onclick="copyCashAlertMessage('${r.id}')">📲 نسخ تنبيه واتساب</button>
+          </td>
+        </tr>
+      `).join('') || '<tr><td colspan="8" style="text-align:center;padding:20px;">لا يوجد سائقون متجاوزون لحد الكاش.</td></tr>';
+
+      document.getElementById('alertsDocsTbody').innerHTML = docsAlertList.map(r => `
+        <tr>
+          <td style="font-weight:700;cursor:pointer;" onclick="openDriverModal('${r.id}')">${r.nameAr}</td>
+          <td><code>${r.id}</code></td>
+          <td><span class="badge badge-${r.co.toLowerCase()}">${r.co}</span></td>
+          <td>
+            ${r.contractEndDate || '--'}
+            ${r.contractExpireStatus ? `<span class="expiry-red">${r.contractExpireStatus}</span>` : ''}
+          </td>
+          <td>${formatExpirySpan(r.expIqama)}</td>
+          <td>${formatExpirySpan(r.expLicense)}</td>
+          <td>${formatExpirySpan(r.expWorkPermit)}</td>
+          <td>${formatExpirySpan(r.expHealthCard)}</td>
+          <td>${formatExpirySpan(r.expVehicleDoc)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function copyCashAlertMessage(riderId) {
+      const r = DB.fleet[riderId];
+      if (!r) return;
+      const msg = `تنبيه عاجل من إدارة العمليات (Sportive Fleet):\nالسائق: ${r.nameAr} (${r.nameEn})\nالرقم الوظيفي: ${r.id} | الشركة: ${r.co}\nيوجد لديكم مبلغ كاش معلق بقيمة (${r.pendingCash.toFixed(3)} د.ك) متجاوز للحد المسموح (20 د.ك)، وغرامة التأخير الحالية (${r.cashPenalty.toFixed(3)} د.ك). يرجى توريد المبلغ فوراً لتجنب الإيقاف الإداري.`;
+      navigator.clipboard.writeText(msg).then(() => {
+        alert('تم نسخ رسالة التنبيه! يمكنك لصقها مباشرة في واتساب السائق أو المشرف.');
+      });
+    }
+
+    /* =========================================================================
+       10. PAGES 2-5: ORDERS RENDERING
        ========================================================================= */
     function renderOrdersPage() {
       const co = APP.activeOrdersCO;
@@ -2603,9 +3463,9 @@
       const nat = document.getElementById('ordNatFilter').value;
       const veh = document.getElementById('ordVehFilter').value;
 
-      let list = [...DB.allRidersList];
+      let list = DB.allRidersList.filter(r => matchesCohort(r, APP.activeCohort));
       if (co !== 'ALL') list = list.filter(r => r.co === co);
-      if (batch !== 'ALL') list = list.filter(r => r.batch === batch);
+      if (batch !== 'ALL') list = list.filter(r => String(r.batch) === batch);
       if (nat !== 'ALL') list = list.filter(r => r.nationality.toLowerCase().includes(nat.toLowerCase()));
       if (veh !== 'ALL') list = list.filter(r => r.vehicleType === veh);
 
@@ -2613,32 +3473,35 @@
       tbody.innerHTML = list.map(r => `
         <tr>
           <td style="font-weight:700;">${r.nameEn}</td>
-          <td style="font-weight:700;color:var(--text);">${r.nameAr}</td>
+          <td style="font-weight:800;color:var(--text);cursor:pointer;" onclick="openDriverModal('${r.id}')">${r.nameAr}</td>
           <td><code>${r.id}</code></td>
           <td><span class="badge badge-${r.co.toLowerCase()}">${r.co}</span></td>
-          <td style="font-weight:800;font-size:14px;color:${r.totalOrders >= 450 ? 'var(--green)' : 'var(--yellow)'};">${r.totalOrders}</td>
+          <td>باتش ${r.batch}</td>
+          <td style="font-weight:800;font-size:14px;color:${r.missingDailyTarget >= 0 ? 'var(--green)' : 'var(--yellow)'};">${r.totalOrders}</td>
           <td style="font-weight:800;color:${r.missingDailyTarget < 0 ? 'var(--red)' : 'var(--green)'};">${r.missingDailyTarget < 0 ? r.missingDailyTarget : ('+' + r.missingDailyTarget)}</td>
+          <td style="font-weight:700;color:var(--text2);">${r.rtt}</td>
           <td>
-            <span class="badge" style="background:${r.missingDailyTarget >= 0 ? '#10B98122' : '#EF444422'};color:${r.missingDailyTarget >= 0 ? 'var(--green)' : 'var(--red)'};">
-              ${r.missingDailyTarget >= 0 ? 'مستوفى التارجت' : 'عجز تارجت'}
+            <span class="badge ${r.missingDailyTarget >= 0 ? 'badge-good' : 'badge-failed'}">
+              ${r.missingDailyTarget >= 0 ? 'مستوفى التارجت اليومي' : 'عجز تارجت يومي'}
             </span>
           </td>
           <td>
-            <button class="btn-secondary" style="padding:3px 8px;font-size:11px;" onclick="openDriverModal('${r.id}')">تفاصيل السائق</button>
+            <button class="btn-secondary" style="padding:3px 8px;font-size:11px;" onclick="openDriverModal('${r.id}')">ملف 360°</button>
           </td>
         </tr>
-      `).join('') || '<tr><td colspan="8" style="text-align:center;padding:20px;">لا توجد نتائج مطابقة.</td></tr>';
+      `).join('') || '<tr><td colspan="10" style="text-align:center;padding:20px;">لا توجد نتائج مطابقة.</td></tr>';
     }
 
     function resetOrdersFilters() {
       document.getElementById('ordBatchFilter').value = 'ALL';
       document.getElementById('ordNatFilter').value = 'ALL';
       document.getElementById('ordVehFilter').value = 'ALL';
+      selectCohort('ALL');
       renderOrdersPage();
     }
 
     /* =========================================================================
-       8. PAGE 6: FLEET MANAGEMENT WITH INLINE 6 TABS ON EVERY CARD
+       11. PAGE 6: FLEET MANAGEMENT WITH 6 INLINE TABS
        ========================================================================= */
     function renderFleetPage() {
       const search = (document.getElementById('fleetSearchInput').value || '').toLowerCase().trim();
@@ -2647,23 +3510,24 @@
       const veh = document.getElementById('fleetVehFilter').value;
       const batch = document.getElementById('fleetBatchFilter').value;
 
-      let list = [...DB.allRidersList];
+      let list = DB.allRidersList.filter(r => matchesCohort(r, APP.activeCohort));
       if (search) {
         list = list.filter(r => 
           r.nameAr.toLowerCase().includes(search) || 
           r.nameEn.toLowerCase().includes(search) || 
-          r.id.toLowerCase().includes(search)
+          r.id.toLowerCase().includes(search) ||
+          (r.plateNum && r.plateNum.toLowerCase().includes(search))
         );
       }
       if (co !== 'ALL') list = list.filter(r => r.co === co);
       if (nat !== 'ALL') list = list.filter(r => r.nationality.toLowerCase().includes(nat.toLowerCase()));
       if (veh !== 'ALL') list = list.filter(r => r.vehicleType === veh);
-      if (batch !== 'ALL') list = list.filter(r => r.batch === batch);
+      if (batch !== 'ALL') list = list.filter(r => String(r.batch) === batch);
 
       document.getElementById('fleetCountLabel').textContent = list.length;
 
       const grid = document.getElementById('fleetGrid');
-      grid.innerHTML = list.map(r => renderRiderCardHTML(r)).join('') || '<div style="color:var(--text3);padding:20px;">لا يوجد سائقين مطابقين لخيارات الفلترة.</div>';
+      grid.innerHTML = list.map(r => renderRiderCardHTML(r)).join('') || '<div style="color:var(--text3);padding:20px;">لا يوجد سائقون مطابقون لخيارات الفلترة.</div>';
     }
 
     function renderRiderCardHTML(r) {
@@ -2674,50 +3538,46 @@
       return `
         <div class="rider-card" id="card-${r.id}">
           <div>
-            <!-- Card Header -->
             <div class="card-header-row">
               <div class="card-avatar" style="background:${coColor};">${r.nameAr.substring(0, 1)}</div>
               <div class="card-title-box">
-                <div class="card-name-ar">${r.nameAr}</div>
+                <div class="card-name-ar" onclick="openDriverModal('${r.id}')">${r.nameAr}</div>
                 <div class="card-name-en">${r.nameEn}</div>
                 <div class="card-id-line">
-                  <span>الرقم: <b>${r.id}</b></span> •
-                  <span>الباتش: <b>${r.batch}</b></span> •
-                  <span>المنطقة: <b>${r.zone}</b></span>
+                  <span>ID: <b>${r.id}</b></span> •
+                  <span>باتش: <b>${r.batch}</b></span> •
+                  <span>المنطقة: <b>${r.zone}</b></span> •
+                  <span>لوحة: <b>${r.plateNum || 'N/A'}</b></span>
                 </div>
               </div>
             </div>
 
-            <!-- Tags -->
             <div class="card-tags">
               <span class="badge badge-${r.co.toLowerCase()}">${r.co}</span>
               <span class="badge badge-${r.vehicleType.toLowerCase()}">${vehIcon} ${r.vehicleType === 'Car' ? 'سيارة' : 'سيكل'}</span>
               <span class="badge" style="background:var(--card-alt);">${r.nationality}</span>
-              ${r.maintCount > 0 ? `<span class="badge" style="background:#F59E0B22;color:var(--yellow);">🔧 ${r.maintCount} صيانة</span>` : ''}
-              ${r.invCount > 0 ? `<span class="badge" style="background:#EF444422;color:var(--red);">⚠️ ${r.invCount} تحقيق</span>` : ''}
+              ${r.contractExpireStatus ? `<span class="badge badge-failed">⏳ عقد: ${r.contractExpireStatus}</span>` : ''}
+              ${r.pendingCash > 20 ? `<span class="badge badge-failed">💵 كاش: ${r.pendingCash} د.ك</span>` : ''}
             </div>
 
-            <!-- IN-CARD DYNAMIC TABS BAR (Right below ID) -->
             <div class="card-tabs-bar">
-              <button class="card-tab-btn ${activeTab === 'payslip' ? 'active' : ''}" onclick="switchCardTab('${r.id}', 'payslip')">💰 Payslip Live</button>
+              <button class="card-tab-btn ${activeTab === 'payslip' ? 'active' : ''}" onclick="switchCardTab('${r.id}', 'payslip')">💰 Payslip</button>
               <button class="card-tab-btn ${activeTab === 'orders' ? 'active' : ''}" onclick="switchCardTab('${r.id}', 'orders')">📦 Orders</button>
-              <button class="card-tab-btn ${activeTab === 'perf' ? 'active' : ''}" onclick="switchCardTab('${r.id}', 'perf')">📈 Performance</button>
+              <button class="card-tab-btn ${activeTab === 'perf' ? 'active' : ''}" onclick="switchCardTab('${r.id}', 'perf')">📈 SLA</button>
               <button class="card-tab-btn ${activeTab === 'att' ? 'active' : ''}" onclick="switchCardTab('${r.id}', 'att')">📅 Attendance</button>
-              <button class="card-tab-btn ${activeTab === 'assets' ? 'active' : ''}" onclick="switchCardTab('${r.id}', 'assets')">🛡️ Assets & Legal</button>
-              <button class="card-tab-btn ${activeTab === 'wallet' ? 'active' : ''}" onclick="switchCardTab('${r.id}', 'wallet')">💵 Wallet & Limits</button>
+              <button class="card-tab-btn ${activeTab === 'assets' ? 'active' : ''}" onclick="switchCardTab('${r.id}', 'assets')">🛡️ Legal</button>
+              <button class="card-tab-btn ${activeTab === 'wallet' ? 'active' : ''}" onclick="switchCardTab('${r.id}', 'wallet')">💵 Cash</button>
             </div>
 
-            <!-- DYNAMIC PANEL FOR THIS CARD -->
             <div class="card-tab-panel" id="panel-${r.id}">
               ${renderCardTabContent(r, activeTab)}
             </div>
           </div>
 
-          <!-- Bottom Button for Full Modal -->
           <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:11px;color:var(--text3);">انقر لتعديل الخصومات والحفظ</span>
+            <span style="font-size:11px;color:var(--text3);">المشرف: ${r.am || 'Abdelrazek'}</span>
             <button class="btn-secondary" style="padding:4px 10px;font-size:11px;" onclick="openDriverModal('${r.id}')">
-              <span>🔍</span> <span>عرض كامل التفاصيل (Full Modal)</span>
+              <span>🔍</span> <span>ملف السائق والتعديلات</span>
             </button>
           </div>
         </div>
@@ -2728,12 +3588,10 @@
       APP.cardTabState[riderId] = tabName;
       const card = document.getElementById(`card-${riderId}`);
       if (card) {
-        // Update tab buttons
         card.querySelectorAll('.card-tab-btn').forEach(btn => btn.classList.remove('active'));
         const activeBtn = Array.from(card.querySelectorAll('.card-tab-btn')).find(b => b.getAttribute('onclick').includes(tabName));
         if (activeBtn) activeBtn.classList.add('active');
 
-        // Update panel content
         const rider = DB.fleet[riderId];
         if (rider) {
           const panel = document.getElementById(`panel-${riderId}`);
@@ -2774,7 +3632,6 @@
                 </div>
               </div>
 
-              <!-- DUAL PROFIT BOX -->
               <div class="profit-dual-box">
                 <div class="profit-dual-col">
                   <span class="profit-dual-title">👤 صافي دخل السائق</span>
@@ -2798,27 +3655,23 @@
                 <span class="mini-metric-val" style="font-weight:800;color:var(--blue);">${r.totalOrders}</span>
               </div>
               <div class="mini-metric-item">
-                <span class="mini-metric-lbl">فارق التارجت:</span>
-                <span class="mini-metric-val" style="color:var(--red);">${r.missingDailyTarget}</span>
+                <span class="mini-metric-lbl">فارق التارجت اليومي:</span>
+                <span class="mini-metric-val" style="color:${r.missingDailyTarget >= 0 ? 'var(--green)' : 'var(--red)'};">${r.missingDailyTarget >= 0 ? ('+' + r.missingDailyTarget) : r.missingDailyTarget}</span>
+              </div>
+              <div class="mini-metric-item">
+                <span class="mini-metric-lbl">المتبقي للـ 450 (RTT):</span>
+                <span class="mini-metric-val">${r.rtt}</span>
               </div>
               <div class="mini-metric-item">
                 <span class="mini-metric-lbl">معدل UTR الحالي:</span>
-                <span class="mini-metric-val">${r.perf.utr || '0.00'}</span>
+                <span class="mini-metric-val">${r.perf.utr || '0.00'} (${r.perf.utrStatus || '-'})</span>
               </div>
               <div class="mini-metric-item">
-                <span class="mini-metric-lbl">نسبة فشل التوصيل:</span>
-                <span class="mini-metric-val">${r.perf.deliveriesFailRate || '0%'}</span>
+                <span class="mini-metric-lbl">طلبات محولة / مفقودة:</span>
+                <span class="mini-metric-val">${r.perf.manualUndispatches || '0'} / ${r.perf.lostOrders || '0'}</span>
               </div>
               <div class="mini-metric-item">
-                <span class="mini-metric-lbl">طلبات قام بتحويلها:</span>
-                <span class="mini-metric-val">${r.perf.manualUndispatches || '0'}</span>
-              </div>
-              <div class="mini-metric-item">
-                <span class="mini-metric-lbl">الطلبات المفقودة:</span>
-                <span class="mini-metric-val">${r.perf.lostOrders || '0'}</span>
-              </div>
-              <div class="mini-metric-item" style="grid-column: span 2;">
-                <span class="mini-metric-lbl">نسبة قبول الطلبات:</span>
+                <span class="mini-metric-lbl">نسبة القبول:</span>
                 <span class="mini-metric-val" style="color:var(--green);font-weight:800;">${r.perf.acceptanceRate || '100%'}</span>
               </div>
             </div>
@@ -2835,13 +3688,10 @@
               <div class="mini-metric-item"><span>6. الساعات الفعلية:</span><b>${r.perf.actualHours || '0'}</b></div>
               <div class="mini-metric-item"><span>7. الساعات المفقودة:</span><b>${r.perf.lostHours || '0'}</b></div>
               <div class="mini-metric-item"><span>8. نسبة AVP:</span><b>${r.perf.avpPct || '0%'}</b></div>
-              <div class="mini-metric-item"><span>9. حالة AVP:</span><b>${r.perf.avpStatus || 'Good'}</b></div>
-              <div class="mini-metric-item"><span>10. ساعات العمل/يوم:</span><b>${r.perf.avgHoursDay || '0.0'}</b></div>
-              <div class="mini-metric-item"><span>11. متوسط مدة الشفت:</span><b>${r.perf.avgShiftDuration || '0.0'}</b></div>
-              <div class="mini-metric-item"><span>12. ساعات البريك:</span><b>${r.perf.breakHours || '0'}</b></div>
-              <div class="mini-metric-item"><span>13. نسبة البريك:</span><b>${r.perf.breakDurationPct || '0%'}</b></div>
-              <div class="mini-metric-item"><span>14. شفتات التأخير:</span><b>${r.perf.lateShifts || '0'}</b></div>
-              <div class="mini-metric-item"><span>15. شفتات الغياب:</span><b>${r.perf.noShowShifts || '0'}</b></div>
+              <div class="mini-metric-item"><span>9. حالة AVP:</span>${renderStatusBadge(r.perf.avpStatus || 'Good')}</div>
+              <div class="mini-metric-item"><span>10. حالة UTR:</span>${renderStatusBadge(r.perf.utrStatus || '-')}</div>
+              <div class="mini-metric-item"><span>11. ساعات البريك:</span><b>${r.perf.breakHours || '0'} (${r.perf.breakDurationPct || '0%'})</b></div>
+              <div class="mini-metric-item"><span>12. تأخير / غياب:</span><b>${r.perf.lateShifts || '0'} / ${r.perf.noShowShifts || '0'}</b></div>
             </div>
           `;
 
@@ -2866,8 +3716,8 @@
                   <span class="mini-metric-val val-neg">${r.attendance.noShow}</span>
                 </div>
                 <div class="mini-metric-item" style="grid-column: span 2;">
-                  <span class="mini-metric-lbl">⚪ أيام بدون حجز شفتات:</span>
-                  <span class="mini-metric-val">${r.attendance.noShift} يوم</span>
+                  <span class="mini-metric-lbl">📄 انتهاء العقد:</span>
+                  <span class="mini-metric-val">${r.contractEndDate || 'غير محدد'} ${r.contractExpireStatus ? `(${r.contractExpireStatus})` : ''}</span>
                 </div>
               </div>
               ${Object.keys(r.dailyNotes).length > 0 ? `
@@ -2905,13 +3755,9 @@
                 <span>دفتر المركبة:</span>
                 ${formatExpirySpan(r.expVehicleDoc)}
               </div>
-              <div class="mini-metric-item">
+              <div class="mini-metric-item" style="grid-column: span 2;">
                 <span>إذن العمل:</span>
                 ${formatExpirySpan(r.expWorkPermit)}
-              </div>
-              <div class="mini-metric-item">
-                <span>صلاحية الباسبور:</span>
-                ${formatExpirySpan(r.expPassport)}
               </div>
             </div>
           `;
@@ -2930,17 +3776,17 @@
               </div>
               <div class="mini-metric-item">
                 <span class="mini-metric-lbl">حالة الحد:</span>
-                <span class="badge" style="background:${isOver ? '#EF444422' : '#10B98122'};color:${isOver ? 'var(--red)' : 'var(--green)'};">
+                <span class="badge ${isOver ? 'badge-failed' : 'badge-good'}">
                   ${isOver ? 'متجاوز للحد' : 'ضمن المسموح'}
                 </span>
               </div>
               <div class="mini-metric-item">
                 <span class="mini-metric-lbl">غرامة الكاش:</span>
-                <span class="mini-metric-val val-neg">${fmtKWD(r.cashPenalty)}</span>
+                <span class="mini-metric-val val-neg">-${fmtKWD(r.cashPenalty)}</span>
               </div>
               <div class="mini-metric-item" style="grid-column: span 2;">
-                <span class="mini-metric-lbl">خصم الكاش غير المورد من الراتب:</span>
-                <span class="mini-metric-val val-neg">-${fmtKWD(r.undepositedCash)}</span>
+                <span class="mini-metric-lbl">كارت البنزين:</span>
+                <span class="mini-metric-val">${r.fuelCard || 'غير مسجل'}</span>
               </div>
             </div>
           `;
@@ -2950,28 +3796,18 @@
       }
     }
 
-    function formatExpirySpan(dateStr) {
-      if (!dateStr) return '<span style="color:var(--text3);">غير محدد</span>';
-      const d = new Date(dateStr);
-      if (isNaN(d.getTime())) return `<span class="expiry-green">${dateStr}</span>`;
-      const diffDays = Math.ceil((d.getTime() - Date.now()) / (1000 * 3600 * 24));
-      if (diffDays <= 0) return `<span class="expiry-red">منتهي (${dateStr})</span>`;
-      if (diffDays <= 30) return `<span class="expiry-red">${dateStr} (${diffDays} يوم)</span>`;
-      if (diffDays <= 90) return `<span class="expiry-yellow">${dateStr} (${diffDays} يوم)</span>`;
-      return `<span class="expiry-green">${dateStr}</span>`;
-    }
-
     function resetFleetFilters() {
       document.getElementById('fleetSearchInput').value = '';
       document.getElementById('fleetCoFilter').value = 'ALL';
       document.getElementById('fleetNatFilter').value = 'ALL';
       document.getElementById('fleetVehFilter').value = 'ALL';
       document.getElementById('fleetBatchFilter').value = 'ALL';
+      selectCohort('ALL');
       renderFleetPage();
     }
 
     /* =========================================================================
-       9. FULL MODAL FOR RIDER DETAILS & ADJUSTMENTS
+       12. FULL 360° MODAL FOR RIDER DETAILS
        ========================================================================= */
     function openDriverModal(riderId) {
       const r = DB.fleet[riderId];
@@ -2980,18 +3816,22 @@
       document.getElementById('modalAvatar').textContent = r.nameAr.substring(0, 1);
       document.getElementById('modalAvatar').style.background = r.co === 'SUPT' ? '#F59E0B' : r.co === 'FTMN' ? '#2563EB' : r.co === 'FNMN' ? '#8B5CF6' : '#10B981';
       document.getElementById('modalRiderName').textContent = `${r.nameAr} (${r.nameEn})`;
-      document.getElementById('modalRiderSub').textContent = `الرقم: ${r.id} • ${r.co} • ${r.nationality} • ${r.vehicleType} • الباتش: ${r.batch} • المنطقة: ${r.zone}`;
+      document.getElementById('modalRiderSub').textContent = `ID: ${r.id} • ${r.co} • ${r.nationality} • ${r.vehicleType} (${r.plateNum || 'N/A'}) • باتش: ${r.batch} • المنطقة: ${r.zone}`;
 
       const content = document.getElementById('modalBodyContent');
       content.innerHTML = `
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+          <button class="btn-action" style="background:var(--orange);" onclick="closeDriverModal(); navigate('maintenance'); selectRiderForMaint('${r.id}');">🔧 + تسجيل صيانة لهذا السائق</button>
+          <button class="btn-action" style="background:var(--red);" onclick="closeDriverModal(); navigate('investigations'); selectRiderForInv('${r.id}');">🔍 + إحالة للتحقيق</button>
+          ${r.pendingCash > 20 ? `<button class="btn-secondary" onclick="copyCashAlertMessage('${r.id}')">📲 نسخ إنذار الكاش (${r.pendingCash} د.ك)</button>` : ''}
+        </div>
+
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
-          <!-- Driver Net Salary Box -->
           <div style="background:var(--card-alt);border:1px solid var(--border);border-radius:10px;padding:14px;">
             <div style="font-size:12px;color:var(--text2);font-weight:700;">👤 صافي مستحقات السائق</div>
             <div style="font-size:22px;font-weight:900;color:${r.driverNet >= 0 ? 'var(--green)' : 'var(--red)'};">${fmtKWD(r.driverNet)}</div>
             <div style="font-size:11px;color:var(--text3);margin-top:4px;">الشريحة: ${r.tierLabel}</div>
           </div>
-          <!-- Company Profit Box -->
           <div style="background:var(--card-alt);border:1px solid var(--border);border-radius:10px;padding:14px;">
             <div style="font-size:12px;color:var(--text2);font-weight:700;">🏢 صافي ربح الشركة من السائق</div>
             <div style="font-size:22px;font-weight:900;color:${r.companyNetProfit >= 0 ? 'var(--green)' : 'var(--red)'};">${fmtKWD(r.companyNetProfit)}</div>
@@ -3000,16 +3840,16 @@
         </div>
 
         <div style="background:var(--card-alt);border-radius:10px;padding:14px;margin-bottom:16px;">
-          <h4 style="font-size:13px;font-weight:800;margin-bottom:10px;">تفاصيل الحسبة المالية والخصومات:</h4>
+          <h4 style="font-size:13px;font-weight:800;margin-bottom:10px;">تفاصيل الحسبة المالية والخصومات والأداء:</h4>
           <div class="mini-metrics-grid" style="margin-bottom:10px;">
+            <div class="mini-metric-item"><span>إجمالي الأوردرات:</span><b>${r.totalOrders} (فارق التارجت: ${r.missingDailyTarget})</b></div>
             <div class="mini-metric-item"><span>الراتب الأساسي:</span><b class="val-pos">${fmtKWD(r.baseSalary)}</b></div>
             <div class="mini-metric-item"><span>بونص ما فوق التارجت:</span><b class="val-pos">${fmtKWD(r.bonus)}</b></div>
             <div class="mini-metric-item"><span>خصم عجز التارجت:</span><b class="val-neg">${r.missingPenalty > 0 ? ('-' + fmtKWD(r.missingPenalty)) : '0.000 د.ك'}</b></div>
             <div class="mini-metric-item"><span>مستحقات الصيانة (+):</span><b class="val-pos">+${fmtKWD(r.maintCost)}</b></div>
             <div class="mini-metric-item"><span>كاش غير مورد (Undeposited):</span><b class="val-neg">-${fmtKWD(r.undepositedCash)}</b></div>
             <div class="mini-metric-item"><span>غرامة الكاش:</span><b class="val-neg">-${fmtKWD(r.cashPenalty)}</b></div>
-            <div class="mini-metric-item"><span>استهلاك البنزين (تكلفة شركة):</span><b>${fmtKWD(r.fuelExpense)}</b></div>
-            <div class="mini-metric-item"><span>تسعيرة الأوردر للشركة:</span><b>${r.vehicleType === 'Car' ? '1.180 د.ك' : '0.850 د.ك'}</b></div>
+            <div class="mini-metric-item"><span>مؤشر AVP / UTR:</span><b>${r.perf.avpPct || '0%'} / ${r.perf.utr || '0.00'}</b></div>
           </div>
 
           <h4 style="font-size:13px;font-weight:800;margin:12px 0 8px;">تعديلات إدارية إضافية (تُحفظ تلقائياً):</h4>
@@ -3027,7 +3867,7 @@
               <input type="number" step="0.001" class="filter-input" style="width:100%;" id="modHousing" value="${r.housing}" oninput="recalcModalNet('${r.id}')" />
             </div>
           </div>
-          <button class="btn-action" style="margin-top:12px;width:100%;justify-content:center;" onclick="saveModalAdjustments('${r.id}')">
+          <button class="btn-action" style="margin-top:12px;width:100%;justify-content:center;background:var(--orange);" onclick="saveModalAdjustments('${r.id}')">
             <span>💾</span> <span>حفظ التعديلات وتحديث الراتب</span>
           </button>
         </div>
@@ -3049,7 +3889,6 @@
       r.violations = v;
       r.debt = d;
       r.housing = h;
-      // اي مصاريف صيانة تخصم من ربح الشركة وتضاف لمستحقات السائق
       r.driverNet = r.driverEarned - r.missingPenalty + r.maintCost - v - d - r.cashPenalty - r.undepositedCash + h;
     }
 
@@ -3065,7 +3904,7 @@
     }
 
     /* =========================================================================
-       10. PAGE 7: ATTENDANCE RENDERING
+       13. PAGE 7: ATTENDANCE RENDERING
        ========================================================================= */
     function renderAttendancePage() {
       let totWorked = 0, totNoShow = 0, totLate = 0, totSusp = 0, totNoShift = 0;
@@ -3083,7 +3922,7 @@
       document.getElementById('attKpiSuspended').textContent = totSusp;
       document.getElementById('attKpiNoShift').textContent = totNoShift;
 
-      let ths = `<tr><th>اسم السائق</th><th>الرقم</th><th>الشركة</th><th>عمل</th><th>غياب</th><th>تأخير</th><th>إيقاف</th><th>بدون شفت</th>`;
+      let ths = `<tr><th>اسم السائق</th><th>الرقم</th><th>الشركة</th><th>المشرف (AM)</th><th>نهاية العقد</th><th>عمل</th><th>غياب</th><th>تأخير</th><th>إيقاف</th><th>بدون شفت</th>`;
       for (let i = 1; i <= 31; i++) ths += `<th style="text-align:center;">${i}</th>`;
       ths += `</tr>`;
       document.getElementById('attendanceThead').innerHTML = ths;
@@ -3091,9 +3930,11 @@
       document.getElementById('attendanceTbody').innerHTML = DB.allRidersList.map(r => {
         let tds = `
           <tr>
-            <td style="font-weight:700;">${r.nameAr}</td>
+            <td style="font-weight:700;cursor:pointer;" onclick="openDriverModal('${r.id}')">${r.nameAr}</td>
             <td><code>${r.id}</code></td>
             <td><span class="badge badge-${r.co.toLowerCase()}">${r.co}</span></td>
+            <td>${r.am || 'Abdelrazek'}</td>
+            <td>${r.contractEndDate || '--'} ${r.contractExpireStatus ? `<span class="expiry-red">${r.contractExpireStatus}</span>` : ''}</td>
             <td class="val-pos">${r.attendance.worked}</td>
             <td class="val-neg">${r.attendance.noShow}</td>
             <td style="color:var(--yellow);">${r.attendance.late}</td>
@@ -3115,21 +3956,24 @@
     }
 
     /* =========================================================================
-       11. PAGE 8: PERFORMANCE RENDERING
+       14. PAGE 8: PERFORMANCE RENDERING
        ========================================================================= */
     function renderPerformancePage() {
       document.getElementById('performanceTbody').innerHTML = DB.allRidersList.map(r => `
         <tr>
-          <td style="font-weight:700;">${r.nameAr}</td>
+          <td style="font-weight:700;cursor:pointer;" onclick="openDriverModal('${r.id}')">${r.nameAr}</td>
           <td><code>${r.id}</code></td>
           <td><span class="badge badge-${r.co.toLowerCase()}">${r.co}</span></td>
           <td>باتش ${r.batch}</td>
           <td>${r.perf.workingDays || '0'}</td>
-          <td>${r.perf.actualHours || '0'}</td>
-          <td style="font-weight:700;">${r.perf.avpPct || '0%'}</td>
-          <td><span class="badge" style="background:#10B98122;color:var(--green);">${r.perf.avpStatus || 'Good'}</span></td>
+          <td>${r.perf.plannedHours || '0'}</td>
+          <td style="font-weight:700;">${r.perf.actualHours || '0'}</td>
+          <td style="font-weight:800;">${r.perf.avpPct || '0%'}</td>
+          <td>${renderStatusBadge(r.perf.avpStatus || 'Good')}</td>
           <td style="font-weight:800;">${r.perf.utr || '0.00'}</td>
-          <td>${r.perf.acceptanceRate || '100%'}</td>
+          <td>${renderStatusBadge(r.perf.utrStatus || '-')}</td>
+          <td style="font-weight:700;">${r.perf.acceptanceRate || '100%'}</td>
+          <td>${renderStatusBadge(r.perf.acceptanceStatus || 'Good')}</td>
           <td style="color:var(--red);">${r.perf.deliveriesFailRate || '0%'}</td>
           <td>${r.perf.manualUndispatches || '0'}</td>
           <td>${r.perf.lostOrders || '0'}</td>
@@ -3138,7 +3982,7 @@
     }
 
     /* =========================================================================
-       12. PAGE 9: MAINTENANCE & PHOTO UPLOAD
+       15. PAGE 9: MAINTENANCE & PHOTO UPLOAD
        ========================================================================= */
     function searchRiderForMaint(q) {
       const dd = document.getElementById('maintRiderDropdown');
@@ -3235,7 +4079,7 @@
         <tr>
           <td><code>${m.ref}</code></td>
           <td>
-            ${m.photo ? `<img src="${m.photo}" class="maint-thumb" onclick="openMaintPhotoModal('${encodeURIComponent(JSON.stringify(m))}')" title="انقر لتكبير صورة الفاتورة" />` : '<span style="color:var(--text3);font-size:11px;">بدون صورة</span>'}
+            ${m.photo ? `<img src="${m.photo}" class="maint-thumb" onclick="openMaintPhotoModal('${encodeURIComponent(JSON.stringify(m))}')" />` : '<span style="color:var(--text3);font-size:11px;">بدون صورة</span>'}
           </td>
           <td style="font-weight:700;">${m.riderName}</td>
           <td><span class="badge badge-${(m.co || 'supt').toLowerCase()}">${m.co}</span></td>
@@ -3250,7 +4094,7 @@
             <button class="btn-secondary" style="padding:2px 6px;font-size:11px;margin-right:6px;" onclick="openMaintPhotoModal('${encodeURIComponent(JSON.stringify(m))}')">عرض</button>
           </td>
         </tr>
-      `).join('') || '<tr><td colspan="11" style="text-align:center;padding:20px;">لا توجد سجلات صيانة.</td></tr>';
+      `).join('') || '<tr><td colspan="11" style="text-align:center;padding:20px;">لا توجد سجلات صيانة مسجلة حالياً.</td></tr>';
     }
 
     function openMaintPhotoModal(recJsonStr) {
@@ -3280,12 +4124,12 @@
     }
 
     /* =========================================================================
-       13. PAGE 10: PAYROLL RENDERING & CSV EXPORT
+       16. PAGE 10: PAYROLL RENDERING & CSV EXPORT
        ========================================================================= */
     function renderPayrollPage() {
       document.getElementById('payrollTbody').innerHTML = DB.allRidersList.map(r => `
         <tr>
-          <td style="font-weight:700;">${r.nameAr}</td>
+          <td style="font-weight:700;cursor:pointer;" onclick="openDriverModal('${r.id}')">${r.nameAr}</td>
           <td><span class="badge badge-${r.co.toLowerCase()}">${r.co}</span></td>
           <td>${r.nationality}</td>
           <td>${r.vehicleType === 'Car' ? 'سيارة' : 'سيكل'}</td>
@@ -3308,31 +4152,19 @@
       const rows = [headers];
       DB.allRidersList.forEach(r => {
         rows.push([
-          r.nameAr,
-          r.id,
-          r.co,
-          r.nationality,
-          r.vehicleType,
-          r.batch,
-          r.totalOrders,
-          r.missingDailyTarget,
-          r.baseSalary.toFixed(3),
-          r.bonus.toFixed(3),
-          r.missingPenalty.toFixed(3),
-          r.maintCost.toFixed(3),
-          r.cashPenalty.toFixed(3),
-          r.undepositedCash.toFixed(3),
-          r.driverNet.toFixed(3),
-          r.companyGrossRevenue.toFixed(3),
-          r.companyCosts.toFixed(3),
-          r.companyNetProfit.toFixed(3)
+          r.nameAr, r.id, r.co, r.nationality, r.vehicleType, r.batch,
+          r.totalOrders, r.missingDailyTarget,
+          r.baseSalary.toFixed(3), r.bonus.toFixed(3), r.missingPenalty.toFixed(3),
+          r.maintCost.toFixed(3), r.cashPenalty.toFixed(3), r.undepositedCash.toFixed(3),
+          r.driverNet.toFixed(3), r.companyGrossRevenue.toFixed(3),
+          r.companyCosts.toFixed(3), r.companyNetProfit.toFixed(3)
         ]);
       });
       downloadCSV(rows, `sportive_payroll_${new Date().toISOString().split('T')[0]}.csv`);
     }
 
     /* =========================================================================
-       14. PAGE 11: INVESTIGATIONS
+       17. PAGE 11: INVESTIGATIONS
        ========================================================================= */
     function searchRiderForInv(q) {
       const dd = document.getElementById('invRiderDropdown');
@@ -3413,52 +4245,34 @@
           <td style="max-width:260px;white-space:normal;font-size:12px;">${inv.actionTaken || '--'}</td>
           <td><span class="badge" style="background:#2563EB22;color:var(--blue);">${inv.source}</span></td>
         </tr>
-      `).join('') || '<tr><td colspan="8" style="text-align:center;padding:20px;">لا توجد تحقيقات مسجلة.</td></tr>';
+      `).join('') || '<tr><td colspan="8" style="text-align:center;padding:20px;">لا توجد تحقيقات مسجلة حالياً.</td></tr>';
     }
 
     /* =========================================================================
-       15. CSV EXPORTERS & UTILITIES
+       18. CSV EXPORTERS & THEME/LANGUAGE TOGGLES
        ========================================================================= */
     function exportFleetCSV() {
-      const headers = ['اسم السائق','الرقم الوظيفي','الشركة','الجنسية','نوع المركبة','رقم اللوحة','المنطقة','الباتش','الأوردرات','عجز التارجت','صافي دخل السائق','صافي ربح الشركة','أيام العمل','الغيابات','التأخيرات','الإيقافات','الرقم المدني','رقم الباسبور','صلاحية الإقامة','صلاحية الرخصة','صلاحية دفتر المركبة','صلاحية إذن العمل','كارت البنزين','استهلاك الوقود','الكاش المعلق'];
+      const headers = ['اسم السائق','الرقم الوظيفي','الشركة','الجنسية','نوع المركبة','رقم اللوحة','المنطقة','الباتش','الأوردرات','عجز التارجت','المتبقي للـ450','صافي دخل السائق','صافي ربح الشركة','أيام العمل','الغيابات','التأخيرات','الإيقافات','نهاية العقد','حالة العقد','الرقم المدني','رقم الباسبور','صلاحية الإقامة','صلاحية الرخصة','صلاحية دفتر المركبة','صلاحية إذن العمل','كارت البنزين','استهلاك الوقود','الكاش المعلق'];
       const rows = [headers];
       DB.allRidersList.forEach(r => {
         rows.push([
-          r.nameAr,
-          r.id,
-          r.co,
-          r.nationality,
-          r.vehicleType,
-          r.plateNum,
-          r.zone,
-          r.batch,
-          r.totalOrders,
-          r.missingDailyTarget,
-          r.driverNet.toFixed(3),
-          r.companyNetProfit.toFixed(3),
-          r.attendance.worked,
-          r.attendance.noShow,
-          r.attendance.late,
-          r.attendance.suspended,
-          r.civilId,
-          r.passportNum,
-          r.expIqama,
-          r.expLicense,
-          r.expVehicleDoc,
-          r.expWorkPermit,
-          r.fuelCard,
-          r.fuelExpense.toFixed(3),
-          r.pendingCash.toFixed(3)
+          r.nameAr, r.id, r.co, r.nationality, r.vehicleType, r.plateNum, r.zone, r.batch,
+          r.totalOrders, r.missingDailyTarget, r.rtt,
+          r.driverNet.toFixed(3), r.companyNetProfit.toFixed(3),
+          r.attendance.worked, r.attendance.noShow, r.attendance.late, r.attendance.suspended,
+          r.contractEndDate, r.contractExpireStatus,
+          r.civilId, r.passportNum, r.expIqama, r.expLicense, r.expVehicleDoc, r.expWorkPermit,
+          r.fuelCard, r.fuelExpense.toFixed(3), r.pendingCash.toFixed(3)
         ]);
       });
       downloadCSV(rows, `sportive_fleet_${new Date().toISOString().split('T')[0]}.csv`);
     }
 
     function exportOrdersCSV() {
-      const headers = ['اسم السائق','الرقم الوظيفي','الشركة','إجمالي الأوردرات','عجز التارجت'];
+      const headers = ['اسم السائق','الرقم الوظيفي','الشركة','الباتش','إجمالي الأوردرات','فارق التارجت اليومي','المتبقي للـ 450'];
       const rows = [headers];
       DB.allRidersList.forEach(r => {
-        rows.push([r.nameAr, r.id, r.co, r.totalOrders, r.missingDailyTarget]);
+        rows.push([r.nameAr, r.id, r.co, r.batch, r.totalOrders, r.missingDailyTarget, r.rtt]);
       });
       downloadCSV(rows, `sportive_orders_${new Date().toISOString().split('T')[0]}.csv`);
     }
@@ -3502,9 +4316,6 @@
       document.getElementById('liveClock').textContent = new Date().toLocaleTimeString();
     }, 1000);
 
-    /* =========================================================================
-       16. INITIALIZATION
-       ========================================================================= */
     window.addEventListener('DOMContentLoaded', () => {
       applyTheme();
       document.documentElement.setAttribute('dir', APP.lang === 'ar' ? 'rtl' : 'ltr');
