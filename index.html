@@ -1924,9 +1924,15 @@
         <span>📡</span> <span>الأونلاين</span>
       </button>
 
-      <button class="top-btn" onclick="openDailyReportStudioModal()" title="إعداد وتصدير التقرير اليومي بالوضع الليلي" style="background:linear-gradient(135deg,#0F172A,#1E293B)!important;color:#38BDF8!important;border:1px solid #38BDF8!important;font-weight:900!important;padding:6px 13px!important;border-radius:980px!important;box-shadow:0 4px 12px rgba(56,189,248,0.18);">
-        <span>🌙</span> <span>التقرير اليومي</span>
-      </button>
+      <div class="pdf-dropdown-wrap" id="drTopbarDropdownContainer">
+        <button class="top-btn" onclick="openDailyReportStudioModal()" title="إعداد وتصدير التقرير اليومي بالوضع الليلي" style="background:linear-gradient(135deg,#0F172A,#1E293B)!important;color:#38BDF8!important;border:1px solid #38BDF8!important;font-weight:900!important;padding:6px 12px!important;border-top-right-radius:980px!important;border-bottom-right-radius:980px!important;border-top-left-radius:0!important;border-bottom-left-radius:0!important;box-shadow:0 4px 12px rgba(56,189,248,0.18);">
+          <span>🌙</span> <span>التقرير اليومي</span>
+        </button>
+        <button class="top-btn" onclick="toggleDailyReportCheckDropdown(event, 'drTopbarCheckMenu')" title="اختيار وتحديد العناصر والكروت والفئات التي يشملها التقرير اليومي" style="background:#1E293B!important;color:#34D399!important;border:1px solid #38BDF8!important;border-right:none!important;font-weight:900!important;padding:6px 9px!important;border-top-left-radius:980px!important;border-bottom-left-radius:980px!important;border-top-right-radius:0!important;border-bottom-right-radius:0!important;">
+          <span>☑️</span> <span style="font-size:10px;">▼</span>
+        </button>
+        <div class="pdf-dropdown-menu" id="drTopbarCheckMenu" onclick="event.stopPropagation()" style="width:410px;max-height:82vh;overflow-y:auto;background:#0F172A!important;color:#F8FAFC!important;border:1px solid #38BDF8!important;box-shadow:0 20px 50px rgba(0,0,0,0.85)!important;"></div>
+      </div>
 
       <div class="pdf-dropdown-wrap" id="pdfDropdownContainer">
         <button class="top-btn apple-primary-pill" onclick="generateExecutiveCompanyPDF()" style="border-top-left-radius:0!important;border-bottom-left-radius:0!important;">
@@ -1986,7 +1992,11 @@
               <h2 style="font-size:22px;font-weight:900;color:var(--text);letter-spacing:-0.4px;">مركز القيادة والتشغيل الموحد</h2>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button class="btn-action" style="background:linear-gradient(135deg,#0F172A,#1E293B)!important;color:#38BDF8!important;border:1px solid #38BDF8!important;" onclick="openDailyReportStudioModal()">🌙 تصدير التقرير اليومي</button>
+              <div class="pdf-dropdown-wrap" id="drHeroDropdownContainer" style="display:inline-flex;">
+                <button class="btn-action" style="background:linear-gradient(135deg,#0F172A,#1E293B)!important;color:#38BDF8!important;border:1px solid #38BDF8!important;border-top-left-radius:0!important;border-bottom-left-radius:0!important;" onclick="openDailyReportStudioModal()">🌙 تصدير التقرير اليومي</button>
+                <button class="btn-action" style="background:#1E293B!important;color:#34D399!important;border:1px solid #38BDF8!important;border-right:none!important;border-top-right-radius:0!important;border-bottom-right-radius:0!important;padding:7px 10px!important;" onclick="toggleDailyReportCheckDropdown(event, 'drHeroCheckMenu')" title="علامة صح لتحديد العناصر والفئات والكروت التي يشملها التقرير اليومي">☑️ ▼</button>
+                <div class="pdf-dropdown-menu" id="drHeroCheckMenu" onclick="event.stopPropagation()" style="width:410px;max-height:80vh;overflow-y:auto;background:#0F172A!important;color:#F8FAFC!important;border:1px solid #38BDF8!important;box-shadow:0 20px 50px rgba(0,0,0,0.85)!important;"></div>
+              </div>
               <button class="btn-action" style="background:var(--blue)!important;" onclick="document.getElementById('uploadWeeklyScheduleInput').click()">📅 رفع شيت الشفتات الأسبوعي</button>
               <button class="btn-secondary" onclick="openAppleLaunchpadModal()">🧭 خريطة الأقسام</button>
               <button class="btn-action" onclick="switchOverviewWorkspace('finance')">📂 الرفع الصباحي والمالية</button>
@@ -5264,18 +5274,28 @@
 
   <!-- 8. DAILY REPORT STUDIO & DARK-MODE EXPORTER MODAL (التقرير اليومي بالوضع الليلي) -->
   <div class="modal-overlay" id="dailyReportStudioModalOverlay" style="z-index:9990;">
-    <div class="modal-card" style="max-width:1420px;width:97vw;max-height:94vh;display:flex;flex-direction:column;background:#090D16;color:#F8FAFC;border:1px solid #334155;border-radius:18px;box-shadow:0 25px 70px rgba(0,0,0,0.8);overflow:hidden;">
+    <div class="modal-card" style="max-width:1440px;width:97vw;max-height:94vh;display:flex;flex-direction:column;background:#090D16;color:#F8FAFC;border:1px solid #334155;border-radius:18px;box-shadow:0 25px 70px rgba(0,0,0,0.85);overflow:hidden;">
       
       <!-- Modal Top Header -->
       <div style="padding:14px 20px;background:linear-gradient(135deg,#0F172A,#1E293B);border-bottom:1px solid #334155;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
         <div style="display:flex;align-items:center;gap:12px;">
           <div style="width:42px;height:42px;border-radius:12px;background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.4);display:flex;align-items:center;justify-content:center;font-size:20px;">🌙</div>
           <div>
-            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative;">
               <h2 style="margin:0;font-size:18.5px;font-weight:900;color:#FFFFFF;letter-spacing:-0.3px;">التقرير اليومي</h2>
+              <!-- Checkmark Option Attached Directly to "التقرير اليومي" -->
+              <div class="pdf-dropdown-wrap" style="display:inline-flex;">
+                <button onclick="toggleDailyReportCheckDropdown(event, 'drModalHeaderCheckMenu')" style="background:rgba(16,185,129,0.18);color:#34D399;border:1px solid #10B981;border-radius:99px;padding:3px 11px;font-size:11.5px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-family:'Cairo',sans-serif;" title="اختر بعلامة صح العناصر والكروت والفئات التي يشملها التقرير اليومي">
+                  <span>☑️ عناصر التقرير اليومي</span> <span style="font-size:9.5px;">▼</span>
+                </button>
+                <div class="pdf-dropdown-menu" id="drModalHeaderCheckMenu" onclick="event.stopPropagation()" style="width:430px;max-height:80vh;overflow-y:auto;right:0;left:auto;background:#0F172A!important;color:#F8FAFC!important;border:1px solid #38BDF8!important;box-shadow:0 20px 55px rgba(0,0,0,0.9)!important;"></div>
+              </div>
+              <button id="drRestoreAllHiddenBtn" onclick="restoreAllRemovedDailyReportItems()" style="background:rgba(245,158,11,0.16);color:#FBBF24;border:1px solid rgba(245,158,11,0.45);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:900;cursor:pointer;display:none;font-family:'Cairo',sans-serif;">
+                🔄 استعادة العناصر المحذوفة (0)
+              </button>
               <span id="drLiveSyncStatusBadge" style="background:rgba(16,185,129,0.15);color:#34D399;border:1px solid rgba(16,185,129,0.35);padding:2px 9px;border-radius:99px;font-size:10.5px;font-weight:800;">🟢 مرتبط ديناميكياً بالداشبورد والشيت الأونلاين</span>
             </div>
-            <div style="font-size:11px;color:#94A3B8;font-weight:700;">احتساب التارجت اليومي فقط • الفئات الـ 7 والكفاءة التشغيلية • ساعات الغد وأقل 10 حجوزات • الإجازات والبنزين</div>
+            <div style="font-size:11px;color:#94A3B8;font-weight:700;">يمكنك إلغاء علامة ☑️ من القائمة أو الضغط على ✕ فوق أي صف أو كرت تفاعلي أو فئة أو مصطلح بالمعاينة لإزالته قبل إصدار التقرير</div>
           </div>
         </div>
 
@@ -5322,14 +5342,16 @@
       <!-- Studio Body (Scrollable) -->
       <div style="padding:16px 20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px;">
 
-        <!-- 1. SELECTABLE EXPORT SECTIONS BAR (اوبشن اختيار العناصر التي يتم اصدارها بالشيت والتقرير) -->
+        <!-- 1. SELECTABLE EXPORT SECTIONS & GRANULAR ITEMS BAR -->
         <div style="background:#0F172A;border:1px solid #1E293B;border-right:4px solid #A855F7;border-radius:12px;padding:10px 14px;">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
-            <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
               <span style="font-size:13.5px;font-weight:900;color:#C084FC;">☑️ اختيار العناصر المُصدّرة بالتقرير والشيت اليومي</span>
-              <span style="font-size:11px;color:#94A3B8;">(حدد أو ألغِ أي عنصر لتخصيص المعاينة وملفات PDF و HTML و Excel فوراً)</span>
+              <span style="font-size:11px;color:#94A3B8;">(ألغِ علامة الصح أمام أي قسم أو كرت أو فئة، أو اضغط <b style="color:#F87171;">✕</b> بجانب أي صف/كرت/مصطلح في المعاينة بالأسفل لإزالته قبل الإصدار)</span>
             </div>
-            <div style="display:flex;gap:6px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="btn-secondary" style="background:#1E293B;color:#38BDF8;border:1px solid #38BDF8;padding:3px 10px;font-size:11px;" onclick="toggleGranularItemsDrawer()">🎛️ تخصيص الكروت والفئات والمصطلحات الفرعية ▼</button>
+              <button class="btn-secondary" style="background:#1E293B;color:#FBBF24;border:1px solid #F59E0B;padding:3px 10px;font-size:11px;" onclick="restoreAllRemovedDailyReportItems()">🔄 استعادة كل المحذوفات</button>
               <button class="btn-secondary" style="background:#1E293B;color:#34D399;border:1px solid #334155;padding:3px 10px;font-size:11px;" onclick="toggleAllDailyReportSections(true)">☑️ تحديد الكل</button>
               <button class="btn-secondary" style="background:#1E293B;color:#F87171;border:1px solid #334155;padding:3px 10px;font-size:11px;" onclick="toggleAllDailyReportSections(false)">⬜ إلغاء التحديد</button>
             </div>
@@ -5372,6 +5394,9 @@
               <input type="checkbox" id="drSec_sups" checked onchange="saveDailyReportManualInputs()" /> <span>12. متابعة المشرفين بالغد والملحوظات</span>
             </label>
           </div>
+
+          <!-- Expandable Granular Sub-Items Checklist (Every Card, Cohort, Badge, Sub-Table) -->
+          <div id="drGranularSubItemsDrawer" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid #26334D;"></div>
         </div>
 
         <!-- 2. Quick Interactive Editors Grid: Row 1 (Leaves Registry & Tomorrow Hours + Fuel Filter) -->
@@ -17716,11 +17741,104 @@
     };
 
     /* =========================================================================
-       46. DAILY REPORT STUDIO & DARK-MODE EXECUTIVE EXPORTER (DYNAMIC V15)
+       46. DAILY REPORT STUDIO & DARK-MODE EXECUTIVE EXPORTER (DYNAMIC V16 GRANULAR)
        ========================================================================= */
     const DR_SECTION_KEYS = [
       'summary', 'cohorts', 'financials', 'sla', 'charts', 'topbot5',
       'excuses', 'tomorrow', 'nofuel', 'leaves', 'maint', 'sups'
+    ];
+
+    const DR_SECTIONS_META = [
+      { key: 'summary',    label: '1. ملخص الإنتاجية وفئات التارجت اليومي' },
+      { key: 'cohorts',    label: '2. تصنيف الفئات الـ 7 والكفاءة التشغيلية' },
+      { key: 'financials', label: '3. الأداء المالي وصافي إيراد الشركة' },
+      { key: 'sla',        label: '4. معايير الأداء (القبول، UTR، الاستراحات، الفشل)' },
+      { key: 'charts',     label: '5. منحنى الأوردرات اليومي والسنوي (ش1–ش10)' },
+      { key: 'topbot5',    label: '6. أفضل 5 سائقين وأدنى 5 سائقين (لأصحاب الأرقام)' },
+      { key: 'excuses',    label: '7. أعذار الأقل إنتاجية وتصنيف الأعذار %' },
+      { key: 'tomorrow',   label: '8. توتال ساعات الغد وأقل 10 سائقين بالحجوزات' },
+      { key: 'nofuel',     label: '9. قائمة السائقين بدون رصيد في كروت البنزين' },
+      { key: 'leaves',     label: '10. سجل الإجازات اليدوي لليوزرات' },
+      { key: 'maint',      label: '11. حالة الصيانة والاسبير المتاح بالورشة' },
+      { key: 'sups',       label: '12. متابعة المشرفين بالغد والملحوظات اليدوية' }
+    ];
+
+    const DR_GRANULAR_GROUPS = [
+      {
+        groupTitle: '🏷️ شارات ومصطلحات الهيدر',
+        items: [
+          { key: 'term_badge_perf',   label: 'مصطلح: أداء وإنتاجية الشركة' },
+          { key: 'term_badge_scope',  label: 'مصطلح: نطاق الشركات وعدد السائقين' },
+          { key: 'term_badge_target', label: 'مصطلح: شارة التارجت اليومي' },
+          { key: 'term_badge_date',   label: 'مصطلح: التاريخ والتوقيت' }
+        ]
+      },
+      {
+        groupTitle: '📦 كروت ملخص الإنتاجية وفئات التارجت (10 كروت)',
+        items: [
+          { key: 'card_today_orders',   label: 'كرت: توتال أوردرات اليوم' },
+          { key: 'card_today_hours',    label: 'كرت: ساعات عمل اليوم وساعات الغد' },
+          { key: 'card_target_met',     label: 'كرت: فئة مستوفوا التارجت اليومي' },
+          { key: 'card_target_deficit', label: 'كرت: فئة عاجزون عن التارجت اليومي' },
+          { key: 'card_cum_orders',     label: 'كرت: أوردرات الشركة التراكمية' },
+          { key: 'card_excuse_pct',     label: 'كرت: نسبة الأعذار' },
+          { key: 'card_excuse_vs_ord',  label: 'كرت: الأعذار للأوردرات' },
+          { key: 'card_overall_eff',    label: 'كرت: الكفاءة التشغيلية العامة' },
+          { key: 'banner_met_group',    label: 'بانر: توتال أوردرات فوق التارجت (للمستوفين)' },
+          { key: 'banner_deficit_group',label: 'بانر: توتال أوردرات قبل وعجز التارجت (للعاجزين)' }
+        ]
+      },
+      {
+        groupTitle: '📊 الفئات التشغيلية الـ 7 (إظهار / إزالة أي فئة)',
+        items: [
+          { key: 'cohort_SUPT_CAR',   label: 'فئة: سيارات الهنود والاثيوبين' },
+          { key: 'cohort_INDIA_BIKE', label: 'فئة: سياكل الهنود' },
+          { key: 'cohort_BANGLA',     label: 'فئة: سيارات البنغالين' },
+          { key: 'cohort_FTMN_KE',    label: 'فئة: سياكل كينين ففتين منت' },
+          { key: 'cohort_SUPT_KE',    label: 'فئة: سياكل كينين سبورتيف' },
+          { key: 'cohort_FNMN_KE',    label: 'فئة: سياكل كينين فورتين منت' },
+          { key: 'cohort_SRBS_KE',    label: 'فئة: سياكل كينين سرب سريع' }
+        ]
+      },
+      {
+        groupTitle: '💰 كروت الأداء المالي (6 كروت)',
+        items: [
+          { key: 'fin_gross_rev', label: 'كرت: إيراد الأوردرات' },
+          { key: 'fin_salaries',  label: 'كرت: رواتب السائقين' },
+          { key: 'fin_maint',     label: 'كرت: تكاليف الصيانة' },
+          { key: 'fin_fuel',      label: 'كرت: تكاليف البنزين' },
+          { key: 'fin_mobile',    label: 'كرت: شحن الموبايل' },
+          { key: 'fin_net_rev',   label: 'كرت: صافي الإيراد' }
+        ]
+      },
+      {
+        groupTitle: '⚡ كروت معايير الأداء والشارتس (7 كروت)',
+        items: [
+          { key: 'sla_acc',      label: 'كرت: نسبة القبول' },
+          { key: 'sla_utr',      label: 'كرت: معدل UTR' },
+          { key: 'sla_break',    label: 'كرت: ساعات الاستراحات' },
+          { key: 'sla_fail',     label: 'كرت: فشل التوصيل' },
+          { key: 'sla_avp',      label: 'كرت: الالتزام بالساعات' },
+          { key: 'chart_daily',  label: 'شارت: منحنى الأوردرات اليومي' },
+          { key: 'chart_annual', label: 'شارت: منحنى الأوردرات السنوي (ش1–ش10)' }
+        ]
+      },
+      {
+        groupTitle: '📋 الجداول الفرعية وكروت الصيانة والمشرفين',
+        items: [
+          { key: 'tbl_top5',        label: 'جدول: أفضل 5 سائقين' },
+          { key: 'tbl_bot5',        label: 'جدول: أدنى 5 سائقين (أرقام فقط)' },
+          { key: 'tbl_low_excuses', label: 'جدول: أعذار الأقل إنتاجية' },
+          { key: 'tbl_excuse_cats', label: 'جدول: تصنيف الأعذار %' },
+          { key: 'box_maint_bikes', label: 'جدول: سياكل تحت الصيانة' },
+          { key: 'box_spare_bikes', label: 'كرت: الاسبير المتاح بالورشة' },
+          { key: 'sup_Islam',       label: 'كرت المشرف: إسلام | Islam' },
+          { key: 'sup_Omar',        label: 'كرت المشرف: عمر | Omar' },
+          { key: 'sup_Emad',        label: 'كرت المشرف: عماد | Emad' },
+          { key: 'sup_Irham',       label: 'كرت المشرف: إرهام | Irham' },
+          { key: 'box_general_note',label: 'صندوق: الملحوظات اليدوية العامة' }
+        ]
+      }
     ];
 
     const DR_7_COHORTS_META = [
@@ -17745,6 +17863,8 @@
           charts: true, topbot5: true, excuses: true, tomorrow: true,
           nofuel: true, leaves: true, maint: true, sups: true
         },
+        hiddenItems: {},
+        customTerms: {},
         spareBikesCount: 4,
         spareBikesDetails: '4 سياكل اسبير جاهزة بالورشة للتسليم الفوري (لوحات: 88412، 88419، 88503، 88517)',
         maintBikesList: [
@@ -17778,6 +17898,8 @@
         lowest10PositiveHoursOnly: saved.lowest10PositiveHoursOnly !== undefined ? !!saved.lowest10PositiveHoursOnly : def.lowest10PositiveHoursOnly,
         noFuelFilterScope: saved.noFuelFilterScope || def.noFuelFilterScope,
         enabledSections: { ...def.enabledSections, ...(saved.enabledSections || {}) },
+        hiddenItems: { ...(saved.hiddenItems || {}) },
+        customTerms: { ...(saved.customTerms || {}) },
         spareBikesCount: saved.spareBikesCount !== undefined ? saved.spareBikesCount : def.spareBikesCount,
         spareBikesDetails: saved.spareBikesDetails !== undefined ? saved.spareBikesDetails : def.spareBikesDetails,
         maintBikesList: Array.isArray(saved.maintBikesList) ? saved.maintBikesList : def.maintBikesList,
@@ -17787,6 +17909,223 @@
         generalNote: saved.generalNote !== undefined ? saved.generalNote : def.generalNote
       };
     }
+
+    function isDrItemVisible(state, itemKey) {
+      return !(state && state.hiddenItems && state.hiddenItems[itemKey]);
+    }
+
+    function getDrTerm(state, termKey, defaultText) {
+      if (state && state.customTerms && state.customTerms[termKey] !== undefined) {
+        return state.customTerms[termKey];
+      }
+      return defaultText;
+    }
+
+    function saveCustomDrTerm(termKey, newText) {
+      const state = loadDailyReportManualState();
+      const cleaned = String(newText || '').trim();
+      if (!cleaned) {
+        // If user cleared the term completely, hide it!
+        state.hiddenItems[termKey] = true;
+      } else {
+        state.customTerms[termKey] = cleaned;
+      }
+      safeStorage.setItem(STORAGE_KEYS.dailyReportManual, JSON.stringify(state));
+      syncAllDailyReportCheckMenus();
+    }
+
+    function toggleDailyReportItemVisibility(itemKey, visibleBool) {
+      const state = loadDailyReportManualState();
+      if (!state.hiddenItems) state.hiddenItems = {};
+      if (visibleBool === undefined) {
+        // Toggle
+        if (state.hiddenItems[itemKey]) delete state.hiddenItems[itemKey];
+        else state.hiddenItems[itemKey] = true;
+      } else if (visibleBool) {
+        delete state.hiddenItems[itemKey];
+      } else {
+        state.hiddenItems[itemKey] = true;
+      }
+      safeStorage.setItem(STORAGE_KEYS.dailyReportManual, JSON.stringify(state));
+      syncAllDailyReportCheckMenus();
+      renderDailyReportLivePreview();
+    }
+
+    function removeDailyReportElement(itemKey, labelHint = 'العنصر') {
+      const state = loadDailyReportManualState();
+      if (!state.hiddenItems) state.hiddenItems = {};
+      state.hiddenItems[itemKey] = true;
+      safeStorage.setItem(STORAGE_KEYS.dailyReportManual, JSON.stringify(state));
+      syncAllDailyReportCheckMenus();
+      renderDailyReportLivePreview();
+      showToast(`🗑️ تمت إزالة (${labelHint}) من التقرير اليومي — لن يظهر عند الإصدار!`);
+    }
+
+    function toggleDailyReportSectionKey(secKey, checkedBool) {
+      const state = loadDailyReportManualState();
+      state.enabledSections[secKey] = !!checkedBool;
+      const studioChk = document.getElementById('drSec_' + secKey);
+      if (studioChk) studioChk.checked = !!checkedBool;
+      safeStorage.setItem(STORAGE_KEYS.dailyReportManual, JSON.stringify(state));
+      syncAllDailyReportCheckMenus();
+      renderDailyReportLivePreview();
+    }
+
+    function restoreAllRemovedDailyReportItems() {
+      const state = loadDailyReportManualState();
+      state.hiddenItems = {};
+      state.customTerms = {};
+      DR_SECTION_KEYS.forEach(k => {
+        state.enabledSections[k] = true;
+        const chk = document.getElementById('drSec_' + k);
+        if (chk) chk.checked = true;
+      });
+      safeStorage.setItem(STORAGE_KEYS.dailyReportManual, JSON.stringify(state));
+      syncAllDailyReportCheckMenus();
+      renderDailyReportLivePreview();
+      showToast('🔄 تمت استعادة كافة العناصر والصفوف والكروت والفئات في التقرير اليومي!');
+    }
+
+    function toggleGranularItemsDrawer() {
+      const drawer = document.getElementById('drGranularSubItemsDrawer');
+      if (!drawer) return;
+      const isHidden = drawer.style.display === 'none' || !drawer.style.display;
+      drawer.style.display = isHidden ? 'block' : 'none';
+      if (isHidden) syncAllDailyReportCheckMenus();
+    }
+
+    function buildDailyReportMasterChecklistHTML(contextId) {
+      const state = loadDailyReportManualState();
+      const hiddenCount = Object.keys(state.hiddenItems || {}).length;
+
+      return `
+        <div style="padding:10px 12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid #334155;">
+            <div>
+              <b style="font-size:13px;color:#38BDF8;">☑️ عناصر التقرير اليومي المُصدّرة</b>
+              <div style="font-size:10.5px;color:#94A3B8;">أي عنصر تلغي علامة الصح أمامه لن يتم إصداره بالتقرير</div>
+            </div>
+            <div style="display:flex;gap:5px;flex-wrap:wrap;">
+              <button class="btn-secondary" style="background:#1E293B;color:#34D399;border:1px solid #334155;padding:2px 8px;font-size:10.5px;" onclick="restoreAllRemovedDailyReportItems()">تحديد واستعادة الكل</button>
+              <button class="btn-secondary" style="background:#1E293B;color:#F87171;border:1px solid #334155;padding:2px 8px;font-size:10.5px;" onclick="toggleAllDailyReportSections(false)">إلغاء الكل</button>
+            </div>
+          </div>
+
+          ${hiddenCount > 0 ? `
+            <div style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:8px;padding:6px 10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;font-size:11px;">
+              <span style="color:#FBBF24;font-weight:800;">🗑️ يوجد (${hiddenCount}) عنصر/صف/كرت مستبعد حالياً</span>
+              <button onclick="restoreAllRemovedDailyReportItems()" style="background:#F59E0B;color:#090D16;border:none;border-radius:6px;padding:2px 8px;font-size:10.5px;font-weight:900;cursor:pointer;">🔄 استعادة الكل</button>
+            </div>
+          ` : ''}
+
+          <!-- 1. Main 12 Sections -->
+          <div style="font-size:11.5px;font-weight:900;color:#C084FC;margin-bottom:5px;">📌 أولاً: الأقسام الرئيسية (12 قسماً)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:10px;">
+            ${DR_SECTIONS_META.map(s => `
+              <label style="display:flex;align-items:center;gap:6px;background:#161F30;padding:4px 7px;border-radius:6px;border:1px solid #26334D;cursor:pointer;font-size:11px;font-weight:800;color:#F8FAFC;">
+                <input type="checkbox" ${state.enabledSections[s.key] !== false ? 'checked' : ''} onchange="toggleDailyReportSectionKey('${s.key}', this.checked)" />
+                <span>${s.label}</span>
+              </label>
+            `).join('')}
+          </div>
+
+          <!-- 2. Granular Cards, Cohorts, Charts & Terms -->
+          <div style="font-size:11.5px;font-weight:900;color:#34D399;margin-bottom:5px;">🎛️ ثانياً: الكروت التفاعلية والفئات الـ 7 والمصطلحات الفرعية</div>
+          <div style="display:flex;flex-direction:column;gap:8px;max-height:290px;overflow-y:auto;padding-left:3px;">
+            ${DR_GRANULAR_GROUPS.map(grp => `
+              <div style="background:#131B2E;border:1px solid #26334D;border-radius:8px;padding:6px 8px;">
+                <div style="font-size:11px;font-weight:900;color:#38BDF8;margin-bottom:4px;">${grp.groupTitle}</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                  ${grp.items.map(it => {
+                    const isVis = isDrItemVisible(state, it.key);
+                    return `
+                      <label style="display:flex;align-items:center;gap:5px;background:#090D16;padding:3.5px 6px;border-radius:5px;border:1px solid ${isVis ? '#26334D' : 'rgba(239,68,68,0.4)'};cursor:pointer;font-size:10.5px;font-weight:700;color:${isVis ? '#E2E8F0' : '#94A3B8'};">
+                        <input type="checkbox" ${isVis ? 'checked' : ''} onchange="toggleDailyReportItemVisibility('${it.key}', this.checked)" />
+                        <span>${it.label}</span>
+                      </label>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div style="display:flex;gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid #334155;">
+            <button class="btn-action" style="flex:1;justify-content:center;background:linear-gradient(135deg,#0284C7,#2563EB)!important;padding:6px 10px;font-size:11.5px;" onclick="closeAllDailyReportCheckMenus();openDailyReportStudioModal();">👁️ فتح المعاينة والتخصيص</button>
+            <button class="btn-action" style="flex:1;justify-content:center;background:linear-gradient(135deg,#059669,#10B981)!important;padding:6px 10px;font-size:11.5px;" onclick="closeAllDailyReportCheckMenus();exportDarkDailyReportPrintWindow();">🖨️ إصدار PDF الآن</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function syncAllDailyReportCheckMenus() {
+      const state = loadDailyReportManualState();
+      const hiddenCount = Object.keys(state.hiddenItems || {}).length;
+
+      DR_SECTION_KEYS.forEach(k => {
+        const chk = document.getElementById('drSec_' + k);
+        if (chk) chk.checked = state.enabledSections[k] !== false;
+      });
+
+      const restoreBtn = document.getElementById('drRestoreAllHiddenBtn');
+      if (restoreBtn) {
+        restoreBtn.style.display = hiddenCount > 0 ? 'inline-flex' : 'none';
+        restoreBtn.innerHTML = `🔄 استعادة العناصر المحذوفة (${hiddenCount})`;
+      }
+
+      ['drTopbarCheckMenu', 'drHeroCheckMenu', 'drModalHeaderCheckMenu', 'drBannerInlineCheckMenu'].forEach(menuId => {
+        const el = document.getElementById(menuId);
+        if (el) {
+          el.innerHTML = buildDailyReportMasterChecklistHTML(menuId);
+        }
+      });
+
+      const drawer = document.getElementById('drGranularSubItemsDrawer');
+      if (drawer && drawer.style.display !== 'none') {
+        drawer.innerHTML = `
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;">
+            ${DR_GRANULAR_GROUPS.map(grp => `
+              <div style="background:#131B2E;border:1px solid #26334D;border-radius:8px;padding:7px 9px;">
+                <div style="font-size:11px;font-weight:900;color:#38BDF8;margin-bottom:5px;">${grp.groupTitle}</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                  ${grp.items.map(it => {
+                    const isVis = isDrItemVisible(state, it.key);
+                    return `
+                      <label style="display:flex;align-items:center;gap:5px;background:#090D16;padding:4px 6px;border-radius:5px;border:1px solid ${isVis ? '#26334D' : 'rgba(239,68,68,0.4)'};cursor:pointer;font-size:10.5px;font-weight:700;color:${isVis ? '#E2E8F0' : '#94A3B8'};">
+                        <input type="checkbox" ${isVis ? 'checked' : ''} onchange="toggleDailyReportItemVisibility('${it.key}', this.checked)" />
+                        <span>${it.label}</span>
+                      </label>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+    }
+
+    function toggleDailyReportCheckDropdown(event, menuId) {
+      if (event) event.stopPropagation();
+      const targetMenu = document.getElementById(menuId);
+      if (!targetMenu) return;
+      const wasOpen = targetMenu.classList.contains('open');
+      closeAllDailyReportCheckMenus();
+      if (!wasOpen) {
+        syncAllDailyReportCheckMenus();
+        targetMenu.classList.add('open');
+      }
+    }
+
+    function closeAllDailyReportCheckMenus() {
+      ['drTopbarCheckMenu', 'drHeroCheckMenu', 'drModalHeaderCheckMenu', 'drBannerInlineCheckMenu'].forEach(id => {
+        document.getElementById(id)?.classList.remove('open');
+      });
+    }
+
+    document.addEventListener('click', () => {
+      closeAllDailyReportCheckMenus();
+    });
 
     function saveDailyReportManualInputs() {
       const state = loadDailyReportManualState();
@@ -17855,6 +18194,7 @@
       }
 
       safeStorage.setItem(STORAGE_KEYS.dailyReportManual, JSON.stringify(state));
+      syncAllDailyReportCheckMenus();
       renderDailyReportLivePreview();
     }
 
@@ -17865,9 +18205,13 @@
         const chk = document.getElementById('drSec_' + k);
         if (chk) chk.checked = !!val;
       });
+      if (val) {
+        state.hiddenItems = {};
+      }
       safeStorage.setItem(STORAGE_KEYS.dailyReportManual, JSON.stringify(state));
+      syncAllDailyReportCheckMenus();
       renderDailyReportLivePreview();
-      showToast(val ? '☑️ تم تحديد جميع عناصر التقرير اليومي للتصدير!' : '⬜ تم إلغاء تحديد العناصر — اختر العناصر المطلوبة فقط.');
+      showToast(val ? '☑️ تم تحديد جميع عناصر وكروت التقرير اليومي للتصدير!' : '⬜ تم إلغاء تحديد العناصر — اختر العناصر المطلوبة فقط.');
     }
 
     function renderMaintBikesEditorRows() {
@@ -18113,7 +18457,6 @@
       let cumMonthOrders = 0;
       let totGrossRev = 0, totDriverSalaries = 0, totMaintCost = 0, totFuelCost = 0, totFuelLiters = 0, totMobileFee = 0, totNetRevenue = 0;
 
-      // Daily Target Only (طبقا للتارجت اليومي فقط) Counters & Group Order Totals
       let targetMetCount = 0;
       let targetDeficitCount = 0;
       let metGroupTotalOrders = 0;
@@ -18123,21 +18466,16 @@
       let deficitGroupRequiredOrders = 0;
       let ordersDeficitBelowTargetTotal = 0;
 
-      // SLA & Performance aggregates
       let sumAcc = 0, sumUtr = 0, sumBreakH = 0, sumActualH = 0, sumPlannedH = 0, sumFailPct = 0, sumQualityScore = 0;
       let perfCount = 0;
 
-      // Daily orders curve (Day 1 .. Last Active Day)
       const maxDay = Math.max(selDay, DB.lastActiveOrdersDay || 12);
       const dailyCurveLabels = Array.from({ length: maxDay }, (_, i) => `${i + 1} أكت`);
       const dailyCurveValues = Array(maxDay).fill(0);
 
-      // Excuse counters
       const excuseCatCounts = {};
       let totalExcusesMonthCount = 0;
       let todayExcusesCount = 0;
-
-      // Tomorrow's total working hours
       let tomorrowTotalWorkMinutes = 0;
 
       const driverDailyRows = riders.map(r => {
@@ -18188,7 +18526,6 @@
         totMobileFee += r.mobileFee;
         totNetRevenue += (r.companyGrossRevenue - (wEarned + r.maintCost + r.fuelExpense + r.mobileFee));
 
-        // STRICT DAILY TARGET ONLY CLASSIFICATION (طبقا للتارجت اليومي فقط)
         const dailyVariance = dOrd - dailyTarget;
         const isDailyTargetMet = dOrd >= dailyTarget;
         if (isDailyTargetMet) {
@@ -18270,28 +18607,27 @@
         };
       });
 
-      // 1. Sort Top 5 Drivers
+      // Filter out any individual rows removed by the user via ✕ (isDrItemVisible)
       const top5Drivers = [...driverDailyRows]
+        .filter(d => isDrItemVisible(manualState, `row_top5_${d.id}`))
         .sort((a, b) => (b.dayOrders - a.dayOrders) || (b.totalOrders - a.totalOrders))
         .slice(0, 5);
 
-      // 2. Sort Bottom 5 Drivers — ONLY drivers who have actual numbers inside their Orders Daily cell (hasNumericOrderInCell && dayOrders > 0)
       const bottom5Drivers = [...driverDailyRows]
-        .filter(d => d.hasNumericOrderInCell && d.dayOrders > 0)
+        .filter(d => d.hasNumericOrderInCell && d.dayOrders > 0 && isDrItemVisible(manualState, `row_bot5_${d.id}`))
         .sort((a, b) => (a.dayOrders - b.dayOrders) || (a.totalOrders - b.totalOrders))
         .slice(0, 5);
 
-      // 3. Low-Productivity & Excused Drivers List
       const lowProdExcusedDrivers = [...driverDailyRows]
-        .filter(d => d.rawCellComment || d.dayOrders <= 6)
+        .filter(d => (d.rawCellComment || d.dayOrders <= 6) && isDrItemVisible(manualState, `row_exc_${d.id}`))
         .sort((a, b) => (a.dayOrders - b.dayOrders) || (a.totalOrders - b.totalOrders))
         .slice(0, 15);
 
-      // 4. Lowest 10 Drivers in Working Hours / Tomorrow Bookings
       const lowest10Pool = manualState.lowest10PositiveHoursOnly
         ? driverDailyRows.filter(d => d.tomorrowBookedMins > 0)
         : driverDailyRows;
       const lowest10HoursDrivers = [...lowest10Pool]
+        .filter(d => isDrItemVisible(manualState, `row_low10_${d.id}`))
         .sort((a, b) => (a.tomorrowBookedMins - b.tomorrowBookedMins) || (a.dayOrders - b.dayOrders) || (a.totalOrders - b.totalOrders))
         .slice(0, 10);
 
@@ -18299,66 +18635,68 @@
         ? manualState.tomorrowTotalHoursOverride
         : formatMinutesToHHMM(tomorrowTotalWorkMinutes);
 
-      // 5. 7 Operational Cohorts Classification & Efficiency Breakdown
+      // 7 Cohorts Breakdown (filtered by cohort_KEY visibility)
       const allFleetRiders = DB.allRidersList || [];
       const fleetDailyOrdersDenom = Math.max(1, allFleetRiders.reduce((s, r) => s + (r.dailyOrders[selDay - 1] || 0), 0));
       const fleetMonthlyOrdersDenom = Math.max(1, allFleetRiders.reduce((s, r) => s + (r.totalOrders || 0), 0));
 
-      const cohortsBreakdown = DR_7_COHORTS_META.map(cm => {
-        const cRiders = allFleetRiders.filter(r => matchesCohort(r, cm.key));
-        const cCount = cRiders.length;
-        let cDayOrders = 0;
-        let cMonthOrders = 0;
-        let cMetCount = 0;
-        let cDeficitCount = 0;
-        let cAboveTargetOrders = 0;
-        let cBeforeTargetOrders = 0;
-        let cDeficitMissingOrders = 0;
+      const cohortsBreakdown = DR_7_COHORTS_META
+        .filter(cm => isDrItemVisible(manualState, `cohort_${cm.key}`))
+        .map(cm => {
+          const cRiders = allFleetRiders.filter(r => matchesCohort(r, cm.key));
+          const cCount = cRiders.length;
+          let cDayOrders = 0;
+          let cMonthOrders = 0;
+          let cMetCount = 0;
+          let cDeficitCount = 0;
+          let cAboveTargetOrders = 0;
+          let cBeforeTargetOrders = 0;
+          let cDeficitMissingOrders = 0;
 
-        cRiders.forEach(r => {
-          const dOrd = r.dailyOrders[selDay - 1] || 0;
-          cDayOrders += dOrd;
-          cMonthOrders += (r.totalOrders || 0);
-          if (dOrd >= dailyTarget) {
-            cMetCount++;
-            cAboveTargetOrders += (dOrd - dailyTarget);
-          } else {
-            cDeficitCount++;
-            cBeforeTargetOrders += dOrd;
-            cDeficitMissingOrders += (dailyTarget - dOrd);
-          }
+          cRiders.forEach(r => {
+            const dOrd = r.dailyOrders[selDay - 1] || 0;
+            cDayOrders += dOrd;
+            cMonthOrders += (r.totalOrders || 0);
+            if (dOrd >= dailyTarget) {
+              cMetCount++;
+              cAboveTargetOrders += (dOrd - dailyTarget);
+            } else {
+              cDeficitCount++;
+              cBeforeTargetOrders += dOrd;
+              cDeficitMissingOrders += (dailyTarget - dOrd);
+            }
+          });
+
+          const dailyContribPct = Number(((cDayOrders / fleetDailyOrdersDenom) * 100).toFixed(1));
+          const monthlyContribPct = Number(((cMonthOrders / fleetMonthlyOrdersDenom) * 100).toFixed(1));
+          const metPct = cCount > 0 ? Number(((cMetCount / cCount) * 100).toFixed(1)) : 0;
+          const deficitPct = cCount > 0 ? Number(((cDeficitCount / cCount) * 100).toFixed(1)) : 0;
+          const efficiencyDiffPct = Number((metPct - deficitPct).toFixed(1));
+
+          return {
+            key: cm.key,
+            label: cm.label,
+            color: cm.color,
+            icon: cm.icon,
+            ridersCount: cCount,
+            dayOrders: cDayOrders,
+            dailyContribPct: dailyContribPct,
+            monthOrders: cMonthOrders,
+            monthlyContribPct: monthlyContribPct,
+            metCount: cMetCount,
+            metPct: metPct,
+            aboveTargetOrders: cAboveTargetOrders,
+            deficitCount: cDeficitCount,
+            deficitPct: deficitPct,
+            beforeTargetOrders: cBeforeTargetOrders,
+            deficitMissingOrders: cDeficitMissingOrders,
+            efficiencyDiffPct: efficiencyDiffPct
+          };
         });
 
-        const dailyContribPct = Number(((cDayOrders / fleetDailyOrdersDenom) * 100).toFixed(1));
-        const monthlyContribPct = Number(((cMonthOrders / fleetMonthlyOrdersDenom) * 100).toFixed(1));
-        const metPct = cCount > 0 ? Number(((cMetCount / cCount) * 100).toFixed(1)) : 0;
-        const deficitPct = cCount > 0 ? Number(((cDeficitCount / cCount) * 100).toFixed(1)) : 0;
-        const efficiencyDiffPct = Number((metPct - deficitPct).toFixed(1));
-
-        return {
-          key: cm.key,
-          label: cm.label,
-          color: cm.color,
-          icon: cm.icon,
-          ridersCount: cCount,
-          dayOrders: cDayOrders,
-          dailyContribPct: dailyContribPct,
-          monthOrders: cMonthOrders,
-          monthlyContribPct: monthlyContribPct,
-          metCount: cMetCount,
-          metPct: metPct,
-          aboveTargetOrders: cAboveTargetOrders,
-          deficitCount: cDeficitCount,
-          deficitPct: deficitPct,
-          beforeTargetOrders: cBeforeTargetOrders,
-          deficitMissingOrders: cDeficitMissingOrders,
-          efficiencyDiffPct: efficiencyDiffPct
-        };
-      });
-
-      // 6. Drivers with Zero / No Fuel Card Balance
       const noFuelDriversList = [];
       riders.forEach(r => {
+        if (!isDrItemVisible(manualState, `row_nofuel_${r.id}`)) return;
         const hasCard = !!(r.fuelCard && r.fuelCard !== 'لا يستعمل') || !!r.fuelSerial;
         const bal = r.fuelRemainingBalance;
         const isCriticalOrZero = bal !== null && bal !== undefined && (bal <= 0.500 || (r.fuelCardStatus || '').toLowerCase() === 'cancelled');
@@ -18386,7 +18724,6 @@
       });
       noFuelDriversList.sort((a, b) => (a.isCritical !== b.isCritical ? (a.isCritical ? -1 : 1) : a.rawBal - b.rawBal));
 
-      // 7. Annual Orders Curve (Month 1 Jan to Month 10 Oct)
       const monthNamesAr = ['يناير (ش1)', 'فبراير (ش2)', 'مارس (ش3)', 'أبريل (ش4)', 'مايو (ش5)', 'يونيو (ش6)', 'يوليو (ش7)', 'أغسطس (ش8)', 'سبتمبر (ش9)', 'أكتوبر (ش10)'];
       const annualOrdersValues = Array(10).fill(0);
       riders.forEach(r => {
@@ -18407,9 +18744,9 @@
       annualOrdersValues[9] = cumMonthOrders;
       const grandAnnualOrdersToDate = annualOrdersValues.reduce((a, b) => a + b, 0);
 
-      // Excuse percentages & breakdown
       const excusesTotalDenom = Math.max(1, totalExcusesMonthCount);
       const excuseCategoriesBreakdown = Object.entries(excuseCatCounts)
+        .filter(([cat]) => isDrItemVisible(manualState, `row_excat_${cat}`))
         .sort((a, b) => b[1] - a[1])
         .map(([cat, count]) => ({
           category: cat,
@@ -18539,16 +18876,7 @@
       if (spDetEl) spDetEl.value = state.spareBikesDetails;
       if (genEl) genEl.value = state.generalNote;
 
-      DR_SECTION_KEYS.forEach(k => {
-        const chk = document.getElementById('drSec_' + k);
-        if (chk) chk.checked = state.enabledSections[k] !== false;
-      });
-
-      ['Islam', 'Omar', 'Emad', 'Irham'].forEach(sup => {
-        const el = document.getElementById('drSupNote_' + sup);
-        if (el) el.value = state.supNotes[sup] || '';
-      });
-
+      syncAllDailyReportCheckMenus();
       renderMaintBikesEditorRows();
       renderManualLeavesEditorRows();
       overlay.classList.add('open');
@@ -18563,9 +18891,24 @@
       renderDailyReportLivePreview();
     }
 
-    // Build the Dark-Mode Daily Report HTML content (respects enabledSections checkboxes!)
+    // Helper for rendering a removable card button in interactive preview
+    function drCardRemoveBtn(isPreview, itemKey, label) {
+      if (!isPreview) return '';
+      return `<button class="dr-no-export" onclick="removeDailyReportElement('${itemKey}', '${label}')" title="إزالة هذا الكرت / العنصر من التقرير قبل الإصدار" style="position:absolute;top:6px;left:6px;background:rgba(239,68,68,0.18);color:#F87171;border:1px solid rgba(239,68,68,0.35);border-radius:6px;width:20px;height:20px;font-size:10px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;line-height:1;z-index:3;">✕</button>`;
+    }
+
+    // Helper for editable/removable term or section title
+    function drEditableTerm(isPreview, state, termKey, defaultText, styleStr = '') {
+      const txt = getDrTerm(state, termKey, defaultText);
+      if (!isPreview) return `<span style="${styleStr}">${txt}</span>`;
+      return `<span contenteditable="true" onblur="saveCustomDrTerm('${termKey}', this.innerText)" title="اضغط لتعديل هذا المصطلح أو امسحه لإخفائه" style="${styleStr};outline:none;border-bottom:1px dashed rgba(148,163,184,0.35);cursor:text;">${txt}</span>`;
+    }
+
+    // Build the Dark-Mode Daily Report HTML content (respects enabledSections AND granular hiddenItems!)
     function buildDarkDailyReportBodyHTML(d, chartUrls = null, isInteractivePreview = false) {
-      const sec = d.manualState.enabledSections || {};
+      const st = d.manualState;
+      const sec = st.enabledSections || {};
+      const vis = (key) => isDrItemVisible(st, key);
       const catColors = ['#EF4444', '#F59E0B', '#38BDF8', '#A855F7', '#10B981', '#EC4899', '#6366F1'];
 
       const maxDaily = Math.max(...d.dailyCurveValues, 1);
@@ -18595,109 +18938,166 @@
       }).join('');
 
       return `
-        <!-- Header Banner (Concise 2-3 Word Titles) -->
+        <!-- Header Banner (with Checkmark Menu attached directly to "التقرير اليومي") -->
         <div style="background:linear-gradient(135deg,#0F172A,#1E293B);border:1px solid #334155;border-right:6px solid #38BDF8;border-radius:14px;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
           <div>
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-              <h1 style="margin:0;font-size:22px;font-weight:900;color:#FFFFFF;">التقرير اليومي</h1>
-              <span style="background:rgba(56,189,248,0.16);color:#38BDF8;border:1px solid rgba(56,189,248,0.4);padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:900;">أداء وإنتاجية الشركة</span>
-              <span style="background:rgba(16,185,129,0.16);color:#34D399;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:900;">${d.coFilter === 'ALL' ? 'كل الشركات' : d.coFilter} (${d.totalRiders} سائق)</span>
-              <span style="background:rgba(245,158,11,0.16);color:#FBBF24;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:900;">التارجت اليومي: ${d.dailyTarget} طلب/يوم</span>
+              <h1 style="margin:0;font-size:22px;font-weight:900;color:#FFFFFF;">${drEditableTerm(isInteractivePreview, st, 'term_main_title', 'التقرير اليومي')}</h1>
+              
+              ${isInteractivePreview ? `
+                <div class="pdf-dropdown-wrap dr-no-export" style="display:inline-flex;">
+                  <button onclick="toggleDailyReportCheckDropdown(event, 'drBannerInlineCheckMenu')" style="background:rgba(16,185,129,0.2);color:#34D399;border:1px solid #10B981;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;gap:4px;font-family:'Cairo',sans-serif;" title="علامة صح لتحديد العناصر والكروت والفئات التي يشملها التقرير اليومي">
+                    <span>☑️ تحديد عناصر التقرير</span> <span style="font-size:9px;">▼</span>
+                  </button>
+                  <div class="pdf-dropdown-menu" id="drBannerInlineCheckMenu" onclick="event.stopPropagation()" style="width:430px;max-height:78vh;overflow-y:auto;right:0;left:auto;background:#0F172A!important;color:#F8FAFC!important;border:1px solid #38BDF8!important;box-shadow:0 20px 55px rgba(0,0,0,0.92)!important;"></div>
+                </div>
+              ` : ''}
+
+              ${vis('term_badge_perf') ? `
+                <span style="background:rgba(56,189,248,0.16);color:#38BDF8;border:1px solid rgba(56,189,248,0.4);padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:900;display:inline-flex;align-items:center;gap:5px;">
+                  ${drEditableTerm(isInteractivePreview, st, 'txt_badge_perf', 'أداء وإنتاجية الشركة')}
+                  ${isInteractivePreview ? `<span class="dr-no-export" onclick="removeDailyReportElement('term_badge_perf', 'مصطلح أداء وإنتاجية الشركة')" style="cursor:pointer;color:#F87171;font-weight:900;" title="إزالة المصطلح">✕</span>` : ''}
+                </span>
+              ` : ''}
+
+              ${vis('term_badge_scope') ? `
+                <span style="background:rgba(16,185,129,0.16);color:#34D399;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:900;display:inline-flex;align-items:center;gap:5px;">
+                  <span>${d.coFilter === 'ALL' ? 'كل الشركات' : d.coFilter} (${d.totalRiders} سائق)</span>
+                  ${isInteractivePreview ? `<span class="dr-no-export" onclick="removeDailyReportElement('term_badge_scope', 'شارة النطاق وعدد السائقين')" style="cursor:pointer;color:#F87171;font-weight:900;" title="إزالة الشارة">✕</span>` : ''}
+                </span>
+              ` : ''}
+
+              ${vis('term_badge_target') ? `
+                <span style="background:rgba(245,158,11,0.16);color:#FBBF24;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:900;display:inline-flex;align-items:center;gap:5px;">
+                  <span>التارجت اليومي: ${d.dailyTarget} طلب/يوم</span>
+                  ${isInteractivePreview ? `<span class="dr-no-export" onclick="removeDailyReportElement('term_badge_target', 'شارة التارجت اليومي')" style="cursor:pointer;color:#F87171;font-weight:900;" title="إزالة الشارة">✕</span>` : ''}
+                </span>
+              ` : ''}
             </div>
           </div>
-          <div style="text-align:left;font-size:12px;color:#CBD5E1;font-weight:800;">
-            <div>📅 اليوم: <b style="color:#38BDF8;">${d.selDay} أكتوبر 2026</b></div>
-            <div style="font-size:11px;color:#94A3B8;">التوقيت: ${new Date().toLocaleTimeString('ar-KW')}</div>
-          </div>
+
+          ${vis('term_badge_date') ? `
+            <div style="text-align:left;font-size:12px;color:#CBD5E1;font-weight:800;position:relative;padding-left:${isInteractivePreview ? '24px' : '0'};">
+              ${isInteractivePreview ? `<button class="dr-no-export" onclick="removeDailyReportElement('term_badge_date', 'التاريخ والتوقيت')" title="إزالة التاريخ والتوقيت" style="position:absolute;top:0;left:0;background:rgba(239,68,68,0.18);color:#F87171;border:none;border-radius:5px;width:18px;height:18px;font-size:10px;cursor:pointer;">✕</button>` : ''}
+              <div>📅 اليوم: <b style="color:#38BDF8;">${d.selDay} أكتوبر 2026</b></div>
+              <div style="font-size:11px;color:#94A3B8;">التوقيت: ${new Date().toLocaleTimeString('ar-KW')}</div>
+            </div>
+          ` : ''}
         </div>
 
         ${sec.summary !== false ? `
-        <!-- SECTION 1: ملخص الإنتاجية وفئات التارجت اليومي (Daily Target Only + Orders Above & Before Target) -->
+        <!-- SECTION 1: ملخص الإنتاجية وفئات التارجت اليومي -->
         <div>
-          <div style="font-size:14px;font-weight:900;color:#38BDF8;margin-bottom:8px;border-right:3px solid #38BDF8;padding-right:8px;">ملخص الإنتاجية</div>
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px;">
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;">
-              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">توتال أوردرات اليوم</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <div style="font-size:14px;font-weight:900;color:#38BDF8;border-right:3px solid #38BDF8;padding-right:8px;">${drEditableTerm(isInteractivePreview, st, 'sec_title_summary', 'ملخص الإنتاجية')}</div>
+            ${isInteractivePreview ? `<button class="dr-no-export" onclick="toggleDailyReportSectionKey('summary', false)" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:2px 8px;font-size:10.5px;font-weight:800;cursor:pointer;">✕ إخفاء القسم بالكامل</button>` : ''}
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:10px;">
+            ${vis('card_today_orders') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'card_today_orders', 'كرت توتال أوردرات اليوم')}
+              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_today_orders', 'توتال أوردرات اليوم')}</div>
               <div style="font-size:21px;font-weight:900;color:#38BDF8;margin-top:3px;">${d.todayOrdersTotal.toLocaleString()} <small style="font-size:12px;">طلب</small></div>
               <div style="font-size:10.5px;color:#64748B;margin-top:2px;">المتوسط: ${(d.todayOrdersTotal / d.totalRiders).toFixed(1)} طلب/سائق</div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;">
-              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">ساعات عمل اليوم</div>
+            ${vis('card_today_hours') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'card_today_hours', 'كرت ساعات عمل اليوم')}
+              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_today_hours', 'ساعات عمل اليوم')}</div>
               <div style="font-size:21px;font-weight:900;color:#34D399;margin-top:3px;">${d.totalTodayWorkFormatted} <small style="font-size:12px;">ساعة</small></div>
               <div style="font-size:10.5px;color:#38BDF8;margin-top:2px;">إجمالي ساعات الغد: <b>${d.tomorrowTotalWorkFormatted} س</b></div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#0F172A;border:1px solid #10B981;border-radius:12px;padding:12px 14px;">
-              <div style="font-size:11.5px;color:#6EE7B7;font-weight:800;">فئة مستوفوا التارجت اليومي (≥${d.dailyTarget})</div>
+            ${vis('card_target_met') ? `
+            <div style="background:#0F172A;border:1px solid #10B981;border-radius:12px;padding:12px 14px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'card_target_met', 'كرت فئة مستوفوا التارجت')}
+              <div style="font-size:11.5px;color:#6EE7B7;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_target_met', `فئة مستوفوا التارجت اليومي (≥${d.dailyTarget})`)}</div>
               <div style="font-size:21px;font-weight:900;color:#10B981;margin-top:3px;">${d.targetMetCount} <small style="font-size:12px;">سائق (${d.targetMetPct}%)</small></div>
               <div style="font-size:10.5px;color:#E2E8F0;margin-top:3px;">أوردرات الفئة: <b>${d.metGroupTotalOrders}</b> | فوق التارجت: <b style="color:#34D399;">+${d.ordersAboveTargetTotal} طلب</b></div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#0F172A;border:1px solid #EF4444;border-radius:12px;padding:12px 14px;">
-              <div style="font-size:11.5px;color:#FCA5A5;font-weight:800;">فئة عاجزون عن التارجت اليومي (&lt;${d.dailyTarget})</div>
+            ${vis('card_target_deficit') ? `
+            <div style="background:#0F172A;border:1px solid #EF4444;border-radius:12px;padding:12px 14px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'card_target_deficit', 'كرت فئة عاجزون عن التارجت')}
+              <div style="font-size:11.5px;color:#FCA5A5;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_target_def', `فئة عاجزون عن التارجت اليومي (<${d.dailyTarget})`)}</div>
               <div style="font-size:21px;font-weight:900;color:#F87171;margin-top:3px;">${d.targetDeficitCount} <small style="font-size:12px;">سائق (${d.targetDeficitPct}%)</small></div>
               <div style="font-size:10.5px;color:#E2E8F0;margin-top:3px;">أوردرات قبل التارجت: <b>${d.deficitGroupTotalOrders}</b> | العجز: <b style="color:#F87171;">-${d.ordersDeficitBelowTargetTotal} طلب</b></div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;">
-              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">أوردرات الشركة التراكمية</div>
+            ${vis('card_cum_orders') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'card_cum_orders', 'كرت أوردرات الشركة التراكمية')}
+              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_cum_orders', 'أوردرات الشركة التراكمية')}</div>
               <div style="font-size:19px;font-weight:900;color:#A78BFA;margin-top:3px;">${d.cumMonthOrders.toLocaleString()} <small style="font-size:11.5px;">أكتوبر</small></div>
               <div style="font-size:10.5px;color:#94A3B8;margin-top:2px;">التراكمي السنوي (ش1–10): <b>${d.grandAnnualOrdersToDate.toLocaleString()}</b></div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;">
-              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">نسبة الأعذار</div>
+            ${vis('card_excuse_pct') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'card_excuse_pct', 'كرت نسبة الأعذار')}
+              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_excuse_pct', 'نسبة الأعذار')}</div>
               <div style="font-size:21px;font-weight:900;color:#FBBF24;margin-top:3px;">${d.fleetExcusePctToday}% <small style="font-size:12px;">(${d.todayExcusesCount} حالة)</small></div>
               <div style="font-size:10.5px;color:#64748B;margin-top:2px;">إجمالي أعذار الشهر: ${d.totalExcusesMonthCount} حالة</div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;">
-              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">الأعذار للأوردرات</div>
+            ${vis('card_excuse_vs_ord') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'card_excuse_vs_ord', 'كرت الأعذار للأوردرات')}
+              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_excuse_vs_ord', 'الأعذار للأوردرات')}</div>
               <div style="font-size:20px;font-weight:900;color:#FB923C;margin-top:3px;">${d.excusesVsTodayOrdersPct}% <small style="font-size:11.5px;">نسبة عددية</small></div>
               <div style="font-size:10.5px;color:#F87171;margin-top:2px;">أثر الفقد: ~${d.estLostOrdersToday} طلب (${d.lostOrdersImpactTodayPct}%)</div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;">
-              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">الكفاءة التشغيلية العامة</div>
+            ${vis('card_overall_eff') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'card_overall_eff', 'كرت الكفاءة التشغيلية العامة')}
+              <div style="font-size:11.5px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_overall_eff', 'الكفاءة التشغيلية العامة')}</div>
               <div style="font-size:21px;font-weight:900;color:${(d.targetMetPct - d.targetDeficitPct) >= 0 ? '#34D399' : '#F87171'};margin-top:3px;">${(d.targetMetPct - d.targetDeficitPct) >= 0 ? '+' : ''}${(d.targetMetPct - d.targetDeficitPct).toFixed(1)}%</div>
               <div style="font-size:10.5px;color:#94A3B8;margin-top:2px;">المحققون (${d.targetMetPct}%) − العاجزون (${d.targetDeficitPct}%)</div>
-            </div>
+            </div>` : ''}
           </div>
 
-          <!-- Detailed Daily Target Groups Comparison Banner (فئة مستوفوا التارجت vs فئة عاجزون عن التارجت) -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div style="background:linear-gradient(135deg,rgba(16,185,129,0.12),#0F172A);border:1px solid rgba(16,185,129,0.4);border-right:4px solid #10B981;border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          ${(vis('banner_met_group') || vis('banner_deficit_group')) ? `
+          <div style="display:grid;grid-template-columns:${vis('banner_met_group') && vis('banner_deficit_group') ? '1fr 1fr' : '1fr'};gap:12px;">
+            ${vis('banner_met_group') ? `
+            <div style="background:linear-gradient(135deg,rgba(16,185,129,0.12),#0F172A);border:1px solid rgba(16,185,129,0.4);border-right:4px solid #10B981;border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'banner_met_group', 'بانر فئة مستوفوا التارجت')}
               <div>
                 <div style="font-size:12.5px;font-weight:900;color:#34D399;">✅ فئة مستوفوا التارجت اليومي (${d.targetMetCount} سائق — ${d.targetMetPct}%)</div>
                 <div style="font-size:11px;color:#CBD5E1;margin-top:2px;">إجمالي أوردرات الفئة اليوم: <b>${d.metGroupTotalOrders} طلب</b> (منها ${d.metGroupBaseTargetOrders} أوردرات التارجت الأساسي)</div>
               </div>
-              <div style="text-align:left;background:#090D16;padding:6px 12px;border-radius:8px;border:1px solid rgba(16,185,129,0.35);">
+              <div style="text-align:left;background:#090D16;padding:6px 12px;border-radius:8px;border:1px solid rgba(16,185,129,0.35);margin-left:${isInteractivePreview ? '20px' : '0'};">
                 <div style="font-size:10px;color:#94A3B8;font-weight:800;">توتال أوردرات فوق التارجت</div>
                 <div style="font-size:17px;font-weight:900;color:#34D399;">+${d.ordersAboveTargetTotal} طلب</div>
               </div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:linear-gradient(135deg,rgba(239,68,68,0.12),#0F172A);border:1px solid rgba(239,68,68,0.4);border-right:4px solid #EF4444;border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            ${vis('banner_deficit_group') ? `
+            <div style="background:linear-gradient(135deg,rgba(239,68,68,0.12),#0F172A);border:1px solid rgba(239,68,68,0.4);border-right:4px solid #EF4444;border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'banner_deficit_group', 'بانر فئة عاجزون عن التارجت')}
               <div>
                 <div style="font-size:12.5px;font-weight:900;color:#F87171;">⚠️ فئة عاجزون عن التارجت اليومي (${d.targetDeficitCount} سائق — ${d.targetDeficitPct}%)</div>
                 <div style="font-size:11px;color:#CBD5E1;margin-top:2px;">توتال أوردرات الفئة قبل التارجت: <b>${d.deficitGroupTotalOrders} طلب</b> (المطلوب للتارجت: ${d.deficitGroupRequiredOrders} طلب)</div>
               </div>
-              <div style="text-align:left;background:#090D16;padding:6px 12px;border-radius:8px;border:1px solid rgba(239,68,68,0.35);">
+              <div style="text-align:left;background:#090D16;padding:6px 12px;border-radius:8px;border:1px solid rgba(239,68,68,0.35);margin-left:${isInteractivePreview ? '20px' : '0'};">
                 <div style="font-size:10px;color:#94A3B8;font-weight:800;">توتال عجز الأوردرات قبل التارجت</div>
                 <div style="font-size:17px;font-weight:900;color:#F87171;">-${d.ordersDeficitBelowTargetTotal} طلب</div>
               </div>
-            </div>
-          </div>
+            </div>` : ''}
+          </div>` : ''}
         </div>
         ` : ''}
 
-        ${sec.cohorts !== false ? `
-        <!-- SECTION 2: تصنيف الفئات الـ 7 والكفاءة التشغيلية (7 Cohorts Classification & Efficiency Matrix) -->
+        ${sec.cohorts !== false && d.cohortsBreakdown.length > 0 ? `
+        <!-- SECTION 2: تصنيف الفئات الـ 7 والكفاءة التشغيلية -->
         <div style="background:#0F172A;border:1px solid #1E293B;border-right:4px solid #38BDF8;border-radius:12px;padding:12px 15px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
-            <b style="font-size:14px;color:#38BDF8;">📊 كفاءة الفئات الـ 7 ومساهمتها اليومية والشهرية</b>
-            <span style="font-size:11px;color:#94A3B8;font-weight:700;">الكفاءة التشغيلية = نسبة محققي التارجت اليومي (%) − نسبة العاجزين عن التارجت اليومي (%)</span>
+            <b style="font-size:14px;color:#38BDF8;">📊 ${drEditableTerm(isInteractivePreview, st, 'sec_title_cohorts', 'كفاءة الفئات الـ 7 ومساهمتها اليومية والشهرية')}</b>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;color:#94A3B8;font-weight:700;">الكفاءة التشغيلية = نسبة محققي التارجت اليومي (%) − نسبة العاجزين عن التارجت اليومي (%)</span>
+              ${isInteractivePreview ? `<button class="dr-no-export" onclick="toggleDailyReportSectionKey('cohorts', false)" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:2px 8px;font-size:10.5px;font-weight:800;cursor:pointer;">✕ إخفاء القسم</button>` : ''}
+            </div>
           </div>
           <div style="overflow-x:auto;">
             <table style="width:100%;border-collapse:collapse;font-size:11px;">
@@ -18712,6 +19112,7 @@
                   <th style="padding:6px 7px;border:1px solid #26334D;">محققو التارجت (%) + فوق التارجت</th>
                   <th style="padding:6px 7px;border:1px solid #26334D;">العاجزون (%) + قبل/عجز التارجت</th>
                   <th style="padding:6px 7px;border:1px solid #26334D;">الكفاءة التشغيلية (الفارق %)</th>
+                  ${isInteractivePreview ? `<th class="dr-no-export" style="padding:6px;border:1px solid #26334D;width:34px;text-align:center;">إزالة</th>` : ''}
                 </tr>
               </thead>
               <tbody>
@@ -18720,7 +19121,7 @@
                   const effColor = c.efficiencyDiffPct >= 20 ? '#34D399' : (c.efficiencyDiffPct >= 0 ? '#FBBF24' : '#F87171');
                   return `
                     <tr style="background:${idx % 2 === 0 ? '#0F172A' : '#131B2E'};">
-                      <td style="padding:6px 7px;border:1px solid #26334D;font-weight:900;color:${c.color};">${c.icon} ${c.label}</td>
+                      <td style="padding:6px 7px;border:1px solid #26334D;font-weight:900;color:${c.color};">${c.icon} ${drEditableTerm(isInteractivePreview, st, 'cohort_lbl_' + c.key, c.label)}</td>
                       <td style="padding:6px 7px;border:1px solid #26334D;font-weight:800;color:#F8FAFC;text-align:center;">${c.ridersCount}</td>
                       <td style="padding:6px 7px;border:1px solid #26334D;font-weight:900;color:#38BDF8;text-align:center;">${c.dayOrders.toLocaleString()}</td>
                       <td style="padding:6px 7px;border:1px solid #26334D;">
@@ -18751,6 +19152,11 @@
                           ${isPosEff ? '+' : ''}${c.efficiencyDiffPct}%
                         </span>
                       </td>
+                      ${isInteractivePreview ? `
+                        <td class="dr-no-export" style="padding:4px;border:1px solid #26334D;text-align:center;">
+                          <button onclick="removeDailyReportElement('cohort_${c.key}', 'فئة ${c.label}')" title="إزالة هذه الفئة من التقرير" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;border-radius:5px;width:22px;height:22px;font-weight:900;cursor:pointer;">✕</button>
+                        </td>
+                      ` : ''}
                     </tr>
                   `;
                 }).join('')}
@@ -18763,43 +19169,58 @@
         ${sec.financials !== false ? `
         <!-- SECTION 3: الأداء المالي (6 Financial Cards) -->
         <div>
-          <div style="font-size:14px;font-weight:900;color:#10B981;margin-bottom:8px;border-right:3px solid #10B981;padding-right:8px;">الأداء المالي</div>
-          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:9px;">
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:11px 12px;">
-              <div style="font-size:11px;color:#94A3B8;font-weight:800;">إيراد الأوردرات</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <div style="font-size:14px;font-weight:900;color:#10B981;border-right:3px solid #10B981;padding-right:8px;">${drEditableTerm(isInteractivePreview, st, 'sec_title_fin', 'الأداء المالي')}</div>
+            ${isInteractivePreview ? `<button class="dr-no-export" onclick="toggleDailyReportSectionKey('financials', false)" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:2px 8px;font-size:10.5px;font-weight:800;cursor:pointer;">✕ إخفاء القسم</button>` : ''}
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px;">
+            ${vis('fin_gross_rev') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:11px 12px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'fin_gross_rev', 'كرت إيراد الأوردرات')}
+              <div style="font-size:11px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_fin_gross', 'إيراد الأوردرات')}</div>
               <div style="font-size:17px;font-weight:900;color:#38BDF8;margin-top:3px;">${d.totGrossRev.toFixed(3)} د.ك</div>
               <div style="font-size:10px;color:#64748B;">إجمالي إيراد الشركة</div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:11px 12px;">
-              <div style="font-size:11px;color:#94A3B8;font-weight:800;">رواتب السائقين</div>
+            ${vis('fin_salaries') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:11px 12px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'fin_salaries', 'كرت رواتب السائقين')}
+              <div style="font-size:11px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_fin_sal', 'رواتب السائقين')}</div>
               <div style="font-size:17px;font-weight:900;color:#FBBF24;margin-top:3px;">${d.totDriverSalaries.toFixed(3)} د.ك</div>
               <div style="font-size:10px;color:#64748B;">${((d.totDriverSalaries / Math.max(1, d.totGrossRev)) * 100).toFixed(1)}% من الإيراد</div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:11px 12px;">
-              <div style="font-size:11px;color:#94A3B8;font-weight:800;">تكاليف الصيانة</div>
+            ${vis('fin_maint') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:11px 12px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'fin_maint', 'كرت تكاليف الصيانة')}
+              <div style="font-size:11px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_fin_maint', 'تكاليف الصيانة')}</div>
               <div style="font-size:17px;font-weight:900;color:#FB923C;margin-top:3px;">${d.totMaintCost.toFixed(3)} د.ك</div>
               <div style="font-size:10px;color:#64748B;">الورش وقطع الغيار</div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:11px 12px;">
-              <div style="font-size:11px;color:#94A3B8;font-weight:800;">تكاليف البنزين</div>
+            ${vis('fin_fuel') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:11px 12px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'fin_fuel', 'كرت تكاليف البنزين')}
+              <div style="font-size:11px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_fin_fuel', 'تكاليف البنزين')}</div>
               <div style="font-size:17px;font-weight:900;color:#F472B6;margin-top:3px;">${d.totFuelCost.toFixed(3)} د.ك</div>
               <div style="font-size:10px;color:#64748B;">${d.totFuelLiters.toFixed(1)} لتر وقود</div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:11px 12px;">
-              <div style="font-size:11px;color:#94A3B8;font-weight:800;">شحن الموبايل</div>
+            ${vis('fin_mobile') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:11px 12px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'fin_mobile', 'كرت شحن الموبايل')}
+              <div style="font-size:11px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_fin_mob', 'شحن الموبايل')}</div>
               <div style="font-size:17px;font-weight:900;color:#A78BFA;margin-top:3px;">${d.totMobileFee.toFixed(3)} د.ك</div>
               <div style="font-size:10px;color:#64748B;">رسوم الخطوط والنت</div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:linear-gradient(135deg,#064E3B,#0F172A);border:1px solid #10B981;border-radius:12px;padding:11px 12px;">
-              <div style="font-size:11px;color:#A7F3D0;font-weight:800;">صافي الإيراد</div>
+            ${vis('fin_net_rev') ? `
+            <div style="background:linear-gradient(135deg,#064E3B,#0F172A);border:1px solid #10B981;border-radius:12px;padding:11px 12px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'fin_net_rev', 'كرت صافي الإيراد')}
+              <div style="font-size:11px;color:#A7F3D0;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_fin_net', 'صافي الإيراد')}</div>
               <div style="font-size:17.5px;font-weight:900;color:#34D399;margin-top:3px;">${d.totNetRevenue.toFixed(3)} د.ك</div>
               <div style="font-size:10px;color:#6EE7B7;">هامش الربح: ${((d.totNetRevenue / Math.max(1, d.totGrossRev)) * 100).toFixed(1)}%</div>
-            </div>
+            </div>` : ''}
           </div>
         </div>
         ` : ''}
@@ -18807,38 +19228,57 @@
         ${sec.sla !== false ? `
         <!-- SECTION 4: معايير الأداء (SLA Metrics Strip) -->
         <div>
-          <div style="font-size:14px;font-weight:900;color:#A78BFA;margin-bottom:8px;border-right:3px solid #A78BFA;padding-right:8px;">معايير الأداء</div>
-          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;">
-              <div><div style="font-size:11px;color:#94A3B8;font-weight:800;">نسبة القبول</div><div style="font-size:17px;font-weight:900;color:#34D399;">${d.avgAcceptancePct}%</div></div>
-              <span style="font-size:18px;">✅</span>
-            </div>
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;">
-              <div><div style="font-size:11px;color:#94A3B8;font-weight:800;">معدل UTR</div><div style="font-size:17px;font-weight:900;color:#38BDF8;">${d.avgUtr} <small style="font-size:10px;">طلب/س</small></div></div>
-              <span style="font-size:18px;">⚡</span>
-            </div>
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;">
-              <div><div style="font-size:11px;color:#94A3B8;font-weight:800;">ساعات الاستراحات</div><div style="font-size:17px;font-weight:900;color:#FBBF24;">${d.breakHoursPct}% <small style="font-size:10px;">(${d.totalBreakHours}س)</small></div></div>
-              <span style="font-size:18px;">☕</span>
-            </div>
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;">
-              <div><div style="font-size:11px;color:#94A3B8;font-weight:800;">فشل التوصيل</div><div style="font-size:17px;font-weight:900;color:#F87171;">${d.deliveryFailPct}%</div></div>
-              <span style="font-size:18px;">⚠️</span>
-            </div>
-            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;">
-              <div><div style="font-size:11px;color:#94A3B8;font-weight:800;">الالتزام بالساعات</div><div style="font-size:17px;font-weight:900;color:#A78BFA;">${d.avpCompliancePct}%</div></div>
-              <span style="font-size:18px;">⏱️</span>
-            </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <div style="font-size:14px;font-weight:900;color:#A78BFA;border-right:3px solid #A78BFA;padding-right:8px;">${drEditableTerm(isInteractivePreview, st, 'sec_title_sla', 'معايير الأداء')}</div>
+            ${isInteractivePreview ? `<button class="dr-no-export" onclick="toggleDailyReportSectionKey('sla', false)" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:2px 8px;font-size:10.5px;font-weight:800;cursor:pointer;">✕ إخفاء القسم</button>` : ''}
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+            ${vis('sla_acc') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'sla_acc', 'كرت نسبة القبول')}
+              <div><div style="font-size:11px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_sla_acc', 'نسبة القبول')}</div><div style="font-size:17px;font-weight:900;color:#34D399;">${d.avgAcceptancePct}%</div></div>
+              <span style="font-size:18px;margin-left:${isInteractivePreview ? '18px' : '0'};">✅</span>
+            </div>` : ''}
+
+            ${vis('sla_utr') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'sla_utr', 'كرت معدل UTR')}
+              <div><div style="font-size:11px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_sla_utr', 'معدل UTR')}</div><div style="font-size:17px;font-weight:900;color:#38BDF8;">${d.avgUtr} <small style="font-size:10px;">طلب/س</small></div></div>
+              <span style="font-size:18px;margin-left:${isInteractivePreview ? '18px' : '0'};">⚡</span>
+            </div>` : ''}
+
+            ${vis('sla_break') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'sla_break', 'كرت ساعات الاستراحات')}
+              <div><div style="font-size:11px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_sla_brk', 'ساعات الاستراحات')}</div><div style="font-size:17px;font-weight:900;color:#FBBF24;">${d.breakHoursPct}% <small style="font-size:10px;">(${d.totalBreakHours}س)</small></div></div>
+              <span style="font-size:18px;margin-left:${isInteractivePreview ? '18px' : '0'};">☕</span>
+            </div>` : ''}
+
+            ${vis('sla_fail') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'sla_fail', 'كرت فشل التوصيل')}
+              <div><div style="font-size:11px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_sla_fail', 'فشل التوصيل')}</div><div style="font-size:17px;font-weight:900;color:#F87171;">${d.deliveryFailPct}%</div></div>
+              <span style="font-size:18px;margin-left:${isInteractivePreview ? '18px' : '0'};">⚠️</span>
+            </div>` : ''}
+
+            ${vis('sla_avp') ? `
+            <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'sla_avp', 'كرت الالتزام بالساعات')}
+              <div><div style="font-size:11px;color:#94A3B8;font-weight:800;">${drEditableTerm(isInteractivePreview, st, 'lbl_sla_avp', 'الالتزام بالساعات')}</div><div style="font-size:17px;font-weight:900;color:#A78BFA;">${d.avpCompliancePct}%</div></div>
+              <span style="font-size:18px;margin-left:${isInteractivePreview ? '18px' : '0'};">⏱️</span>
+            </div>` : ''}
           </div>
         </div>
         ` : ''}
 
-        ${sec.charts !== false ? `
-        <!-- SECTION 5: المنحنيات البيانية (Daily Orders Curve & Annual Orders Curve Jan-Oct) -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-          <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-              <b style="font-size:13.5px;color:#38BDF8;">📈 منحنى الأوردرات اليومي</b>
+        ${sec.charts !== false && (vis('chart_daily') || vis('chart_annual')) ? `
+        <!-- SECTION 5: المنحنيات البيانية -->
+        <div style="display:grid;grid-template-columns:${vis('chart_daily') && vis('chart_annual') ? '1fr 1fr' : '1fr'};gap:14px;">
+          ${vis('chart_daily') ? `
+          <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;position:relative;">
+            ${drCardRemoveBtn(isInteractivePreview, 'chart_daily', 'شارت منحنى الأوردرات اليومي')}
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-left:${isInteractivePreview ? '22px' : '0'};">
+              <b style="font-size:13.5px;color:#38BDF8;">📈 ${drEditableTerm(isInteractivePreview, st, 'lbl_chart_daily', 'منحنى الأوردرات اليومي')}</b>
               <span style="font-size:11px;color:#94A3B8;">1 – ${d.dailyCurveLabels.length} أكتوبر</span>
             </div>
             ${chartUrls && chartUrls.dailyChart ? `<img src="${chartUrls.dailyChart}" style="width:100%;height:auto;border-radius:8px;" />` : `
@@ -18847,11 +19287,13 @@
                 ${dailySvgBars}
               </svg>
             `}
-          </div>
+          </div>` : ''}
 
-          <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-              <b style="font-size:13.5px;color:#10B981;">📊 منحنى الأوردرات السنوي</b>
+          ${vis('chart_annual') ? `
+          <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;position:relative;">
+            ${drCardRemoveBtn(isInteractivePreview, 'chart_annual', 'شارت منحنى الأوردرات السنوي')}
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-left:${isInteractivePreview ? '22px' : '0'};">
+              <b style="font-size:13.5px;color:#10B981;">📊 ${drEditableTerm(isInteractivePreview, st, 'lbl_chart_annual', 'منحنى الأوردرات السنوي')}</b>
               <span style="font-size:11px;color:#94A3B8;">شهر 1 (يناير) – شهر 10 (أكتوبر)</span>
             </div>
             ${chartUrls && chartUrls.annualChart ? `<img src="${chartUrls.annualChart}" style="width:100%;height:auto;border-radius:8px;" />` : `
@@ -18859,16 +19301,17 @@
                 ${annualSvgBars}
               </svg>
             `}
-          </div>
+          </div>` : ''}
         </div>
         ` : ''}
 
-        ${sec.topbot5 !== false ? `
-        <!-- SECTION 6: أفضل 5 سائقين & أدنى 5 سائقين (لأصحاب الأرقام فقط في خلايا الشيت اليومي) -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-          <!-- Top 5 Drivers -->
-          <div style="background:#0F172A;border:1px solid #1E293B;border-top:3px solid #10B981;border-radius:12px;padding:12px 14px;">
-            <div style="font-size:13.5px;font-weight:900;color:#34D399;margin-bottom:8px;">🏆 أفضل 5 سائقين</div>
+        ${sec.topbot5 !== false && (vis('tbl_top5') || vis('tbl_bot5')) ? `
+        <!-- SECTION 6: أفضل 5 سائقين & أدنى 5 سائقين -->
+        <div style="display:grid;grid-template-columns:${vis('tbl_top5') && vis('tbl_bot5') ? '1fr 1fr' : '1fr'};gap:14px;">
+          ${vis('tbl_top5') ? `
+          <div style="background:#0F172A;border:1px solid #1E293B;border-top:3px solid #10B981;border-radius:12px;padding:12px 14px;position:relative;">
+            ${drCardRemoveBtn(isInteractivePreview, 'tbl_top5', 'جدول أفضل 5 سائقين')}
+            <div style="font-size:13.5px;font-weight:900;color:#34D399;margin-bottom:8px;">🏆 ${drEditableTerm(isInteractivePreview, st, 'lbl_tbl_top5', 'أفضل 5 سائقين')}</div>
             <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
               <thead>
                 <tr style="background:#161F30;color:#38BDF8;">
@@ -18878,6 +19321,7 @@
                   <th style="padding:6px;border:1px solid #26334D;">أوردرات اليوم</th>
                   <th style="padding:6px;border:1px solid #26334D;">فوق التارجت</th>
                   <th style="padding:6px;border:1px solid #26334D;">ساعات العمل</th>
+                  ${isInteractivePreview ? `<th class="dr-no-export" style="padding:6px;border:1px solid #26334D;width:30px;">✕</th>` : ''}
                 </tr>
               </thead>
               <tbody>
@@ -18889,16 +19333,18 @@
                     <td style="padding:6px;border:1px solid #26334D;font-weight:900;color:#34D399;font-size:13px;">${r.dayOrders}</td>
                     <td style="padding:6px;border:1px solid #26334D;font-weight:900;color:#10B981;">+${Math.max(0, r.dayOrders - d.dailyTarget)}</td>
                     <td style="padding:6px;border:1px solid #26334D;color:#CBD5E1;font-weight:700;">${r.workHoursFormatted} س</td>
+                    ${isInteractivePreview ? `<td class="dr-no-export" style="padding:4px;border:1px solid #26334D;text-align:center;"><button onclick="removeDailyReportElement('row_top5_${r.id}', 'صف السائق ${r.nameAr}')" title="إزالة هذا الصف" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;border-radius:4px;width:20px;height:20px;cursor:pointer;font-weight:900;">✕</button></td>` : ''}
                   </tr>
                 `).join('')}
               </tbody>
             </table>
-          </div>
+          </div>` : ''}
 
-          <!-- Bottom 5 Drivers (Strictly ONLY drivers with numeric values in their daily orders cell!) -->
-          <div style="background:#0F172A;border:1px solid #1E293B;border-top:3px solid #EF4444;border-radius:12px;padding:12px 14px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-              <span style="font-size:13.5px;font-weight:900;color:#F87171;">⚠️ أدنى 5 سائقين (لأصحاب الأرقام فقط)</span>
+          ${vis('tbl_bot5') ? `
+          <div style="background:#0F172A;border:1px solid #1E293B;border-top:3px solid #EF4444;border-radius:12px;padding:12px 14px;position:relative;">
+            ${drCardRemoveBtn(isInteractivePreview, 'tbl_bot5', 'جدول أدنى 5 سائقين')}
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-left:${isInteractivePreview ? '22px' : '0'};">
+              <span style="font-size:13.5px;font-weight:900;color:#F87171;">⚠️ ${drEditableTerm(isInteractivePreview, st, 'lbl_tbl_bot5', 'أدنى 5 سائقين (لأصحاب الأرقام فقط)')}</span>
               <span style="font-size:10.5px;color:#94A3B8;">يستبعد الخلايا النصية/الفارغة</span>
             </div>
             <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
@@ -18910,6 +19356,7 @@
                   <th style="padding:6px;border:1px solid #26334D;">أوردرات اليوم</th>
                   <th style="padding:6px;border:1px solid #26334D;">عجز اليوم</th>
                   <th style="padding:6px;border:1px solid #26334D;">ساعات العمل والكومنت</th>
+                  ${isInteractivePreview ? `<th class="dr-no-export" style="padding:6px;border:1px solid #26334D;width:30px;">✕</th>` : ''}
                 </tr>
               </thead>
               <tbody>
@@ -18924,22 +19371,23 @@
                       <span style="background:rgba(56,189,248,0.15);color:#38BDF8;padding:2px 6px;border-radius:5px;font-weight:900;margin-left:5px;">⏱️ ${r.workHoursFormatted} س</span>
                       <span style="color:#FBBF24;font-weight:800;">💬 ${r.effectiveExcuse}</span>
                     </td>
+                    ${isInteractivePreview ? `<td class="dr-no-export" style="padding:4px;border:1px solid #26334D;text-align:center;"><button onclick="removeDailyReportElement('row_bot5_${r.id}', 'صف السائق ${r.nameAr}')" title="إزالة هذا الصف" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;border-radius:4px;width:20px;height:20px;cursor:pointer;font-weight:900;">✕</button></td>` : ''}
                   </tr>
                 `).join('')}
               </tbody>
             </table>
-          </div>
+          </div>` : ''}
         </div>
         ` : ''}
 
-        ${sec.excuses !== false ? `
-        <!-- SECTION 7: أعذار الأقل إنتاجية (Hours next to Cell Comment) & تصنيف الأعذار (%) -->
-        <div style="display:grid;grid-template-columns:1.45fr 1fr;gap:14px;">
-          
-          <!-- Detailed Low-Productivity Drivers Excuses & Working Hours Side-by-Side -->
-          <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-              <b style="font-size:13.5px;color:#FBBF24;">💬 أعذار الأقل إنتاجية</b>
+        ${sec.excuses !== false && (vis('tbl_low_excuses') || vis('tbl_excuse_cats')) ? `
+        <!-- SECTION 7: أعذار الأقل إنتاجية & تصنيف الأعذار (%) -->
+        <div style="display:grid;grid-template-columns:${vis('tbl_low_excuses') && vis('tbl_excuse_cats') ? '1.45fr 1fr' : '1fr'};gap:14px;">
+          ${vis('tbl_low_excuses') ? `
+          <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;position:relative;">
+            ${drCardRemoveBtn(isInteractivePreview, 'tbl_low_excuses', 'جدول أعذار الأقل إنتاجية')}
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-left:${isInteractivePreview ? '22px' : '0'};">
+              <b style="font-size:13.5px;color:#FBBF24;">💬 ${drEditableTerm(isInteractivePreview, st, 'lbl_tbl_exc', 'أعذار الأقل إنتاجية')}</b>
               <span style="font-size:11px;color:#94A3B8;">ساعات عمل السائق اليومية بجوار الكومنت</span>
             </div>
             <table style="width:100%;border-collapse:collapse;font-size:11px;">
@@ -18950,6 +19398,7 @@
                   <th style="padding:6px;border:1px solid #26334D;">أوردرات اليوم</th>
                   <th style="padding:6px;border:1px solid #26334D;">ساعات عمل اليوم + الكومنت / الملحوظة</th>
                   <th style="padding:6px;border:1px solid #26334D;">التصنيف</th>
+                  ${isInteractivePreview ? `<th class="dr-no-export" style="padding:6px;border:1px solid #26334D;width:30px;">✕</th>` : ''}
                 </tr>
               </thead>
               <tbody>
@@ -18971,17 +19420,19 @@
                       `}
                     </td>
                     <td style="padding:5.5px 6px;border:1px solid #26334D;"><span style="background:rgba(245,158,11,0.15);color:#FBBF24;padding:2px 7px;border-radius:99px;font-weight:800;font-size:10px;">${r.excuseCategory}</span></td>
+                    ${isInteractivePreview ? `<td class="dr-no-export" style="padding:4px;border:1px solid #26334D;text-align:center;"><button onclick="removeDailyReportElement('row_exc_${r.id}', 'صف عذر السائق ${r.nameAr}')" title="إزالة هذا الصف" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;border-radius:4px;width:20px;height:20px;cursor:pointer;font-weight:900;">✕</button></td>` : ''}
                   </tr>
                 `).join('')}
               </tbody>
             </table>
-          </div>
+          </div>` : ''}
 
-          <!-- Excuses Percentage Breakdown Table & Bars -->
-          <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;">
+          ${vis('tbl_excuse_cats') ? `
+          <div style="background:#0F172A;border:1px solid #1E293B;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;position:relative;">
+            ${drCardRemoveBtn(isInteractivePreview, 'tbl_excuse_cats', 'جدول تصنيف الأعذار')}
             <div>
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <b style="font-size:13.5px;color:#F472B6;">📊 تصنيف الأعذار</b>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-left:${isInteractivePreview ? '22px' : '0'};">
+                <b style="font-size:13.5px;color:#F472B6;">📊 ${drEditableTerm(isInteractivePreview, st, 'lbl_tbl_excat', 'تصنيف الأعذار')}</b>
                 <span style="font-size:11px;color:#94A3B8;">نسب مئوية ومقارنة بالأوردرات</span>
               </div>
               <table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:10px;">
@@ -18991,6 +19442,7 @@
                     <th style="padding:6px;border:1px solid #26334D;">العدد</th>
                     <th style="padding:6px;border:1px solid #26334D;">% من الأعذار</th>
                     <th style="padding:6px;border:1px solid #26334D;">% للأوردرات</th>
+                    ${isInteractivePreview ? `<th class="dr-no-export" style="padding:6px;border:1px solid #26334D;width:28px;">✕</th>` : ''}
                   </tr>
                 </thead>
                 <tbody>
@@ -19011,6 +19463,7 @@
                           </div>
                         </td>
                         <td style="padding:5.5px 6px;border:1px solid #26334D;color:#FBBF24;font-weight:800;">${c.lostOrdersVsTotalPct}%</td>
+                        ${isInteractivePreview ? `<td class="dr-no-export" style="padding:4px;border:1px solid #26334D;text-align:center;"><button onclick="removeDailyReportElement('row_excat_${c.category}', 'تصنيف ${c.category}')" title="إزالة هذا الصف" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;border-radius:4px;width:20px;height:20px;cursor:pointer;font-weight:900;">✕</button></td>` : ''}
                       </tr>
                     `;
                   }).join('')}
@@ -19022,20 +19475,23 @@
               <div>• <b>نسبة الأعذار الإجمالية بالأسطول:</b> <span style="color:#FBBF24;font-weight:900;">${d.fleetExcusePctToday}%</span> (${d.todayExcusesCount} من ${d.totalRiders} سائق)</div>
               <div style="margin-top:3px;">• <b>نسبة الأعذار مقارنة بتوتال الأوردرات:</b> <span style="color:#F87171;font-weight:900;">${d.excusesVsTodayOrdersPct}%</span> (أثر الفقد التقديري: <b>${d.lostOrdersImpactTodayPct}%</b>)</div>
             </div>
-          </div>
+          </div>` : ''}
         </div>
         ` : ''}
 
         ${sec.tomorrow !== false ? `
-        <!-- SECTION 8: ساعات عمل الغد وأقل 10 سائقين في الحجوزات (Tomorrow Total Hours & Lowest 10 Booked Drivers + Manual Notes) -->
+        <!-- SECTION 8: ساعات عمل الغد وأقل 10 سائقين في الحجوزات -->
         <div style="background:#0F172A;border:1px solid #1E293B;border-right:4px solid #38BDF8;border-radius:12px;padding:12px 15px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
             <div style="display:flex;align-items:center;gap:10px;">
-              <b style="font-size:14px;color:#38BDF8;">⏱️ ساعات الغد وأقل 10 سائقين في الحجوزات</b>
-              <span style="font-size:11px;color:#94A3B8;">(يمكنك كتابة ملحوظة يدوية بجوار كل سائق من الـ 10 الأقل في الحجوزات)</span>
+              <b style="font-size:14px;color:#38BDF8;">⏱️ ${drEditableTerm(isInteractivePreview, st, 'sec_title_tomorrow', 'ساعات الغد وأقل 10 سائقين في الحجوزات')}</b>
+              <span style="font-size:11px;color:#94A3B8;">(يمكنك كتابة ملحوظة يدوية أو إزالة أي صف بـ ✕)</span>
             </div>
-            <div style="background:rgba(56,189,248,0.16);border:1px solid rgba(56,189,248,0.45);padding:4px 14px;border-radius:99px;font-size:12.5px;font-weight:900;color:#38BDF8;">
-              ⏱️ إجمالي توتال عدد ساعات الغد: <span style="color:#34D399;font-size:14px;">${d.tomorrowTotalWorkFormatted} ساعة</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="background:rgba(56,189,248,0.16);border:1px solid rgba(56,189,248,0.45);padding:4px 14px;border-radius:99px;font-size:12.5px;font-weight:900;color:#38BDF8;">
+                ⏱️ إجمالي توتال عدد ساعات الغد: <span style="color:#34D399;font-size:14px;">${d.tomorrowTotalWorkFormatted} ساعة</span>
+              </div>
+              ${isInteractivePreview ? `<button class="dr-no-export" onclick="toggleDailyReportSectionKey('tomorrow', false)" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:2px 8px;font-size:10.5px;font-weight:800;cursor:pointer;">✕ إخفاء القسم</button>` : ''}
             </div>
           </div>
           <table style="width:100%;border-collapse:collapse;font-size:11px;">
@@ -19048,7 +19504,8 @@
                 <th style="padding:6px;border:1px solid #26334D;">المشرف</th>
                 <th style="padding:6px;border:1px solid #26334D;">أوردرات اليوم</th>
                 <th style="padding:6px;border:1px solid #26334D;">ساعات الحجز / العمل</th>
-                <th style="padding:6px;border:1px solid #26334D;width:42%;">📝 ملحوظة يدوية بجوار السائق (تُحفظ وتُصدّر تلقائياً)</th>
+                <th style="padding:6px;border:1px solid #26334D;width:40%;">📝 ملحوظة يدوية بجوار السائق (تُحفظ وتُصدّر تلقائياً)</th>
+                ${isInteractivePreview ? `<th class="dr-no-export" style="padding:6px;border:1px solid #26334D;width:30px;">✕</th>` : ''}
               </tr>
             </thead>
             <tbody>
@@ -19068,6 +19525,7 @@
                       <span style="color:#34D399;font-weight:800;">📝 ${r.tomorrowManualNote || '—'}</span>
                     `}
                   </td>
+                  ${isInteractivePreview ? `<td class="dr-no-export" style="padding:4px;border:1px solid #26334D;text-align:center;"><button onclick="removeDailyReportElement('row_low10_${r.id}', 'صف السائق ${r.nameAr} من أقل 10 ساعات')" title="إزالة هذا الصف" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;border-radius:4px;width:20px;height:20px;cursor:pointer;font-weight:900;">✕</button></td>` : ''}
                 </tr>
               `).join('')}
             </tbody>
@@ -19080,11 +19538,10 @@
         <div style="display:grid;grid-template-columns:${sec.nofuel !== false && sec.leaves !== false ? '1.15fr 1fr' : '1fr'};gap:14px;">
           
           ${sec.nofuel !== false ? `
-          <!-- Drivers with No Fuel Card Balance -->
-          <div style="background:#0F172A;border:1px solid #1E293B;border-right:4px solid #EC4899;border-radius:12px;padding:12px 14px;">
+          <div style="background:#0F172A;border:1px solid #1E293B;border-right:4px solid #EC4899;border-radius:12px;padding:12px 14px;position:relative;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
-              <b style="font-size:13.5px;color:#F472B6;">⛽ سائقون بدون رصيد في كروت البنزين (${d.noFuelDriversList.length})</b>
-              <span style="font-size:10.5px;color:#94A3B8;">كروت صفرية/حرجة أو بدون رصيد مربوط</span>
+              <b style="font-size:13.5px;color:#F472B6;">⛽ ${drEditableTerm(isInteractivePreview, st, 'sec_title_nofuel', 'سائقون بدون رصيد في كروت البنزين')} (${d.noFuelDriversList.length})</b>
+              ${isInteractivePreview ? `<button class="dr-no-export" onclick="toggleDailyReportSectionKey('nofuel', false)" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:800;cursor:pointer;">✕ إخفاء</button>` : `<span style="font-size:10.5px;color:#94A3B8;">كروت صفرية/حرجة أو بدون رصيد</span>`}
             </div>
             <div style="max-height:${isInteractivePreview ? '240px' : 'none'};overflow-y:auto;">
               <table style="width:100%;border-collapse:collapse;font-size:11px;">
@@ -19097,6 +19554,7 @@
                     <th style="padding:5px 6px;border:1px solid #26334D;">السيريال / الكارت</th>
                     <th style="padding:5px 6px;border:1px solid #26334D;">الرصيد المتبقي</th>
                     <th style="padding:5px 6px;border:1px solid #26334D;">الحالة</th>
+                    ${isInteractivePreview ? `<th class="dr-no-export" style="padding:5px;border:1px solid #26334D;width:28px;">✕</th>` : ''}
                   </tr>
                 </thead>
                 <tbody>
@@ -19109,8 +19567,9 @@
                       <td style="padding:5px 6px;border:1px solid #26334D;color:#FBBF24;font-weight:700;">${f.fuelSerial !== '—' ? f.fuelSerial : f.fuelCard}</td>
                       <td style="padding:5px 6px;border:1px solid #26334D;font-weight:900;color:${f.isCritical ? '#F87171' : '#94A3B8'};">${f.balance}</td>
                       <td style="padding:5px 6px;border:1px solid #26334D;"><span style="background:${f.isCritical ? 'rgba(239,68,68,0.16)' : 'rgba(148,163,184,0.14)'};color:${f.isCritical ? '#FCA5A5' : '#CBD5E1'};padding:2px 6px;border-radius:99px;font-size:10px;font-weight:800;">${f.statusLabel}</span></td>
+                      ${isInteractivePreview ? `<td class="dr-no-export" style="padding:4px;border:1px solid #26334D;text-align:center;"><button onclick="removeDailyReportElement('row_nofuel_${f.id}', 'صف كارت بنزين ${f.nameAr}')" title="إزالة هذا الصف" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;border-radius:4px;width:20px;height:20px;cursor:pointer;font-weight:900;">✕</button></td>` : ''}
                     </tr>
-                  `).join('') || `<tr><td colspan="7" style="text-align:center;padding:10px;color:#34D399;">✅ جميع السائقين لديهم رصيد كروت بنزين كافٍ</td></tr>`}
+                  `).join('') || `<tr><td colspan="8" style="text-align:center;padding:10px;color:#34D399;">✅ جميع السائقين لديهم رصيد كروت بنزين كافٍ</td></tr>`}
                 </tbody>
               </table>
             </div>
@@ -19118,11 +19577,10 @@
           ` : ''}
 
           ${sec.leaves !== false ? `
-          <!-- Manual Leaves / Vacation Users Registry (الاي دي - الاسم - عدد الايام - السبب - الحالة) -->
-          <div style="background:#0F172A;border:1px solid #1E293B;border-right:4px solid #10B981;border-radius:12px;padding:12px 14px;">
+          <div style="background:#0F172A;border:1px solid #1E293B;border-right:4px solid #10B981;border-radius:12px;padding:12px 14px;position:relative;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
-              <b style="font-size:13.5px;color:#34D399;">🏖️ سجل إجازات السائقين (${d.manualState.manualLeavesList.length})</b>
-              <span style="font-size:10.5px;color:#94A3B8;">الاي دي • الاسم • عدد الأيام • السبب • الحالة</span>
+              <b style="font-size:13.5px;color:#34D399;">🏖️ ${drEditableTerm(isInteractivePreview, st, 'sec_title_leaves', 'سجل إجازات السائقين')} (${d.manualState.manualLeavesList.length})</b>
+              ${isInteractivePreview ? `<button class="dr-no-export" onclick="toggleDailyReportSectionKey('leaves', false)" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:800;cursor:pointer;">✕ إخفاء</button>` : `<span style="font-size:10.5px;color:#94A3B8;">الاي دي • الاسم • عدد الأيام • السبب • الحالة</span>`}
             </div>
             <table style="width:100%;border-collapse:collapse;font-size:11px;">
               <thead>
@@ -19132,6 +19590,7 @@
                   <th style="padding:5px 6px;border:1px solid #26334D;">عدد الأيام</th>
                   <th style="padding:5px 6px;border:1px solid #26334D;">السبب</th>
                   <th style="padding:5px 6px;border:1px solid #26334D;">الحالة</th>
+                  ${isInteractivePreview ? `<th class="dr-no-export" style="padding:5px;border:1px solid #26334D;width:28px;">✕</th>` : ''}
                 </tr>
               </thead>
               <tbody>
@@ -19142,8 +19601,9 @@
                     <td style="padding:5.5px 6px;border:1px solid #26334D;font-weight:900;color:#FBBF24;text-align:center;">${lv.days || '—'}</td>
                     <td style="padding:5.5px 6px;border:1px solid #26334D;color:#CBD5E1;">${lv.reason || '—'}</td>
                     <td style="padding:5.5px 6px;border:1px solid #26334D;text-align:center;"><span style="background:rgba(16,185,129,0.16);color:#34D399;padding:2px 7px;border-radius:99px;font-weight:800;font-size:10px;">${lv.status || 'إجازة معتمدة'}</span></td>
+                    ${isInteractivePreview ? `<td class="dr-no-export" style="padding:4px;border:1px solid #26334D;text-align:center;"><button onclick="removeManualLeaveUserRow(${idx})" title="حذف صف الإجازة" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;border-radius:4px;width:20px;height:20px;cursor:pointer;font-weight:900;">✕</button></td>` : ''}
                   </tr>
-                `).join('') || `<tr><td colspan="5" style="text-align:center;padding:10px;color:#64748B;">لا توجد إجازات مسجلة حالياً</td></tr>`}
+                `).join('') || `<tr><td colspan="6" style="text-align:center;padding:10px;color:#64748B;">لا توجد إجازات مسجلة حالياً</td></tr>`}
               </tbody>
             </table>
           </div>
@@ -19152,19 +19612,22 @@
         </div>
         ` : ''}
 
-        ${sec.maint !== false ? `
-        <!-- SECTION 11: حالة الصيانة (سياكل تحت الصيانة + الاسبير المتاح بالورشة) -->
+        ${sec.maint !== false && (vis('box_maint_bikes') || vis('box_spare_bikes')) ? `
+        <!-- SECTION 11: حالة الصيانة -->
         <div style="background:#0F172A;border:1px solid #1E293B;border-right:4px solid #F59E0B;border-radius:12px;padding:12px 16px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
-            <b style="font-size:14px;color:#FBBF24;">🔧 حالة الصيانة</b>
-            <div style="display:flex;gap:10px;">
+            <b style="font-size:14px;color:#FBBF24;">🔧 ${drEditableTerm(isInteractivePreview, st, 'sec_title_maint', 'حالة الصيانة')}</b>
+            <div style="display:flex;gap:8px;align-items:center;">
               <span style="background:rgba(245,158,11,0.16);color:#FBBF24;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:900;">🛠️ سياكل بالصيانة: ${d.manualState.maintBikesList.length}</span>
               <span style="background:rgba(16,185,129,0.16);color:#34D399;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:900;">🏍️ الاسبير المتاح: ${d.manualState.spareBikesCount}</span>
+              ${isInteractivePreview ? `<button class="dr-no-export" onclick="toggleDailyReportSectionKey('maint', false)" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:800;cursor:pointer;">✕ إخفاء القسم</button>` : ''}
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px;">
-            <div>
+          <div style="display:grid;grid-template-columns:${vis('box_maint_bikes') && vis('box_spare_bikes') ? '1.4fr 1fr' : '1fr'};gap:12px;">
+            ${vis('box_maint_bikes') ? `
+            <div style="position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'box_maint_bikes', 'جدول سياكل تحت الصيانة')}
               <div style="font-size:11.5px;font-weight:900;color:#CBD5E1;margin-bottom:6px;">سياكل تحت الصيانة</div>
               <table style="width:100%;border-collapse:collapse;font-size:11px;">
                 <thead>
@@ -19172,6 +19635,7 @@
                     <th style="padding:5px 7px;border:1px solid #26334D;">السيكل / السائق</th>
                     <th style="padding:5px 7px;border:1px solid #26334D;">تفاصيل العطل</th>
                     <th style="padding:5px 7px;border:1px solid #26334D;">مدة انتهاء الصيانة</th>
+                    ${isInteractivePreview ? `<th class="dr-no-export" style="padding:5px;border:1px solid #26334D;width:28px;">✕</th>` : ''}
                   </tr>
                 </thead>
                 <tbody>
@@ -19180,17 +19644,20 @@
                       <td style="padding:5px 7px;border:1px solid #26334D;font-weight:800;color:#F8FAFC;">${m.bike}</td>
                       <td style="padding:5px 7px;border:1px solid #26334D;color:#CBD5E1;">${m.issue}</td>
                       <td style="padding:5px 7px;border:1px solid #26334D;font-weight:900;color:#34D399;">⏱️ ${m.eta}</td>
+                      ${isInteractivePreview ? `<td class="dr-no-export" style="padding:4px;border:1px solid #26334D;text-align:center;"><button onclick="removeManualMaintBikeRow(${idx})" title="إزالة هذا الصف" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;border-radius:4px;width:20px;height:20px;cursor:pointer;font-weight:900;">✕</button></td>` : ''}
                     </tr>
-                  `).join('') || `<tr><td colspan="3" style="text-align:center;padding:8px;color:#64748B;">لا توجد سياكل تحت الصيانة حالياً</td></tr>`}
+                  `).join('') || `<tr><td colspan="4" style="text-align:center;padding:8px;color:#64748B;">لا توجد سياكل تحت الصيانة حالياً</td></tr>`}
                 </tbody>
               </table>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#161F30;border:1px solid #26334D;border-radius:10px;padding:12px;display:flex;flex-direction:column;justify-content:center;">
+            ${vis('box_spare_bikes') ? `
+            <div style="background:#161F30;border:1px solid #26334D;border-radius:10px;padding:12px;display:flex;flex-direction:column;justify-content:center;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'box_spare_bikes', 'كرت الاسبير المتاح بالورشة')}
               <div style="font-size:12px;font-weight:900;color:#34D399;margin-bottom:4px;">🏍️ الاسبير المتاح بالورشة</div>
               <div style="font-size:24px;font-weight:900;color:#10B981;margin-bottom:4px;">${d.manualState.spareBikesCount} <small style="font-size:12px;">سياكل جاهزة</small></div>
               <div style="font-size:11.5px;color:#E2E8F0;line-height:1.5;">${d.manualState.spareBikesDetails || 'متاحة بالورشة للتسليم الفوري'}</div>
-            </div>
+            </div>` : ''}
           </div>
         </div>
         ` : ''}
@@ -19198,31 +19665,43 @@
         ${sec.sups !== false ? `
         <!-- SECTION 12: متابعة المشرفين (Islam, Omar, Emad, Irham) + ملحوظات يدوية -->
         <div style="background:#0F172A;border:1px solid #1E293B;border-right:4px solid #38BDF8;border-radius:12px;padding:12px 16px;">
-          <div style="font-size:14px;font-weight:900;color:#38BDF8;margin-bottom:10px;">👤 متابعة المشرفين</div>
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px;">
-            <div style="background:#161F30;border:1px solid #26334D;border-left:4px solid #38BDF8;border-radius:9px;padding:9px 12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <div style="font-size:14px;font-weight:900;color:#38BDF8;">👤 ${drEditableTerm(isInteractivePreview, st, 'sec_title_sups', 'متابعة المشرفين')}</div>
+            ${isInteractivePreview ? `<button class="dr-no-export" onclick="toggleDailyReportSectionKey('sups', false)" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:800;cursor:pointer;">✕ إخفاء القسم</button>` : ''}
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-bottom:10px;">
+            ${vis('sup_Islam') ? `
+            <div style="background:#161F30;border:1px solid #26334D;border-left:4px solid #38BDF8;border-radius:9px;padding:9px 12px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'sup_Islam', 'كرت المشرف إسلام')}
               <div style="font-size:12px;font-weight:900;color:#38BDF8;margin-bottom:4px;">👤 إسلام | Islam</div>
               <div dir="auto" style="font-size:11.5px;color:#F8FAFC;line-height:1.45;font-family:'Inter','Cairo',sans-serif;">${d.manualState.supNotes.Islam || '—'}</div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#161F30;border:1px solid #26334D;border-left:4px solid #34D399;border-radius:9px;padding:9px 12px;">
+            ${vis('sup_Omar') ? `
+            <div style="background:#161F30;border:1px solid #26334D;border-left:4px solid #34D399;border-radius:9px;padding:9px 12px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'sup_Omar', 'كرت المشرف عمر')}
               <div style="font-size:12px;font-weight:900;color:#34D399;margin-bottom:4px;">👤 عمر | Omar</div>
               <div dir="auto" style="font-size:11.5px;color:#F8FAFC;line-height:1.45;font-family:'Inter','Cairo',sans-serif;">${d.manualState.supNotes.Omar || '—'}</div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#161F30;border:1px solid #26334D;border-left:4px solid #FBBF24;border-radius:9px;padding:9px 12px;">
+            ${vis('sup_Emad') ? `
+            <div style="background:#161F30;border:1px solid #26334D;border-left:4px solid #FBBF24;border-radius:9px;padding:9px 12px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'sup_Emad', 'كرت المشرف عماد')}
               <div style="font-size:12px;font-weight:900;color:#FBBF24;margin-bottom:4px;">👤 عماد | Emad</div>
               <div dir="auto" style="font-size:11.5px;color:#F8FAFC;line-height:1.45;font-family:'Inter','Cairo',sans-serif;">${d.manualState.supNotes.Emad || '—'}</div>
-            </div>
+            </div>` : ''}
 
-            <div style="background:#161F30;border:1px solid #26334D;border-left:4px solid #C084FC;border-radius:9px;padding:9px 12px;">
+            ${vis('sup_Irham') ? `
+            <div style="background:#161F30;border:1px solid #26334D;border-left:4px solid #C084FC;border-radius:9px;padding:9px 12px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'sup_Irham', 'كرت المشرف إرهام')}
               <div style="font-size:12px;font-weight:900;color:#C084FC;margin-bottom:4px;">👤 إرهام | Irham</div>
               <div dir="auto" style="font-size:11.5px;color:#F8FAFC;line-height:1.45;font-family:'Inter','Cairo',sans-serif;">${d.manualState.supNotes.Irham || '—'}</div>
-            </div>
+            </div>` : ''}
           </div>
 
-          ${d.manualState.generalNote ? `
-            <div style="background:#161F30;border:1px solid #334155;border-right:4px solid #10B981;border-radius:8px;padding:8px 12px;font-size:11.5px;color:#E2E8F0;">
+          ${vis('box_general_note') && d.manualState.generalNote ? `
+            <div style="background:#161F30;border:1px solid #334155;border-right:4px solid #10B981;border-radius:8px;padding:8px 12px;font-size:11.5px;color:#E2E8F0;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'box_general_note', 'صندوق الملحوظات اليدوية العامة')}
               <b style="color:#34D399;">📝 ملحوظات يدوية:</b> ${d.manualState.generalNote}
             </div>
           ` : ''}
@@ -19338,8 +19817,9 @@
       flex-direction: column;
       gap: 14px;
     }
+    .dr-no-export { display: none !important; }
     @media print {
-      .no-print { display: none !important; }
+      .no-print, .dr-no-export { display: none !important; }
       body { padding: 8px; background: #090D16 !important; }
     }
   </style>
@@ -19357,7 +19837,7 @@
     }
 
     async function exportDarkDailyReportPrintWindow() {
-      showToast('⏳ جاري تجهيز التقرير اليومي بالوضع الليلي للعناصر المحددة...');
+      showToast('⏳ جاري تجهيز التقرير اليومي بالوضع الليلي للعناصر المحددة فقط...');
       const d = computeDailyReportDataset();
       const charts = await generateDarkDailyReportCharts(d);
       const fullHtml = buildCompleteStandaloneDarkReportHTMLDocument(d, charts);
@@ -19394,7 +19874,9 @@
         return;
       }
       const d = computeDailyReportDataset();
-      const sec = d.manualState.enabledSections || {};
+      const st = d.manualState;
+      const sec = st.enabledSections || {};
+      const vis = (key) => isDrItemVisible(st, key);
       const wb = XLSX.utils.book_new();
 
       const summaryRows = [
@@ -19403,72 +19885,70 @@
       ];
 
       if (sec.summary !== false) {
-        summaryRows.push(
-          ['ملخص الإنتاجية والتارجت اليومي (طبقا للتارجت اليومي فقط)', 'القيمة', 'التفاصيل'],
-          ['توتال أوردرات اليوم', d.todayOrdersTotal, 'طلب'],
-          ['إجمالي ساعات عمل اليوم', d.totalTodayWorkFormatted, 'ساعة'],
-          ['إجمالي توتال عدد ساعات الغد', d.tomorrowTotalWorkFormatted, 'ساعة'],
-          ['فئة مستوفوا التارجت اليومي (عدد السائقين)', d.targetMetCount, `${d.targetMetPct}% من الأسطول`],
-          ['إجمالي أوردرات فئة مستوفي التارجت اليوم', d.metGroupTotalOrders, `التارجت الأساسي: ${d.metGroupBaseTargetOrders} طلب`],
-          ['عدد أوردرات فوق التارجت (فئة مستوفي التارجت)', `+${d.ordersAboveTargetTotal}`, 'طلب إضافي فوق التارجت اليومي'],
-          ['فئة عاجزون عن التارجت اليومي (عدد السائقين)', d.targetDeficitCount, `${d.targetDeficitPct}% من الأسطول`],
-          ['عدد أوردرات قبل التارجت (فئة العاجزين عن التارجت)', d.deficitGroupTotalOrders, `المطلوب للتارجت: ${d.deficitGroupRequiredOrders} طلب`],
-          ['إجمالي عجز الأوردرات عن التارجت اليومي (فئة العاجزين)', `-${d.ordersDeficitBelowTargetTotal}`, 'طلب ناقص عن التارجت اليومي'],
-          ['نسبة الأعذار اليوم', `${d.fleetExcusePctToday}%`, `${d.todayExcusesCount} حالة`],
-          ['نسبة الأعذار مقارنة بتوتال الأوردرات', `${d.excusesVsTodayOrdersPct}%`, `أثر الفقد: ${d.lostOrdersImpactTodayPct}%`],
-          ['أوردرات الشركة التراكمية (أكتوبر)', d.cumMonthOrders, `السنوي (ش1-10): ${d.grandAnnualOrdersToDate}`],
-          []
-        );
+        summaryRows.push(['ملخص الإنتاجية والتارجت اليومي (طبقا للتارجت اليومي فقط)', 'القيمة', 'التفاصيل']);
+        if (vis('card_today_orders')) summaryRows.push(['توتال أوردرات اليوم', d.todayOrdersTotal, 'طلب']);
+        if (vis('card_today_hours')) {
+          summaryRows.push(['إجمالي ساعات عمل اليوم', d.totalTodayWorkFormatted, 'ساعة']);
+          summaryRows.push(['إجمالي توتال عدد ساعات الغد', d.tomorrowTotalWorkFormatted, 'ساعة']);
+        }
+        if (vis('card_target_met') || vis('banner_met_group')) {
+          summaryRows.push(['فئة مستوفوا التارجت اليومي (عدد السائقين)', d.targetMetCount, `${d.targetMetPct}% من الأسطول`]);
+          summaryRows.push(['إجمالي أوردرات فئة مستوفي التارجت اليوم', d.metGroupTotalOrders, `التارجت الأساسي: ${d.metGroupBaseTargetOrders} طلب`]);
+          summaryRows.push(['عدد أوردرات فوق التارجت (فئة مستوفي التارجت)', `+${d.ordersAboveTargetTotal}`, 'طلب إضافي فوق التارجت اليومي']);
+        }
+        if (vis('card_target_deficit') || vis('banner_deficit_group')) {
+          summaryRows.push(['فئة عاجزون عن التارجت اليومي (عدد السائقين)', d.targetDeficitCount, `${d.targetDeficitPct}% من الأسطول`]);
+          summaryRows.push(['عدد أوردرات قبل التارجت (فئة العاجزين عن التارجت)', d.deficitGroupTotalOrders, `المطلوب للتارجت: ${d.deficitGroupRequiredOrders} طلب`]);
+          summaryRows.push(['إجمالي عجز الأوردرات عن التارجت اليومي (فئة العاجزين)', `-${d.ordersDeficitBelowTargetTotal}`, 'طلب ناقص عن التارجت اليومي']);
+        }
+        if (vis('card_excuse_pct')) summaryRows.push(['نسبة الأعذار اليوم', `${d.fleetExcusePctToday}%`, `${d.todayExcusesCount} حالة`]);
+        if (vis('card_excuse_vs_ord')) summaryRows.push(['نسبة الأعذار مقارنة بتوتال الأوردرات', `${d.excusesVsTodayOrdersPct}%`, `أثر الفقد: ${d.lostOrdersImpactTodayPct}%`]);
+        if (vis('card_cum_orders')) summaryRows.push(['أوردرات الشركة التراكمية (أكتوبر)', d.cumMonthOrders, `السنوي (ش1-10): ${d.grandAnnualOrdersToDate}`]);
+        summaryRows.push([]);
       }
 
       if (sec.financials !== false) {
-        summaryRows.push(
-          ['الأداء المالي', 'المبلغ (د.ك)', 'ملاحظات'],
-          ['إيراد الأوردرات', d.totGrossRev.toFixed(3), 'د.ك'],
-          ['رواتب السائقين', d.totDriverSalaries.toFixed(3), 'د.ك'],
-          ['تكاليف الصيانة', d.totMaintCost.toFixed(3), 'د.ك'],
-          ['تكاليف البنزين', d.totFuelCost.toFixed(3), `${d.totFuelLiters.toFixed(1)} لتر`],
-          ['رسوم شحن الموبايل', d.totMobileFee.toFixed(3), 'د.ك'],
-          ['صافي إيراد الشركة', d.totNetRevenue.toFixed(3), 'د.ك'],
-          []
-        );
+        summaryRows.push(['الأداء المالي', 'المبلغ (د.ك)', 'ملاحظات']);
+        if (vis('fin_gross_rev')) summaryRows.push(['إيراد الأوردرات', d.totGrossRev.toFixed(3), 'د.ك']);
+        if (vis('fin_salaries')) summaryRows.push(['رواتب السائقين', d.totDriverSalaries.toFixed(3), 'د.ك']);
+        if (vis('fin_maint')) summaryRows.push(['تكاليف الصيانة', d.totMaintCost.toFixed(3), 'د.ك']);
+        if (vis('fin_fuel')) summaryRows.push(['تكاليف البنزين', d.totFuelCost.toFixed(3), `${d.totFuelLiters.toFixed(1)} لتر`]);
+        if (vis('fin_mobile')) summaryRows.push(['رسوم شحن الموبايل', d.totMobileFee.toFixed(3), 'د.ك']);
+        if (vis('fin_net_rev')) summaryRows.push(['صافي إيراد الشركة', d.totNetRevenue.toFixed(3), 'د.ك']);
+        summaryRows.push([]);
       }
 
       if (sec.sla !== false) {
-        summaryRows.push(
-          ['معايير الأداء التشغيلية', 'القيمة', 'المعيار'],
-          ['نسبة القبول', `${d.avgAcceptancePct}%`, 'SLA'],
-          ['معدل UTR', d.avgUtr, 'طلب/ساعة'],
-          ['ساعات الاستراحات', `${d.breakHoursPct}%`, `${d.totalBreakHours} ساعة`],
-          ['فشل التوصيل', `${d.deliveryFailPct}%`, 'SLA'],
-          ['الالتزام بالساعات (AVP)', `${d.avpCompliancePct}%`, 'SLA'],
-          []
-        );
+        summaryRows.push(['معايير الأداء التشغيلية', 'القيمة', 'المعيار']);
+        if (vis('sla_acc')) summaryRows.push(['نسبة القبول', `${d.avgAcceptancePct}%`, 'SLA']);
+        if (vis('sla_utr')) summaryRows.push(['معدل UTR', d.avgUtr, 'طلب/ساعة']);
+        if (vis('sla_break')) summaryRows.push(['ساعات الاستراحات', `${d.breakHoursPct}%`, `${d.totalBreakHours} ساعة`]);
+        if (vis('sla_fail')) summaryRows.push(['فشل التوصيل', `${d.deliveryFailPct}%`, 'SLA']);
+        if (vis('sla_avp')) summaryRows.push(['الالتزام بالساعات (AVP)', `${d.avpCompliancePct}%`, 'SLA']);
+        summaryRows.push([]);
       }
 
       if (sec.maint !== false) {
-        summaryRows.push(
-          ['حالة الصيانة والورشة', 'التفاصيل', 'المدة / العدد'],
-          ['الاسبير المتاح بالورشة', d.manualState.spareBikesDetails, d.manualState.spareBikesCount],
-          ...d.manualState.maintBikesList.map(m => ['سيكل تحت الصيانة', `${m.bike} — ${m.issue}`, m.eta]),
-          []
-        );
+        summaryRows.push(['حالة الصيانة والورشة', 'التفاصيل', 'المدة / العدد']);
+        if (vis('box_spare_bikes')) summaryRows.push(['الاسبير المتاح بالورشة', d.manualState.spareBikesDetails, d.manualState.spareBikesCount]);
+        if (vis('box_maint_bikes')) {
+          d.manualState.maintBikesList.forEach(m => summaryRows.push(['سيكل تحت الصيانة', `${m.bike} — ${m.issue}`, m.eta]));
+        }
+        summaryRows.push([]);
       }
 
       if (sec.sups !== false) {
-        summaryRows.push(
-          ['متابعة المشرفين بالغد', 'Supervisor Follow-up Note (EN / AR)'],
-          ['إسلام | Islam', d.manualState.supNotes.Islam],
-          ['عمر | Omar', d.manualState.supNotes.Omar],
-          ['عماد | Emad', d.manualState.supNotes.Emad],
-          ['إرهام | Irham', d.manualState.supNotes.Irham],
-          ['ملحوظات يدوية عامة', d.manualState.generalNote]
-        );
+        summaryRows.push(['متابعة المشرفين بالغد', 'Supervisor Follow-up Note (EN / AR)']);
+        if (vis('sup_Islam')) summaryRows.push(['إسلام | Islam', d.manualState.supNotes.Islam]);
+        if (vis('sup_Omar')) summaryRows.push(['عمر | Omar', d.manualState.supNotes.Omar]);
+        if (vis('sup_Emad')) summaryRows.push(['عماد | Emad', d.manualState.supNotes.Emad]);
+        if (vis('sup_Irham')) summaryRows.push(['إرهام | Irham', d.manualState.supNotes.Irham]);
+        if (vis('box_general_note')) summaryRows.push(['ملحوظات يدوية عامة', d.manualState.generalNote]);
       }
 
       XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(summaryRows), 'ملخص التقرير اليومي');
 
-      if (sec.cohorts !== false) {
+      if (sec.cohorts !== false && d.cohortsBreakdown.length > 0) {
         const cohortSheetRows = [
           ['الفئة التشغيلية', 'عدد السائقين', 'أوردرات اليوم', '% المساهمة في توتال اليوم', 'أوردرات الشهر', '% المساهمة في توتال الشهر', 'مستوفو التارجت (عدد)', '% محققو التارجت', 'أوردرات فوق التارجت (+)', 'العاجزون عن التارجت (عدد)', '% العاجزون عن التارجت', 'أوردرات قبل التارجت', 'عجز الأوردرات (-)', 'الكفاءة التشغيلية للفئة (الفارق %)'],
           ...d.cohortsBreakdown.map(c => [
@@ -19486,16 +19966,20 @@
           ['القسم', 'الترتيب', 'ID', 'اسم السائق', 'الشركة', 'أوردرات اليوم', 'فارق التارجت اليومي', 'ساعات عمل اليوم', 'الكومنت / العذر', 'تصنيف العذر', 'إجمالي أوردرات الشهر']
         ];
         if (sec.topbot5 !== false) {
-          d.top5Drivers.forEach((r, i) => {
-            driversRows.push(['أفضل 5 سائقين', i + 1, r.id, r.nameAr, r.co, r.dayOrders, `+${Math.max(0, r.dayOrders - d.dailyTarget)}`, r.workHoursFormatted, r.rawCellComment || '—', 'مستوفٍ للتارجت', r.totalOrders]);
-          });
-          driversRows.push([]);
-          d.bottom5Drivers.forEach((r, i) => {
-            driversRows.push(['أدنى 5 سائقين (أصحاب الأرقام فقط)', i + 1, r.id, r.nameAr, r.co, r.dayOrders, `-${Math.max(0, d.dailyTarget - r.dayOrders)}`, r.workHoursFormatted, r.effectiveExcuse, r.excuseCategory, r.totalOrders]);
-          });
-          driversRows.push([]);
+          if (vis('tbl_top5')) {
+            d.top5Drivers.forEach((r, i) => {
+              driversRows.push(['أفضل 5 سائقين', i + 1, r.id, r.nameAr, r.co, r.dayOrders, `+${Math.max(0, r.dayOrders - d.dailyTarget)}`, r.workHoursFormatted, r.rawCellComment || '—', 'مستوفٍ للتارجت', r.totalOrders]);
+            });
+            driversRows.push([]);
+          }
+          if (vis('tbl_bot5')) {
+            d.bottom5Drivers.forEach((r, i) => {
+              driversRows.push(['أدنى 5 سائقين (أصحاب الأرقام فقط)', i + 1, r.id, r.nameAr, r.co, r.dayOrders, `-${Math.max(0, d.dailyTarget - r.dayOrders)}`, r.workHoursFormatted, r.effectiveExcuse, r.excuseCategory, r.totalOrders]);
+            });
+            driversRows.push([]);
+          }
         }
-        if (sec.excuses !== false) {
+        if (sec.excuses !== false && vis('tbl_low_excuses')) {
           d.lowProdExcusedDrivers.forEach((r, i) => {
             driversRows.push(['أعذار الأقل إنتاجية', i + 1, r.id, r.nameAr, r.co, r.dayOrders, r.dayOrders - d.dailyTarget, r.workHoursFormatted, r.effectiveExcuse, r.excuseCategory, r.totalOrders]);
           });
@@ -19536,7 +20020,7 @@
       }
 
       XLSX.writeFile(wb, `CO_Fleet_Daily_Report_${d.selDay}_Oct_2026.xlsx`);
-      showToast('📊 تم تصدير شيت التقرير اليومي المخصص (.xlsx) بنجاح!');
+      showToast('📊 تم تصدير شيت التقرير اليومي للعناصر المحددة فقط (.xlsx) بنجاح!');
     }
 
   </script>
