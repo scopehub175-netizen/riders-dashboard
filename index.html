@@ -4091,7 +4091,7 @@
                     <button class="btn-secondary" style="padding:2px 8px;font-size:10.5px;" onclick="setAllQualityPdfChecks(false)">إلغاء</button>
                   </div>
                 </div>
-                <label class="pdf-chk-item"><input type="checkbox" id="qchkSummary" checked /> <span>1. الملخص التنفيذي وتوزيع السائقين على المشرفين الـ 5</span></label>
+                <label class="pdf-chk-item" style="display:none!important;"><input type="checkbox" id="qchkSummary" /> <span>1. الملخص التنفيذي</span></label>
                 <label class="pdf-chk-item"><input type="checkbox" id="qchk11Metrics" checked /> <span>2. مصفوفة معايير الكوالتي الـ 11 كاملة لكل سائق</span></label>
                 <label class="pdf-chk-item"><input type="checkbox" id="qchkWeeklyShifts" checked /> <span>3. شريط ساعات العمل الأسبوعية (7 أيام بتصميم بطاقة HD)</span></label>
                 <label class="pdf-chk-item"><input type="checkbox" id="qchkHistM1M9" checked /> <span>4. جدول السجل التفصيلي (ش1 إلى ش10 من فاتورة طلبات + نوفمبر ش11 + استهلاك البنزين السنوي ش1–10)</span></label>
@@ -4106,7 +4106,7 @@
         </div>
 
         <!-- Supervisors Summary Strip (ياسر، اسلام، عمر، عماد، ارحام) -->
-        <div class="kpi-grid" id="qualitySupervisorsKpiGrid"></div>
+        <div class="kpi-grid" id="qualitySupervisorsKpiGrid" style="display:none!important;"></div>
 
         <!-- Quality Filter & Ranking Selector Bar -->
         <div class="filter-bar" style="border:1.5px solid rgba(16,185,129,0.35)!important;">
@@ -17752,15 +17752,7 @@
             </div>
           </div>
 
-          ${incSummary ? `
-            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;">
-              ${SUPERVISORS_LIST.map(s => {
-                const sr = DB.allRidersList.filter(r => r.supervisor === s);
-                const sc = sr.length > 0 ? (sr.reduce((a, b) => a + b.qualityScore, 0) / sr.length).toFixed(1) : '0.0';
-                return `<div style="background:#161F30;border:1px solid #334155;border-radius:10px;padding:8px;text-align:center;"><div style="font-size:10.5px;color:#94A3B8;">${isEn ? 'Supervisor' : 'المشرف المسؤول'}</div><div style="font-size:14px;font-weight:900;color:#FFF;margin:2px 0;">👤 ${isEn ? SUPERVISORS_EN_MAP[s] : `${s} (${SUPERVISORS_EN_MAP[s]})`}</div><div style="font-size:11px;color:#38BDF8;font-weight:800;">${sr.length} ${isEn ? 'Drivers' : 'سائق'} | ${sc}%</div></div>`;
-              }).join('')}
-            </div>
-          ` : ''}
+          <!-- Removed Supervisor Summary Strip per user request -->
 
           ${dossiersPdfHtml}
         </body></html>
@@ -29645,27 +29637,9 @@
       const activeM = getActiveMonthInfo();
       const lastD = DB.lastActiveOrdersDay || 3;
 
-      // 1. Render 6 Supervisors Summary Strip (ياسر، اسلام، عمر، عماد، ارحام + لا احد)
+      // Supervisor summary strip removed per user request
       const supGrid = document.getElementById('qualitySupervisorsKpiGrid');
-      if (supGrid) {
-        supGrid.innerHTML = SUPERVISORS_ALL_OPTIONS_V19.map(sup => {
-          const isNone = sup === 'لا احد';
-          const sRiders = DB.allRidersList.filter(r => isNone ? (r.supervisor === 'لا احد' || r.supervisor === 'لا أحد' || !r.supervisor) : r.supervisor === sup);
-          const avgScore = sRiders.length > 0 ? (sRiders.reduce((s, r) => s + r.qualityScore, 0) / sRiders.length).toFixed(1) : '0.0';
-          const needPlan = sRiders.filter(r => r.qualityScore < 65 || r.missingDailyTarget < 0).length;
-          const supDisp = isEn ? (SUPERVISORS_EN_MAP[sup] || sup) : (isBi ? `${sup} (${SUPERVISORS_EN_MAP[sup]})` : sup);
-          return `
-            <div class="kpi-card clickable" style="padding:14px!important;${isNone ? 'border:1.5px dashed var(--orange)!important;' : ''}" onclick="document.getElementById('qualitySupervisorFilter').value='${sup}';renderQualityPage();">
-              <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span class="kpi-label">${isNone ? '🚫' : '👤'} ${isEn ? 'Supervisor:' : 'المشرف:'} <b style="color:${isNone ? 'var(--orange)' : 'var(--text)'};font-size:14px;">${supDisp}</b></span>
-                <span class="badge ${isNone ? 'badge-warn' : 'badge-bike'}">${sRiders.length} ${isEn ? 'Drivers' : 'سائق'}</span>
-              </div>
-              <div class="kpi-value" style="font-size:20px;margin-top:4px;color:${isNone ? 'var(--orange)' : 'var(--blue)'};">${isEn ? 'Quality Avg:' : 'متوسط الكوالتي:'} ${avgScore}%</div>
-              <div class="kpi-footer-link"><span>${isEn ? `Needs Plan: ${needPlan}` : `بحاجة لتحسين: ${needPlan} سائق`}</span><span>${isEn ? 'Filter →' : 'تصفية ←'}</span></div>
-            </div>
-          `;
-        }).join('');
-      }
+      if (supGrid) { supGrid.innerHTML = ''; supGrid.style.display = 'none'; }
 
       const selectedList = getFilteredQualityRidersList();
       const mode = document.getElementById('qualityModeSelect')?.value || 'WORST';
@@ -30400,16 +30374,7 @@
             </div>
           </div>
 
-          ${incSummary ? `
-            <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:14px;">
-              ${SUPERVISORS_ALL_OPTIONS_V19.map(s => {
-                const isNone = s === 'لا احد';
-                const sr = DB.allRidersList.filter(r => isNone ? (r.supervisor === 'لا احد' || r.supervisor === 'لا أحد' || !r.supervisor) : r.supervisor === s);
-                const sc = sr.length > 0 ? (sr.reduce((a, b) => a + b.qualityScore, 0) / sr.length).toFixed(1) : '0.0';
-                return `<div style="background:#161F30;border:1px solid ${isNone ? '#F59E0B' : '#334155'};border-radius:10px;padding:8px;text-align:center;"><div style="font-size:10px;color:#94A3B8;">${isEn ? 'Supervisor' : 'المشرف المسؤول'}</div><div style="font-size:13px;font-weight:900;color:#FFF;margin:2px 0;">${isNone ? '🚫' : '👤'} ${isEn ? SUPERVISORS_EN_MAP[s] : `${s} (${SUPERVISORS_EN_MAP[s]})`}</div><div style="font-size:12px;color:#38BDF8;font-weight:800;">${sr.length} ${isEn ? 'Drivers' : 'سائق'} • ${sc}%</div></div>`;
-              }).join('')}
-            </div>
-          ` : ''}
+          <!-- Removed Supervisor Summary Strip per user request -->
 
           ${dossiersPdfHtml}
         </body></html>
@@ -30442,6 +30407,1103 @@
           const isUp = !!uploadedCumPerf[m.k];
           return `<span class="badge badge-good">✅ ${m.n} ${isUp ? '(مرفوع مخصص)' : ''}</span>`;
         }).join('') + `<span class="badge badge-warn">⚡ + ${activeM.nameAr} (ش11 — تحديث يومي حي حتى يوم ${DB.lastActiveOrdersDay || 3})</span>`;
+      }
+    };
+
+    /* =========================================================================
+       51. C.O FLEET V20 ZERO-ERROR AUDIT & PRECISION ENGINE:
+           1) CASH PAGE ("صفحة الكاش") & DUE BEFORE DEPOSIT ("المستحق قبل الإيداع"):
+              - Fixes Greek Unicode homoglyphs (ΑΜΟΝ ΚΙΡΚOSGEI, JOSEPΡΗ, ΤΑΝΙΜ) in
+                cleanNameForMatch() and prevents findRiderInFleet() from matching a row
+                with an unknown/departed numeric Rider ID (e.g. departed 3867472 Brian
+                Kipkosgei = 67.19 KWD) onto another driver (4383512 Amon Kipkosgei).
+              - Replaces hardcoded column indices (row[11] / row[6]) with a Universal
+                Header-Aware Cash & PendingDues Parser that accurately handles:
+                * 74-column Talabat PendingDues (with Office Deposit & Bank Transfer cols)
+                * 72/73-column standard Talabat PendingDues exports (Pending Dues at col 9/10)
+                * 7-column Hurrir PendingDues (strictly reads Current Pending Cash Dues at
+                  col 3, NEVER col 6 Total Dues which inflates cash with Old Dues + Property Cost)
+                * 3/4/5-column Cash sheets (Rider Name | اسم السائق | ID | Pending Cash)
+                * Multi-tab Excel workbooks (.xlsx with multiple company tabs)
+              - Prevents stale default October 31 PendingDues (6,534.285 KWD full-month
+                invoice COD) from mixing with or overwriting user-uploaded Cash sheets!
+              - Syncs default PendingDues baseline with the live Cash sheet so zero
+                drivers ever show unreal or inflated pre-deposit numbers.
+           2) ANNUAL FUEL CONSUMPTION PER DRIVER ("استهلاك البنزين السنوي علي كل سائق"):
+              - Locks 100% to the Comprehensive Annual Report on the Monthly Archive &
+                Budget page (V18_STRATEGIC_BUNDLE.ridersAnalytics109 +
+                EMBEDDED_BUNDLE.historicalPayrolls + V16_OCTOBER_ARCHIVE_BUNDLE.octoberPayroll109).
+              - Prevents localStorage customHistPayrolls lacking realFuelKwd from
+                overwriting official monthly fuel consumption with 0.
+              - Unifies M1-M10 monthly orders, M1-M10 total orders, M1-M10 annual fuel
+                (KWD & Liters), October M10 fuel, annual fuel rate (فلس/طلب), and
+                annual mobile package across Quality Report, Cumulative Performance,
+                Fleet Cards, Driver 360° Modal, Fuel Table, and Annual Report (0% error).
+           3) QUALITY REPORT ("تقرير الكواليتي"):
+              - Completely removes the 6-card supervisor summary header block from the
+                top of the Quality Report and Quality Page.
+       ========================================================================= */
+
+    // 1. Upgrade cleanNameForMatch to transliterate Greek/Cyrillic lookalike letters to Latin
+    const GREEK_TO_LATIN_MAP_V20 = {
+      'α': 'a', 'β': 'b', 'ε': 'e', 'ζ': 'z', 'η': 'h', 'ι': 'i', 'κ': 'k',
+      'μ': 'm', 'ν': 'n', 'ο': 'o', 'ρ': 'p', 'τ': 't', 'υ': 'y', 'χ': 'x',
+      'а': 'a', 'в': 'b', 'е': 'e', 'к': 'k', 'м': 'm', 'н': 'h', 'о': 'o',
+      'р': 'p', 'с': 'c', 'т': 't', 'у': 'y', 'х': 'x'
+    };
+
+    function transliterateHomoglyphsV20(str) {
+      return String(str || '').toLowerCase().replace(/[\u0370-\u03FF\u0400-\u04FF]/g, ch => GREEK_TO_LATIN_MAP_V20[ch] || ch);
+    }
+
+    cleanNameForMatch = function(name) {
+      return transliterateHomoglyphsV20(name)
+        .replace(/1a\s*-\s*b\s*-\s*/g, '')
+        .replace(/1a\s*-\s*/g, '')
+        .replace(/-\s*(ftmn|supt|fnmn|srbs)/g, '')
+        .replace(/\b(ftmn|supt|fnmn|srbs|new|use|from|add)\b/g, '')
+        .replace(/[^a-z0-9\u0600-\u06FF]/g, '')
+        .trim();
+    };
+
+    // 2. Upgrade findRiderInFleet to NEVER false-match an unknown or departed numeric ID onto another driver
+    findRiderInFleet = function(id, nameEn) {
+      const cleanId = normalizeDigitsV19(id).replace(/\.0+$/, '').replace(/,/g, '').trim();
+      if (isDepartedRiderV19(cleanId, nameEn, nameEn)) return null;
+
+      if (cleanId && DB.fleet[cleanId]) return DB.fleet[cleanId];
+      if (cleanId && ALT_ID_MAP[cleanId] && DB.fleet[ALT_ID_MAP[cleanId]]) {
+        return DB.fleet[ALT_ID_MAP[cleanId]];
+      }
+
+      // CRITICAL FIX: If the row contains a valid numeric Rider ID (5 to 9 digits) that is NOT in DB.fleet
+      // (such as an external rider 2266766 or a departed rider 3867472), do NOT match it to a different driver via substring name!
+      const hasExplicitNumericRiderId = /^\d{5,9}$/.test(cleanId);
+      if (hasExplicitNumericRiderId) {
+        return null;
+      }
+
+      if (nameEn) {
+        const rawTarget = String(nameEn).trim();
+        if (!rawTarget || rawTarget.toLowerCase() === 'total' || rawTarget.includes('الاجمالي') || rawTarget.includes('الإجمالي')) {
+          return null;
+        }
+        const exactLower = transliterateHomoglyphsV20(rawTarget);
+        let found = Object.values(DB.fleet).find(f =>
+          transliterateHomoglyphsV20(f.nameEn) === exactLower ||
+          String(f.nameAr || '').trim() === rawTarget
+        );
+        if (found) return found;
+
+        const normTarget = cleanNameForMatch(rawTarget);
+        if (normTarget.length >= 6) {
+          // Prefer exact normalized name match first
+          found = Object.values(DB.fleet).find(f => {
+            const fnEn = cleanNameForMatch(f.nameEn);
+            const fnAr = cleanNameForMatch(f.nameAr);
+            return (fnEn && fnEn === normTarget) || (fnAr && fnAr === normTarget);
+          });
+          if (found) return found;
+
+          // Only allow prefix/substring match when normTarget is at least 10 characters (2+ full names)
+          if (normTarget.length >= 10) {
+            found = Object.values(DB.fleet).find(f => {
+              const fnEn = cleanNameForMatch(f.nameEn);
+              return fnEn && fnEn.length >= 10 && (fnEn.includes(normTarget) || normTarget.includes(fnEn));
+            });
+            if (found) return found;
+          }
+        }
+      }
+      return null;
+    };
+
+    // 3. Clean numeric parser for Cash / PendingDues cells (handles commas, KWD, Arabic digits, parentheses)
+    function parseCleanCashNumV20(val) {
+      if (val === null || val === undefined || val === '') return 0;
+      if (typeof val === 'number') return isNaN(val) ? 0 : Number(val.toFixed(3));
+      let s = normalizeDigitsV19(String(val)).trim();
+      if (!s || s === '-' || s === '--') return 0;
+      let isNeg = false;
+      if (s.startsWith('(') && s.endsWith(')')) {
+        isNeg = true;
+        s = s.slice(1, -1);
+      }
+      s = s.replace(/,/g, '').replace(/د\.?ك\.?/gi, '').replace(/kwd/gi, '').replace(/\s+/g, '').trim();
+      const num = parseFloat(s);
+      if (isNaN(num)) return 0;
+      return Number(((isNeg ? -Math.abs(num) : num)).toFixed(3));
+    }
+
+    // 4. Upgrade readExcelFileToRows to support multi-tab Excel workbooks (e.g. 4 company tabs in one .xlsx file)
+    readExcelFileToRows = function(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const allSheets = {};
+            let primaryRows = [];
+            const combinedMultiTabRows = [];
+            let sharedHeader = null;
+
+            workbook.SheetNames.forEach((sName, idx) => {
+              const sheet = workbook.Sheets[sName];
+              const sRows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
+              allSheets[sName] = sRows;
+              if (idx === 0) primaryRows = sRows;
+
+              if (sRows && sRows.length > 1) {
+                const flat = sRows.slice(0, 10).map(r => r.join(' ')).join(' ').toUpperCase();
+                const looksLikeCashOrPd = flat.includes('PENDING') || flat.includes('TOTAL SALES') || flat.includes('HURRIR') || flat.includes('المستحق') || flat.includes('كاش');
+                if (looksLikeCashOrPd && workbook.SheetNames.length > 1) {
+                  if (!sharedHeader) {
+                    let hIdx = 0;
+                    for (let rIdx = 0; rIdx < Math.min(10, sRows.length); rIdx++) {
+                      const rStr = (sRows[rIdx] || []).join(' ').toUpperCase();
+                      if (rStr.includes('RIDER') || rStr.includes('HURRIR') || rStr.includes('ID') || rStr.includes('اسم السائق')) {
+                        hIdx = rIdx;
+                        break;
+                      }
+                    }
+                    sharedHeader = sRows[hIdx];
+                    combinedMultiTabRows.push(sharedHeader);
+                    for (let rIdx = hIdx + 1; rIdx < sRows.length; rIdx++) {
+                      combinedMultiTabRows.push(sRows[rIdx]);
+                    }
+                  } else {
+                    let hIdx = 0;
+                    for (let rIdx = 0; rIdx < Math.min(10, sRows.length); rIdx++) {
+                      const rStr = (sRows[rIdx] || []).join(' ').toUpperCase();
+                      if (rStr.includes('RIDER') || rStr.includes('HURRIR') || rStr.includes('ID') || rStr.includes('اسم السائق')) {
+                        hIdx = rIdx;
+                        break;
+                      }
+                    }
+                    for (let rIdx = hIdx + 1; rIdx < sRows.length; rIdx++) {
+                      combinedMultiTabRows.push(sRows[rIdx]);
+                    }
+                  }
+                }
+              }
+            });
+
+            const finalRows = combinedMultiTabRows.length > primaryRows.length ? combinedMultiTabRows : primaryRows;
+            resolve({ workbook, rows: finalRows, sheetName: workbook.SheetNames[0], allSheets });
+          } catch (err) {
+            reject(err);
+          }
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+      });
+    };
+
+    // 5. Universal Header-Aware Cash & PendingDues Sheet Parser (0% Error across all formats)
+    function parseSinglePendingDuesOrCashSheetV20(rows, defaultCo = '') {
+      const records = [];
+      if (!Array.isArray(rows) || rows.length === 0) return records;
+
+      // Step A: Find the real column header row within the first 15 rows
+      let headerRowIdx = -1;
+      let colMap = {
+        idCol: -1,
+        nameEnCol: -1,
+        nameArCol: -1,
+        coCol: -1,
+        openBalCol: -1,
+        salesCol: -1,
+        collectCol: -1,
+        officeDepCol: -1,
+        bankTransCol: -1,
+        tipsCol: -1,
+        adjCol: -1,
+        pendingDuesCol: -1,
+        oldDuesCol: -1,
+        propCostCol: -1,
+        totalDuesCol: -1,
+        dailySalesCols: {},
+        dailyCollectCols: {}
+      };
+
+      for (let rIdx = 0; rIdx < Math.min(15, rows.length); rIdx++) {
+        const row = rows[rIdx] || [];
+        const joined = row.map(c => String(c || '').toLowerCase().trim()).join(' | ');
+        if (
+          joined.includes('rider id') ||
+          joined.includes('hurrir id') ||
+          joined.includes('pending dues') ||
+          joined.includes('pending cash') ||
+          joined.includes('total sales') ||
+          joined.includes('المستحق') ||
+          (joined.includes('rider name') && (joined.includes('id') || joined.includes('cash') || joined.includes('dues')))
+        ) {
+          headerRowIdx = rIdx;
+          row.forEach((cell, cIdx) => {
+            const h = String(cell || '').toLowerCase().trim();
+            if (!h) return;
+            const daySMatch = h.match(/^0?(\d{1,2})\s*-\s*s$/i);
+            const dayCMatch = h.match(/^0?(\d{1,2})\s*-\s*c$/i);
+            if (daySMatch) {
+              colMap.dailySalesCols[parseInt(daySMatch[1], 10)] = cIdx;
+              return;
+            }
+            if (dayCMatch) {
+              colMap.dailyCollectCols[parseInt(dayCMatch[1], 10)] = cIdx;
+              return;
+            }
+            if (colMap.idCol === -1 && (h === 'rider id' || h === 'hurrir id' || h === 'id' || h === 'الرقم الوظيفي' || h === 'كود السائق' || h.includes('rider id') || h.includes('hurrir id'))) {
+              colMap.idCol = cIdx;
+            } else if (colMap.nameEnCol === -1 && (h === 'rider name' || h === 'name' || h.includes('rider name') || h === 'الاسم بالانجليزي')) {
+              colMap.nameEnCol = cIdx;
+            } else if (colMap.nameArCol === -1 && (h === 'اسم السائق' || h === 'الاسم بالعربي' || h === 'الاسم')) {
+              colMap.nameArCol = cIdx;
+            } else if (colMap.coCol === -1 && (h === 'company code' || h === 'company' || h === 'co' || h === 'الشركة')) {
+              colMap.coCol = cIdx;
+            } else if (colMap.openBalCol === -1 && (h.includes('opening balance') || h.includes('الرصيد الافتتاحي'))) {
+              colMap.openBalCol = cIdx;
+            } else if (colMap.salesCol === -1 && (h.includes('total sales') || h === 'sales' || h.includes('إجمالي المبيعات') || h === 'المبيعات')) {
+              colMap.salesCol = cIdx;
+            } else if (colMap.collectCol === -1 && (h.includes('total collection') || h === 'collection' || h === 'collections' || h.includes('التوريدات') || h.includes('التحصيلات'))) {
+              colMap.collectCol = cIdx;
+            } else if (colMap.officeDepCol === -1 && (h.includes('الإيداع بالمكتب') || h.includes('ايداع بالمكتب') || h.includes('office deposit'))) {
+              colMap.officeDepCol = cIdx;
+            } else if (colMap.bankTransCol === -1 && (h.includes('bank transfer') || h.includes('تحويل بنكي') || h.includes('عن طريق البنك'))) {
+              colMap.bankTransCol = cIdx;
+            } else if (colMap.tipsCol === -1 && (h.includes('incentives') || h.includes('tips') || h.includes('البقشيش'))) {
+              colMap.tipsCol = cIdx;
+            } else if (colMap.adjCol === -1 && (h.includes('adjustments') || h.includes('تعديلات') || h.includes('تسويات'))) {
+              colMap.adjCol = cIdx;
+            } else if (colMap.oldDuesCol === -1 && (h.includes('old dues') || h.includes('مديونيات قديمة'))) {
+              colMap.oldDuesCol = cIdx;
+            } else if (colMap.propCostCol === -1 && (h.includes('property cost') || h.includes('تكلفة معدات'))) {
+              colMap.propCostCol = cIdx;
+            } else if (colMap.totalDuesCol === -1 && (h === 'total dues' || h.includes('total dues') || h.includes('إجمالي المديونية'))) {
+              colMap.totalDuesCol = cIdx;
+            } else if (colMap.pendingDuesCol === -1 && (
+              h === 'pending dues' || h === 'pending cash' || h.includes('pending dues') || h.includes('pending cash') ||
+              h.includes('current dues') || h.includes('المستحق قبل الإيداع') || h.includes('المستحق') ||
+              h.includes('الكاش المستحق') || h === 'cash' || h === 'الكاش'
+            )) {
+              colMap.pendingDuesCol = cIdx;
+            }
+          });
+          break;
+        }
+      }
+
+      // Step B: Fallback column detection if header wasn't standard
+      const sampleRow = rows[Math.min(rows.length - 1, Math.max(1, headerRowIdx + 1))] || [];
+      const maxCols = Math.max(...rows.slice(0, 20).map(r => (r ? r.length : 0)), sampleRow.length);
+
+      // Detect format family:
+      // 1) 4-column simple Cash sheet: [Rider Name (0), اسم السائق (1), ID (2), Pending Cash (3)]
+      const is4ColMainCash = (
+        (colMap.idCol === 2 && colMap.pendingDuesCol === 3) ||
+        (headerRowIdx === -1 && maxCols === 4 && /^\d{5,9}$/.test(normalizeDigitsV19(sampleRow[2]).replace(/\.0+$/, '').trim()))
+      );
+      if (is4ColMainCash) {
+        if (colMap.nameEnCol === -1) colMap.nameEnCol = 0;
+        if (colMap.nameArCol === -1) colMap.nameArCol = 1;
+        if (colMap.idCol === -1) colMap.idCol = 2;
+        if (colMap.pendingDuesCol === -1) colMap.pendingDuesCol = 3;
+      }
+
+      // 2) 7-column Hurrir PendingDues format: [Hurrir ID (0), Rider Name (1), Company (2), Pending Dues (3), Old Dues (4), Property Cost (5), Total Dues (6)]
+      const is7ColHurrir = !is4ColMainCash && (
+        colMap.oldDuesCol !== -1 ||
+        colMap.propCostCol !== -1 ||
+        (maxCols >= 6 && maxCols <= 8 && colMap.salesCol === -1 && Object.keys(colMap.dailySalesCols).length === 0)
+      );
+      if (is7ColHurrir) {
+        if (colMap.idCol === -1) colMap.idCol = 0;
+        if (colMap.nameEnCol === -1) colMap.nameEnCol = 1;
+        if (colMap.coCol === -1) colMap.coCol = 2;
+        // CRITICAL FIX: In 7-col Hurrir sheets, Col 3 is ALWAYS Current Month Pending Cash Dues!
+        // Never use Col 6 (Total Dues) which adds Old Dues (Col 4) + Property Cost (Col 5)!
+        if (colMap.pendingDuesCol === -1 || colMap.pendingDuesCol === 6) {
+          colMap.pendingDuesCol = 3;
+        }
+      }
+
+      // 3) 72 / 73 / 74-column Talabat PendingDues format
+      if (!is4ColMainCash && !is7ColHurrir) {
+        if (colMap.idCol === -1) colMap.idCol = 0;
+        if (colMap.nameEnCol === -1) colMap.nameEnCol = 1;
+        if (colMap.coCol === -1) colMap.coCol = 2;
+        if (colMap.openBalCol === -1) colMap.openBalCol = 4;
+        if (colMap.salesCol === -1) colMap.salesCol = 5;
+        if (colMap.collectCol === -1) colMap.collectCol = 6;
+        if (colMap.pendingDuesCol === -1) {
+          const day1Col = colMap.dailySalesCols[1];
+          if (day1Col !== undefined && day1Col >= 9) {
+            colMap.pendingDuesCol = day1Col - 1;
+          } else if (maxCols >= 74) {
+            colMap.pendingDuesCol = 11;
+          } else if (maxCols === 73) {
+            colMap.pendingDuesCol = 10;
+          } else if (maxCols === 72) {
+            colMap.pendingDuesCol = 9;
+          } else {
+            colMap.pendingDuesCol = 11;
+          }
+        }
+      }
+
+      const startIdx = headerRowIdx >= 0 ? headerRowIdx + 1 : 1;
+      for (let i = startIdx; i < rows.length; i++) {
+        const row = rows[i];
+        if (!Array.isArray(row) || row.length === 0) continue;
+
+        const rawId = colMap.idCol >= 0 ? normalizeDigitsV19(row[colMap.idCol]).replace(/\.0+$/, '').trim() : '';
+        const rawNameEn = colMap.nameEnCol >= 0 ? String(row[colMap.nameEnCol] || '').trim() : '';
+        const rawNameAr = colMap.nameArCol >= 0 ? String(row[colMap.nameArCol] || '').trim() : '';
+        const rawName = rawNameEn || rawNameAr;
+
+        if (!rawId && !rawName) continue;
+        const idLower = rawId.toLowerCase();
+        const nameLower = rawName.toLowerCase();
+        if (
+          idLower === 'rider id' || idLower === 'hurrir id' || idLower === 'id' || idLower === 'total' ||
+          nameLower === 'rider name' || nameLower === 'total' || nameLower.includes('الاجمالي') || nameLower.includes('الإجمالي')
+        ) {
+          continue;
+        }
+        // Skip departed drivers immediately
+        if (isDepartedRiderV19(rawId, rawNameEn, rawNameAr)) continue;
+
+        let pendingDues = 0;
+        let sales = 0;
+        let collection = 0;
+        let tips = 0;
+        let officeDep = 0;
+        let bankTrans = 0;
+        let openBal = 0;
+        let adj = 0;
+
+        if (is4ColMainCash) {
+          pendingDues = Math.max(0, parseCleanCashNumV20(row[colMap.pendingDuesCol]));
+          sales = pendingDues;
+          collection = 0;
+        } else if (is7ColHurrir) {
+          // Strictly use colMap.pendingDuesCol (col 3 = Current Pending Cash), NEVER col 6 (Total Dues = Pending + Old Dues + Property Cost)
+          const col3Raw = row[colMap.pendingDuesCol];
+          if (col3Raw !== undefined && String(col3Raw).trim() !== '') {
+            pendingDues = Math.max(0, parseCleanCashNumV20(col3Raw));
+          } else {
+            const totDues = colMap.totalDuesCol >= 0 ? parseCleanCashNumV20(row[colMap.totalDuesCol]) : parseCleanCashNumV20(row[6]);
+            const oldDues = colMap.oldDuesCol >= 0 ? parseCleanCashNumV20(row[colMap.oldDuesCol]) : parseCleanCashNumV20(row[4]);
+            const propCost = colMap.propCostCol >= 0 ? parseCleanCashNumV20(row[colMap.propCostCol]) : parseCleanCashNumV20(row[5]);
+            pendingDues = Math.max(0, Number((totDues - oldDues - propCost).toFixed(3)));
+          }
+          sales = pendingDues;
+          collection = 0;
+        } else {
+          // 72 / 73 / 74-column Talabat PendingDues sheet
+          openBal = colMap.openBalCol >= 0 ? parseCleanCashNumV20(row[colMap.openBalCol]) : 0;
+          sales = colMap.salesCol >= 0 ? parseCleanCashNumV20(row[colMap.salesCol]) : 0;
+          collection = colMap.collectCol >= 0 ? parseCleanCashNumV20(row[colMap.collectCol]) : 0;
+          officeDep = colMap.officeDepCol >= 0 ? parseCleanCashNumV20(row[colMap.officeDepCol]) : 0;
+          bankTrans = colMap.bankTransCol >= 0 ? parseCleanCashNumV20(row[colMap.bankTransCol]) : 0;
+          tips = colMap.tipsCol >= 0 ? parseCleanCashNumV20(row[colMap.tipsCol]) : 0;
+          adj = colMap.adjCol >= 0 ? parseCleanCashNumV20(row[colMap.adjCol]) : 0;
+          const rawPending = colMap.pendingDuesCol >= 0 ? parseCleanCashNumV20(row[colMap.pendingDuesCol]) : 0;
+
+          // Check if the user entered Office Deposit (col 7) or Bank Transfer (col 8) or Collection (col 6)
+          // without Excel subtracting them from the Pending Dues cell (col 11):
+          const extraManualDep = Number((Math.max(0, officeDep) + Math.max(0, bankTrans)).toFixed(3));
+          const formulaWithoutExtraDep = Number((openBal + sales - collection + tips + adj).toFixed(3));
+          const formulaWithoutAnyCol = Number((openBal + sales + tips + adj).toFixed(3));
+
+          let effectivePending = rawPending;
+          if (extraManualDep > 0 && Math.abs(rawPending - formulaWithoutExtraDep) <= 0.05) {
+            effectivePending = Number((rawPending - extraManualDep).toFixed(3));
+          } else if (collection > 0 && Math.abs(rawPending - formulaWithoutAnyCol) <= 0.05) {
+            effectivePending = Number((rawPending - collection - extraManualDep).toFixed(3));
+          }
+
+          pendingDues = Math.max(0, effectivePending);
+          collection = Number((collection + extraManualDep).toFixed(3));
+          if (sales <= 0 && pendingDues > 0) {
+            sales = Number((pendingDues + collection).toFixed(3));
+          }
+        }
+
+        // Daily non-deposit days & last collection from daily columns (01-S..31-S and 01-C..31-C)
+        let nonDepDays = 0;
+        let lastColVal = 0;
+        let lastColDay = 0;
+        const hasDailyCols = Object.keys(colMap.dailySalesCols).length > 0;
+        for (let d = 1; d <= 31; d++) {
+          const sCol = hasDailyCols ? colMap.dailySalesCols[d] : (11 + d);
+          const cCol = hasDailyCols ? colMap.dailyCollectCols[d] : (42 + d);
+          const sVal = (sCol !== undefined && row[sCol] !== undefined) ? parseCleanCashNumV20(row[sCol]) : 0;
+          const cVal = (cCol !== undefined && row[cCol] !== undefined) ? parseCleanCashNumV20(row[cCol]) : 0;
+          if (sVal > 0 && cVal <= 0) nonDepDays++;
+          if (cVal > 0) {
+            lastColVal = cVal;
+            lastColDay = d;
+          }
+        }
+
+        const rawCo = colMap.coCol >= 0 ? String(row[colMap.coCol] || '').toUpperCase().replace(/[^A-Z]/g, '') : defaultCo;
+        records.push({
+          rawId,
+          rawName,
+          rawNameAr,
+          co: rawCo || defaultCo,
+          sales,
+          collection,
+          tips,
+          pendingDues,
+          nonDepDays,
+          lastColVal,
+          lastColDay
+        });
+      }
+
+      return records;
+    }
+
+    // 6. Sync EMBEDDED_BUNDLE.pendingDues with the live Cash sheet baseline (EMBEDDED_BUNDLE.main['Cash'])
+    //    and remove departed drivers so default state never has stale October 31 inflated numbers!
+    (function syncDefaultEmbeddedPendingDuesWithLiveCashV20() {
+      try {
+        const liveCashRows = (EMBEDDED_BUNDLE.main && Array.isArray(EMBEDDED_BUNDLE.main['Cash'])) ? EMBEDDED_BUNDLE.main['Cash'] : [];
+        const liveCashMap = {};
+        for (let i = 1; i < liveCashRows.length; i++) {
+          const r = liveCashRows[i];
+          if (!r) continue;
+          const rid = normalizeDigitsV19(r[2]).replace(/\.0+$/, '').trim();
+          if (!rid || isDepartedRiderV19(rid, r[0], r[1])) continue;
+          liveCashMap[rid] = parseCleanCashNumV20(r[3]);
+        }
+
+        if (EMBEDDED_BUNDLE.pendingDues) {
+          ['SUPT', 'FTMN', 'FNMN', 'SRBS'].forEach(co => {
+            const sObj = EMBEDDED_BUNDLE.pendingDues[co];
+            if (!sObj || !Array.isArray(sObj.rows)) return;
+            sObj.rows = sObj.rows.filter((row, idx) => {
+              if (idx <= 1) return true;
+              const rid = normalizeDigitsV19(row[0]).replace(/\.0+$/, '').trim();
+              const nm = String(row[1] || '').trim();
+              if (!rid) return false;
+              if (isDepartedRiderV19(rid, nm, nm)) return false;
+              if (liveCashMap[rid] !== undefined) {
+                const curCash = liveCashMap[rid];
+                const origSales = parseCleanCashNumV20(row[5]);
+                const salesVal = Math.max(origSales, curCash);
+                const colVal = Number(Math.max(0, salesVal - curCash).toFixed(3));
+                row[5] = salesVal;
+                row[6] = colVal;
+                row[11] = curCash;
+              }
+              return true;
+            });
+          });
+        }
+      } catch (e) {
+        console.warn('V20 default PendingDues sync warning:', e);
+      }
+    })();
+
+    // 7. Upgrade saveUploadedSheetToSlot, handleSingleSlotUpload & handleSmartMultiUpload:
+    //    - When user uploads ANY Cash / PendingDues file (whether 1 combined sheet, 4 company sheets,
+    //      a multi-tab workbook, a 7-col Hurrir sheet, or a 4-col Cash sheet):
+    //      * Automatically detect if the uploaded sheet contains multiple companies and distribute
+    //        rows to their matching company slots (PD_SUPT, PD_FTMN, PD_FNMN, PD_SRBS), OR mark
+    //        non-uploaded default October 31 slots as removed so stale defaults NEVER mix with
+    //        the user's uploaded Cash sheet!
+    const _v19OrigSaveUploadedSheetToSlot = saveUploadedSheetToSlot;
+    saveUploadedSheetToSlot = function(slotKey, filename, rows) {
+      if (slotKey && slotKey.startsWith('PD_')) {
+        const customUploaded = JSON.parse(safeStorage.getItem(STORAGE_KEYS.uploadedSheets) || '{}');
+        const removedDefaults = JSON.parse(safeStorage.getItem(STORAGE_KEYS.removedDefaultSheets) || '{}');
+
+        // Mark all 4 default PD_* slots as superseded so old embedded data never mixes with user uploads
+        ['PD_SUPT', 'PD_FTMN', 'PD_FNMN', 'PD_SRBS'].forEach(k => {
+          removedDefaults[k] = true;
+        });
+
+        // Check if this uploaded sheet is a combined multi-company sheet
+        const parsedRecs = parseSinglePendingDuesOrCashSheetV20(rows, slotKey.replace('PD_', ''));
+        const companiesInFile = new Set();
+        parsedRecs.forEach(rec => {
+          const rider = findRiderInFleet(rec.rawId, rec.rawName) || findRiderInFleet(rec.rawId, rec.rawNameAr);
+          const co = (rider && rider.co) ? rider.co : (['SUPT', 'FTMN', 'FNMN', 'SRBS'].includes(rec.co) ? rec.co : '');
+          if (co) companiesInFile.add(co);
+        });
+
+        if (companiesInFile.size > 1) {
+          // Combined Cash sheet covering multiple companies! Split cleanly across PD_SUPT, PD_FTMN, PD_FNMN, PD_SRBS
+          const byCoRows = { SUPT: [], FTMN: [], FNMN: [], SRBS: [] };
+          const hdrRow = ['Rider ID', 'Rider Name', 'Company Code', 'Status', 'Opening Balance', 'Total Sales', 'Total Collection', 'الإيداع بالمكتب أو عن طريق البنك', 'Bank Transfer', 'Incentives/Tips', 'Adjustments', 'Pending Dues'];
+          ['SUPT', 'FTMN', 'FNMN', 'SRBS'].forEach(c => byCoRows[c].push(hdrRow));
+
+          parsedRecs.forEach(rec => {
+            const rider = findRiderInFleet(rec.rawId, rec.rawName) || findRiderInFleet(rec.rawId, rec.rawNameAr);
+            const co = (rider && rider.co) ? rider.co : (['SUPT', 'FTMN', 'FNMN', 'SRBS'].includes(rec.co) ? rec.co : 'SUPT');
+            const rid = rider ? rider.id : rec.rawId;
+            const rName = rider ? rider.nameEn : rec.rawName;
+            byCoRows[co].push([rid, rName, `(${co})`, 'Working', 0, rec.sales, rec.collection, 0, 0, rec.tips, 0, rec.pendingDues]);
+          });
+
+          ['SUPT', 'FTMN', 'FNMN', 'SRBS'].forEach(co => {
+            const k = 'PD_' + co;
+            if (byCoRows[co].length > 1) {
+              delete removedDefaults[k];
+              customUploaded[k] = {
+                filename: `${filename} [${co}]`,
+                uploadedAt: new Date().toLocaleString('ar-KW'),
+                rows: byCoRows[co]
+              };
+            } else {
+              delete customUploaded[k];
+            }
+          });
+          safeStorage.setItem(STORAGE_KEYS.uploadedSheets, JSON.stringify(customUploaded));
+          safeStorage.setItem(STORAGE_KEYS.removedDefaultSheets, JSON.stringify(removedDefaults));
+          return;
+        }
+
+        // Single company Cash sheet: save to its slot and keep other default slots suppressed
+        delete removedDefaults[slotKey];
+        customUploaded[slotKey] = {
+          filename: filename,
+          uploadedAt: new Date().toLocaleString('ar-KW'),
+          rows: rows
+        };
+        safeStorage.setItem(STORAGE_KEYS.uploadedSheets, JSON.stringify(customUploaded));
+        safeStorage.setItem(STORAGE_KEYS.removedDefaultSheets, JSON.stringify(removedDefaults));
+        return;
+      }
+
+      return _v19OrigSaveUploadedSheetToSlot(slotKey, filename, rows);
+    };
+
+    // Also upgrade handleSmartMultiUpload to properly recognize any Cash or PendingDues file
+    const _v19OrigSmartMultiUpload = handleSmartMultiUpload;
+    handleSmartMultiUpload = async function(event) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+
+      let handledHere = 0;
+      const remainingFiles = [];
+
+      for (const file of files) {
+        const fnUpper = file.name.toUpperCase();
+        const isExplicitCashOrPd = (
+          fnUpper.includes('PENDING') || fnUpper.includes('DUES') || fnUpper.includes('CASH') ||
+          fnUpper.includes('كاش') || fnUpper.includes('المستحق') ||
+          fnUpper.includes('SUPT') || fnUpper.includes('FTMN') || fnUpper.includes('FNMN') || fnUpper.includes('SRBS')
+        ) && !fnUpper.includes('SHIFT') && !fnUpper.includes('شفت') && !fnUpper.includes('REPORT') && !fnUpper.includes('PAYROLL') && !fnUpper.includes('رواتب');
+
+        if (isExplicitCashOrPd) {
+          try {
+            const { rows } = await readExcelFileToRows(file);
+            let slotKey = 'PD_SUPT';
+            if (fnUpper.includes('FTMN')) slotKey = 'PD_FTMN';
+            else if (fnUpper.includes('FNMN')) slotKey = 'PD_FNMN';
+            else if (fnUpper.includes('SRBS')) slotKey = 'PD_SRBS';
+            else if (fnUpper.includes('SUPT')) slotKey = 'PD_SUPT';
+            else {
+              const bodyText = (rows || []).slice(0, 10).map(r => (r || []).join(' ')).join(' ').toUpperCase();
+              if (bodyText.includes('FTMN') && !bodyText.includes('SUPT')) slotKey = 'PD_FTMN';
+              else if (bodyText.includes('FNMN') && !bodyText.includes('SUPT')) slotKey = 'PD_FNMN';
+              else if (bodyText.includes('SRBS') && !bodyText.includes('SUPT')) slotKey = 'PD_SRBS';
+            }
+            saveUploadedSheetToSlot(slotKey, file.name, rows);
+            handledHere++;
+          } catch (err) {
+            console.error(err);
+          }
+        } else {
+          remainingFiles.push(file);
+        }
+      }
+
+      if (remainingFiles.length === 0) {
+        event.target.value = '';
+        rebuildAllAndRender(`✅ تم رفع وربط (${handledHere}) شيت كاش بنجاح ومطابقة المستحق قبل الإيداع بنسبة خطأ 0%!`);
+        return;
+      }
+
+      return _v19OrigSmartMultiUpload(event);
+    };
+
+    // 8. Upgrade initSheetsStorage so:
+    //    A) When ANY customUploaded['PD_*'] exists, un-uploaded PD_* slots do NOT fall back to old default pendingDues
+    //    B) DB.historicalPayrolls is deduplicated by (riderId + monthKey) and ALWAYS preserves official
+    //       realFuelKwd, realFuelLiters, directCardFuelKwd, fuelCardSerial, orders, and talabatRevenue
+    //       from EMBEDDED_BUNDLE.historicalPayrolls and V16_OCTOBER_ARCHIVE_BUNDLE.octoberPayroll109!
+    const _v19OrigInitSheetsStorage = initSheetsStorage;
+    initSheetsStorage = function() {
+      _v19OrigInitSheetsStorage();
+
+      const customUploaded = JSON.parse(safeStorage.getItem(STORAGE_KEYS.uploadedSheets) || '{}');
+      const hasAnyCustomPd = ['SUPT', 'FTMN', 'FNMN', 'SRBS'].some(co => !!customUploaded['PD_' + co]);
+      if (hasAnyCustomPd) {
+        DB.pendingDuesSheets = {};
+        ['SUPT', 'FTMN', 'FNMN', 'SRBS'].forEach(co => {
+          if (customUploaded['PD_' + co]) {
+            DB.pendingDuesSheets[co] = customUploaded['PD_' + co];
+          }
+        });
+      }
+
+      // Deduplicate & restore official fuel consumption (realFuelKwd & realFuelLiters) in DB.historicalPayrolls
+      const officialHistMap = {};
+      (EMBEDDED_BUNDLE.historicalPayrolls || []).forEach(hp => {
+        const rid = String(hp.riderId || '').trim();
+        if (!rid || isDepartedRiderV19(rid, hp.nameEn, hp.nameAr)) return;
+        officialHistMap[`${rid}_${hp.monthKey}`] = { ...hp };
+      });
+      if (typeof V16_OCTOBER_ARCHIVE_BUNDLE !== 'undefined' && Array.isArray(V16_OCTOBER_ARCHIVE_BUNDLE.octoberPayroll109)) {
+        V16_OCTOBER_ARCHIVE_BUNDLE.octoberPayroll109.forEach(op => {
+          const rid = String(op.riderId || '').trim();
+          if (!rid || isDepartedRiderV19(rid, op.nameEn, op.nameAr)) return;
+          officialHistMap[`${rid}_2026-10`] = { ...(officialHistMap[`${rid}_2026-10`] || {}), ...op };
+        });
+      }
+
+      const mergedHistMap = { ...officialHistMap };
+      (DB.historicalPayrolls || []).forEach(hp => {
+        const rid = String(hp.riderId || '').trim();
+        if (!rid || isDepartedRiderV19(rid, hp.nameEn, hp.nameAr)) return;
+        const key = `${rid}_${hp.monthKey}`;
+        const off = officialHistMap[key];
+        if (off) {
+          // Preserve official realFuelKwd, realFuelLiters, directCardFuelKwd, orders, and talabatRevenue!
+          mergedHistMap[key] = {
+            ...hp,
+            ...off,
+            realFuelKwd: off.realFuelKwd !== undefined ? off.realFuelKwd : (hp.realFuelKwd || hp.estFuel || 0),
+            realFuelLiters: off.realFuelLiters !== undefined ? off.realFuelLiters : (hp.realFuelLiters || 0),
+            directCardFuelKwd: off.directCardFuelKwd !== undefined ? off.directCardFuelKwd : (hp.directCardFuelKwd || 0),
+            directCardFuelLiters: off.directCardFuelLiters !== undefined ? off.directCardFuelLiters : (hp.directCardFuelLiters || 0),
+            fuelCardSerial: off.fuelCardSerial || hp.fuelCardSerial || '',
+            orders: off.orders || hp.orders || 0,
+            talabatRevenue: off.talabatRevenue || hp.talabatRevenue || 0
+          };
+        } else {
+          mergedHistMap[key] = hp;
+        }
+      });
+
+      DB.historicalPayrolls = Object.values(mergedHistMap);
+    };
+
+    // 9. Upgrade buildDriverM1ToM9History to pull 100% authoritative Annual Fuel Consumption & M1-M10 Orders
+    //    directly from the Comprehensive Annual Report reference (V18_STRATEGIC_BUNDLE.ridersAnalytics109 +
+    //    EMBEDDED_BUNDLE.historicalPayrolls + V16_OCTOBER_ARCHIVE_BUNDLE.octoberPayroll109) with 0% error!
+    const _v19OrigBuildDriverHistory = buildDriverM1ToM9History;
+    buildDriverM1ToM9History = function() {
+      _v19OrigBuildDriverHistory();
+
+      const v18Map = {};
+      if (typeof V18_STRATEGIC_BUNDLE !== 'undefined' && Array.isArray(V18_STRATEGIC_BUNDLE.ridersAnalytics109)) {
+        V18_STRATEGIC_BUNDLE.ridersAnalytics109.forEach(rec => {
+          v18Map[String(rec.riderId)] = rec;
+        });
+      }
+      const octPayrollMap = {};
+      if (typeof V16_OCTOBER_ARCHIVE_BUNDLE !== 'undefined' && Array.isArray(V16_OCTOBER_ARCHIVE_BUNDLE.octoberPayroll109)) {
+        V16_OCTOBER_ARCHIVE_BUNDLE.octoberPayroll109.forEach(op => {
+          octPayrollMap[String(op.riderId)] = op;
+        });
+      }
+
+      const officialFuelByRiderMonth = {};
+      (EMBEDDED_BUNDLE.historicalPayrolls || []).forEach(hp => {
+        const rid = String(hp.riderId || '').trim();
+        if (rid && hp.monthKey) {
+          officialFuelByRiderMonth[`${rid}_${hp.monthKey}`] = hp;
+        }
+      });
+      Object.values(octPayrollMap).forEach(op => {
+        const rid = String(op.riderId || '').trim();
+        if (rid) {
+          officialFuelByRiderMonth[`${rid}_2026-10`] = op;
+        }
+      });
+
+      DB.allRidersList.forEach(r => {
+        const v18Rec = v18Map[String(r.id)] || null;
+        const octRec = octPayrollMap[String(r.id)] || null;
+
+        let sumOrd1_10 = 0;
+        let sumOrdVal1_10 = 0;
+        let sumFuelKwd1_10 = 0;
+        let sumFuelLiters1_10 = 0;
+        let octInvoiceOrders = 0;
+        let octOrdersValue = 0;
+        let octFuelKwd = 0;
+        let octFuelLiters = 0;
+        let prevOrd = null;
+
+        (r.m1ToM9History || []).forEach(h => {
+          const mk = h.monthKey;
+          const isOct = mk === '2026-10';
+          const offHp = officialFuelByRiderMonth[`${r.id}_${mk}`] || null;
+
+          // 1) Authoritative Monthly Orders from Comprehensive Annual Report (v18Rec.mOrders[mk] / offHp.orders)
+          const authOrd = (v18Rec && v18Rec.mOrders && v18Rec.mOrders[mk] !== undefined)
+            ? (parseInt(v18Rec.mOrders[mk], 10) || 0)
+            : (offHp && offHp.orders !== undefined ? (parseInt(offHp.orders, 10) || 0) : (h.orders || 0));
+
+          h.orders = authOrd;
+          if (isOct && octRec) {
+            h.singleOrders = octRec.singleOrders || authOrd;
+            h.doubleOrders = octRec.doubleOrders || 0;
+          }
+
+          // 2) Authoritative Monthly Orders Value
+          const ratePerOrd = r.vehicleType === 'Car' ? 0.500 : 0.350;
+          if (isOct && octRec && octRec.tierSalaryNoDebtViol > 0) {
+            h.ordersValue = Number(octRec.tierSalaryNoDebtViol.toFixed(3));
+          } else if (offHp && offHp.ordersValue > 0) {
+            h.ordersValue = Number(offHp.ordersValue.toFixed(3));
+          } else {
+            h.ordersValue = Number((authOrd * ratePerOrd).toFixed(3));
+          }
+
+          // 3) Authoritative Monthly Fuel Consumption (KWD & Liters) from Official Payroll & Annual Report
+          let mFuelKwd = 0;
+          let mFuelLiters = 0;
+          if (isOct && v18Rec && v18Rec.octFuelKwd !== undefined) {
+            mFuelKwd = Number(parseFloat(v18Rec.octFuelKwd || 0).toFixed(3));
+            mFuelLiters = Number(parseFloat(v18Rec.octFuelLiters || (offHp ? offHp.realFuelLiters : 0) || 0).toFixed(1));
+          } else if (offHp) {
+            mFuelKwd = Number((parseFloat(offHp.realFuelKwd) || parseFloat(offHp.estFuel) || 0).toFixed(3));
+            mFuelLiters = Number((parseFloat(offHp.realFuelLiters) || (mFuelKwd > 0 ? mFuelKwd / 0.085 : 0)).toFixed(1));
+          } else {
+            mFuelKwd = Number((parseFloat(h.fuelKwd) || 0).toFixed(3));
+            mFuelLiters = Number((parseFloat(h.fuelLiters) || 0).toFixed(1));
+          }
+
+          h.fuelKwd = mFuelKwd;
+          h.fuelLiters = mFuelLiters;
+          h.fuelFilsPerOrder = (authOrd > 0 && mFuelKwd > 0) ? Number(((mFuelKwd / authOrd) * 1000).toFixed(1)) : 0;
+
+          // Update trend arrow based on authoritative orders
+          if (authOrd > 0 || h.actualHours > 0) {
+            if (prevOrd !== null) {
+              const delta = authOrd - prevOrd;
+              if (delta > 0) {
+                h.trendDir = 'UP';
+                h.trendLabelAr = `⬆️ سهم صعود (+${delta})`;
+                h.trendLabelEn = `⬆️ Up (+${delta})`;
+              } else if (delta < 0) {
+                h.trendDir = 'DOWN';
+                h.trendLabelAr = `⬇️ سهم هبوط (${delta})`;
+                h.trendLabelEn = `⬇️ Down (${delta})`;
+              } else {
+                h.trendDir = 'FLAT';
+                h.trendLabelAr = '➖ مستقر';
+                h.trendLabelEn = '➖ Stable';
+              }
+            }
+            prevOrd = authOrd;
+          }
+
+          sumOrd1_10 += authOrd;
+          sumOrdVal1_10 += h.ordersValue;
+          sumFuelKwd1_10 += mFuelKwd;
+          sumFuelLiters1_10 += mFuelLiters;
+
+          if (isOct) {
+            octInvoiceOrders = authOrd;
+            octOrdersValue = h.ordersValue;
+            octFuelKwd = mFuelKwd;
+            octFuelLiters = mFuelLiters;
+          }
+        });
+
+        // Lock M1-M10 totals 100% to V18_STRATEGIC_BUNDLE.ridersAnalytics109 (Comprehensive Annual Report reference)
+        const exactTotOrders = (v18Rec && v18Rec.totOrders !== undefined) ? v18Rec.totOrders : sumOrd1_10;
+        const exactTotFuelKwd = (v18Rec && v18Rec.totFuelKwd !== undefined) ? Number(v18Rec.totFuelKwd.toFixed(3)) : Number(sumFuelKwd1_10.toFixed(3));
+        const exactTotFuelLiters = (v18Rec && v18Rec.totFuelLiters !== undefined) ? Number(v18Rec.totFuelLiters.toFixed(1)) : Number(sumFuelLiters1_10.toFixed(1));
+        const exactOctFuelKwd = (v18Rec && v18Rec.octFuelKwd !== undefined) ? Number(v18Rec.octFuelKwd.toFixed(3)) : Number(octFuelKwd.toFixed(3));
+        const exactOctFuelLiters = (v18Rec && v18Rec.octFuelLiters !== undefined) ? Number(v18Rec.octFuelLiters.toFixed(1)) : Number(octFuelLiters.toFixed(1));
+        const exactFilsPerOrder = (v18Rec && v18Rec.filsPerOrderAnnual !== undefined)
+          ? v18Rec.filsPerOrderAnnual
+          : (exactTotOrders > 0 ? Number(((exactTotFuelKwd / exactTotOrders) * 1000).toFixed(1)) : 0);
+        const activeMonths10 = (v18Rec && v18Rec.activeMonths) ? v18Rec.activeMonths : 10;
+        const annualMobileM1ToM10 = Number((activeMonths10 * 5.0).toFixed(3));
+        const annualFuelAndMobileM1ToM10 = Number((exactTotFuelKwd + annualMobileM1ToM10).toFixed(3));
+
+        r.octInvoiceOrders = octInvoiceOrders;
+        r.annualOrdersM1ToM10 = exactTotOrders;
+        r.annualTotalOrders = exactTotOrders + (r.totalOrders || 0);
+        r.annualFuelM1ToM10Kwd = exactTotFuelKwd;
+        r.annualFuelM1ToM10Liters = exactTotFuelLiters;
+        r.annualFuelFilsPerOrder = exactFilsPerOrder;
+        r.annualMobileM1ToM10Kwd = annualMobileM1ToM10;
+        r.annualFuelAndMobileM1ToM10Kwd = annualFuelAndMobileM1ToM10;
+
+        if (r.cumM1M9) {
+          r.cumM1M9.totalOrders = exactTotOrders;
+          r.cumM1M9.totalOrdersValue = Number(sumOrdVal1_10.toFixed(3));
+          r.cumM1M9.octInvoiceOrders = octInvoiceOrders;
+          r.cumM1M9.octOrdersValue = Number(octOrdersValue.toFixed(3));
+          r.cumM1M9.octFuelKwd = exactOctFuelKwd;
+          r.cumM1M9.octFuelLiters = exactOctFuelLiters;
+          r.cumM1M9.totalFuelKwd = exactTotFuelKwd;
+          r.cumM1M9.totalFuelLiters = exactTotFuelLiters;
+          r.cumM1M9.avgFuelFilsPerOrder = exactFilsPerOrder;
+          r.cumM1M9.annualMobileFeeKwd = annualMobileM1ToM10;
+          r.cumM1M9.totalFuelAndMobileKwd = annualFuelAndMobileM1ToM10;
+
+          const activeRecs = (r.m1ToM9History || []).filter(x => x.orders > 0);
+          if (activeRecs.length >= 2) {
+            const firstOrd = activeRecs[0].orders;
+            const lastOrd = activeRecs[activeRecs.length - 1].orders;
+            r.cumM1M9.firstMonthLabel = activeRecs[0].short;
+            r.cumM1M9.lastMonthLabel = activeRecs[activeRecs.length - 1].short;
+            r.cumM1M9.firstMonthOrders = firstOrd;
+            r.cumM1M9.lastMonthOrders = lastOrd;
+            r.cumM1M9.diffM1ToM9Orders = lastOrd - firstOrd;
+            r.cumM1M9.growthPct = firstOrd > 0 ? ((lastOrd - firstOrd) / firstOrd) * 100 : 0;
+          }
+        }
+      });
+    };
+
+    // 10. Upgrade normalizeFleetDatabase to run the Universal PendingDues & Cash Parser AND sync Annual Fuel
+    const _v19MasterNormFleet = normalizeFleetDatabase;
+    normalizeFleetDatabase = function() {
+      _v19MasterNormFleet();
+
+      // A. Re-compute Pending Cash ("المستحق قبل الإيداع" / r.pendingCash) using Universal Header-Aware Parser
+      DB.extraCompanyCashSummary = { totalSales: 0, totalCollections: 0, totalTips: 0, preDepositDues: 0 };
+
+      const activePdCos = Object.keys(DB.pendingDuesSheets || {}).filter(co => {
+        const sObj = DB.pendingDuesSheets[co];
+        return sObj && Array.isArray(sObj.rows) && sObj.rows.length > 1;
+      });
+
+      // Reset rider cash fields before populating
+      DB.allRidersList.forEach(r => {
+        r.cashTotalSales = 0;
+        r.cashTotalCollection = 0;
+        r.cashTips = 0;
+        r.pendingCash = 0;
+        r.nonDepositDaysCount = 0;
+      });
+
+      if (activePdCos.length > 0) {
+        activePdCos.forEach(co => {
+          const sheetObj = DB.pendingDuesSheets[co];
+          const recs = parseSinglePendingDuesOrCashSheetV20(sheetObj.rows, co);
+          recs.forEach(rec => {
+            if (isDepartedRiderV19(rec.rawId, rec.rawName, rec.rawNameAr)) return;
+            const rider = findRiderInFleet(rec.rawId, rec.rawName) || findRiderInFleet(rec.rawId, rec.rawNameAr);
+            if (rider) {
+              rider.cashTotalSales = rec.sales;
+              rider.cashTotalCollection = rec.collection;
+              rider.cashTips = rec.tips;
+              rider.pendingCash = rec.pendingDues;
+              rider.nonDepositDaysCount = rec.nonDepDays;
+              if (rider.dailyDeposit <= 0 && rec.lastColVal > 0) {
+                rider.lastDepositAmount = rec.lastColVal;
+                rider.lastDepositDate = `${rec.lastColDay}`;
+              }
+            } else {
+              DB.extraCompanyCashSummary.totalSales = Number((DB.extraCompanyCashSummary.totalSales + rec.sales).toFixed(3));
+              DB.extraCompanyCashSummary.totalCollections = Number((DB.extraCompanyCashSummary.totalCollections + rec.collection).toFixed(3));
+              DB.extraCompanyCashSummary.totalTips = Number((DB.extraCompanyCashSummary.totalTips + rec.tips).toFixed(3));
+              DB.extraCompanyCashSummary.preDepositDues = Number((DB.extraCompanyCashSummary.preDepositDues + rec.pendingDues).toFixed(3));
+            }
+          });
+        });
+      } else if (Array.isArray(DB.cash) && DB.cash.length > 1) {
+        const recs = parseSinglePendingDuesOrCashSheetV20(DB.cash, '');
+        recs.forEach(rec => {
+          if (isDepartedRiderV19(rec.rawId, rec.rawName, rec.rawNameAr)) return;
+          const rider = findRiderInFleet(rec.rawId, rec.rawName) || findRiderInFleet(rec.rawId, rec.rawNameAr);
+          if (rider) {
+            rider.cashTotalSales = rec.sales;
+            rider.cashTotalCollection = rec.collection;
+            rider.cashTips = rec.tips;
+            rider.pendingCash = rec.pendingDues;
+          }
+        });
+      }
+
+      // Recompute netPendingCash, cashPenalty, and 75% cap salary deductions after accurate pendingCash
+      DB.allRidersList.forEach(r => {
+        r.pendingCash = Number(Math.max(0, r.pendingCash || 0).toFixed(3));
+        r.dailyDeposit = Number(Math.max(0, r.dailyDeposit || 0).toFixed(3));
+        r.netPendingCash = Number(Math.max(0, r.pendingCash - r.dailyDeposit).toFixed(3));
+        r.undepositedCash = r.netPendingCash;
+        r.cashPenalty = r.netPendingCash > 20 ? Number(((r.netPendingCash - 20) * 0.15).toFixed(3)) : 0;
+
+        const grossEarnedAfterPen = Math.max(0, r.driverEarned - r.missingPenalty + (r.housing || 0));
+        const maxTotalDed75 = Number((grossEarnedAfterPen * 0.75).toFixed(3));
+        let remCap = maxTotalDed75;
+        const cashDed75 = Number(Math.min(Math.max(0, r.netPendingCash || 0), remCap).toFixed(3));
+        remCap = Number(Math.max(0, remCap - cashDed75).toFixed(3));
+        const augDed75 = String(r.id) === '1908630' ? 0 : Number(Math.min(Math.max(0, r.invAugDeduction || 0), remCap).toFixed(3));
+        remCap = Number(Math.max(0, remCap - augDed75).toFixed(3));
+        const violDed75 = Number(Math.min(Math.max(0, r.violationsTotalRaw || 0), remCap).toFixed(3));
+        remCap = Number(Math.max(0, remCap - violDed75).toFixed(3));
+        const rawDebt = Math.max(0, (r.latestHistRemainingDebt || 0) + (parseFloat(DB.localAdj[r.id]?.debt) || 0));
+        const debtDed75 = Number(Math.min(rawDebt, remCap).toFixed(3));
+
+        r.cashDeducted75 = cashDed75;
+        r.cashCarriedOver75 = Number(Math.max(0, r.netPendingCash - cashDed75).toFixed(3));
+        r.violationsDeducted70 = violDed75;
+        r.debtDeducted75 = debtDed75;
+        r.totalDeductionsApplied75 = Number((cashDed75 + augDed75 + violDed75 + debtDed75).toFixed(3));
+        r.driverNet = Number(Math.max(0, grossEarnedAfterPen - r.totalDeductionsApplied75).toFixed(3));
+      });
+
+      // B. Rebuild Driver M1-M10 History & Authoritative Annual Fuel Consumption
+      buildDriverM1ToM9History();
+
+      // C. Sync r.monthlyFinancialLedger with authoritative M1-M10 orders & realFuelKwd (deduplicated by monthKey)
+      const activeMInfo = getActiveMonthInfo();
+      DB.allRidersList.forEach(r => {
+        const byMk = {};
+        (r.histPayrolls || []).forEach(hp => {
+          if (hp.monthKey && hp.monthKey !== activeMInfo.key && hp.monthKey <= '2026-10') {
+            byMk[hp.monthKey] = hp;
+          }
+        });
+        const hps = Object.values(byMk).sort((a, b) => a.monthKey.localeCompare(b.monthKey));
+        const histMapFromM1M10 = {};
+        (r.m1ToM9History || []).forEach(h => { histMapFromM1M10[h.monthKey] = h; });
+
+        let histOrdSum = 0, histTalabatRevSum = 0, histDriverSalSum = 0, histFuelSum = 0, histMobileSum = 0, histCompProfitSum = 0;
+        r.monthlyFinancialLedger = [];
+
+        hps.forEach(hp => {
+          const mk = hp.monthKey;
+          const hRec = histMapFromM1M10[mk];
+          const bInMonth = hRec ? hRec.batch : (hp.batch || r.batch);
+          const ordInMonth = hRec ? hRec.orders : (hp.orders || 0);
+          const tRev = (hp.talabatRevenue !== undefined && hp.talabatRevenue > 0)
+            ? hp.talabatRevenue
+            : computeRiderTalabatRevenueForMonth(r, mk, ordInMonth, bInMonth);
+          const dSal = mk === '2026-10'
+            ? (hp.tierSalaryNoDebtViol !== undefined ? hp.tierSalaryNoDebtViol : Math.max(0, hp.netSalary || 0))
+            : Math.max(0, hp.netSalary || 0);
+          const realF = hRec ? hRec.fuelKwd : Number((parseFloat(hp.realFuelKwd) || parseFloat(hp.estFuel) || 0).toFixed(3));
+          const realFLiters = hRec ? hRec.fuelLiters : Number((parseFloat(hp.realFuelLiters) || 0).toFixed(1));
+          const realM = 5.000;
+          const cProf = Number((tRev - dSal - realF - realM).toFixed(3));
+
+          histOrdSum += ordInMonth;
+          histTalabatRevSum += tRev;
+          histDriverSalSum += dSal;
+          histFuelSum += realF;
+          histMobileSum += realM;
+          histCompProfitSum += cProf;
+
+          r.monthlyFinancialLedger.push({
+            monthKey: mk,
+            monthLabel: hp.monthLabel || getMonthMeta(mk).nameAr,
+            batch: bInMonth,
+            orders: ordInMonth,
+            talabatRev: tRev,
+            rateUsed: getRiderTalabatRateForMonth(r, mk, bInMonth),
+            ordersValue: hp.ordersValue || 0,
+            targetDiff: hp.targetDiff || 0,
+            targetPenalty: hp.targetPenalty || 0,
+            cashDed: hp.cashDeduction || 0,
+            violations: hp.violations || 0,
+            invoices: mk === '2026-10' ? 0 : (hp.invoices || 0),
+            debtDed: hp.debtDeducted || 0,
+            remainingDebt: Math.abs(hp.remainingDebt || 0),
+            driverNet: hp.netSalary || 0,
+            tierSalaryNoDebtViol: hp.tierSalaryNoDebtViol !== undefined ? hp.tierSalaryNoDebtViol : dSal,
+            realFuelKwd: realF,
+            realFuelLiters: realFLiters,
+            mobileFee: realM,
+            fuelAndMobile: Number((realF + realM).toFixed(3)),
+            companyNetProfit: cProf
+          });
+        });
+
+        const grossEarnedAfterPen = Math.max(0, r.driverEarned - r.missingPenalty + (r.housing || 0));
+        r.monthlyFinancialLedger.push({
+          monthKey: activeMInfo.key,
+          monthLabel: `${activeMInfo.nameAr} (الحالي — نشط)`,
+          batch: r.batch,
+          orders: r.totalOrders,
+          talabatRev: r.companyGrossRevenue,
+          rateUsed: r.talabatOrderRate,
+          ordersValue: r.driverEarned,
+          targetDiff: r.missingDailyTarget,
+          targetPenalty: r.missingPenalty,
+          cashDed: r.cashDeducted75,
+          violations: r.violationsDeducted70,
+          invoices: 0,
+          debtDed: r.debtDeducted75,
+          remainingDebt: r.debtCarriedOver75 || 0,
+          driverNet: r.driverNet,
+          tierSalaryNoDebtViol: grossEarnedAfterPen,
+          realFuelKwd: r.fuelExpense,
+          realFuelLiters: r.fuelLiters,
+          mobileFee: 5.000,
+          fuelAndMobile: Number((r.fuelExpense + 5.000).toFixed(3)),
+          companyNetProfit: r.companyNetProfit,
+          isCurrent: true
+        });
+
+        r.annualOrdersM1ToM10 = r.cumM1M9 ? r.cumM1M9.totalOrders : histOrdSum;
+        r.annualTotalOrders = r.annualOrdersM1ToM10 + r.totalOrders;
+        r.annualTalabatRevenue = Number((histTalabatRevSum + r.companyGrossRevenue).toFixed(3));
+        r.annualDriverNetSalary = Number((histDriverSalSum + Math.max(0, r.driverNet)).toFixed(3));
+        r.annualRealFuelKwd = Number(((r.annualFuelM1ToM10Kwd || histFuelSum) + r.fuelExpense).toFixed(3));
+        r.annualMobileFeeKwd = Number(((r.annualMobileM1ToM10Kwd || histMobileSum) + 5.000).toFixed(3));
+        r.annualCompanyNetProfit = Number((histCompProfitSum + r.companyNetProfit).toFixed(3));
+      });
+    };
+
+    // 11. Enhance Driver Card Wallet Tab, Driver 360° Modal, and Cumulative Performance View
+    //     to display the authoritative Annual Fuel Consumption (ش1–ش10) matching the Annual Report 100%!
+    const _v19OrigRenderCardTabContent = renderCardTabContent;
+    renderCardTabContent = function(r, tab) {
+      const baseHtml = _v19OrigRenderCardTabContent(r, tab);
+      if (tab === 'wallet' && r.cumM1M9) {
+        const cm = r.cumM1M9;
+        const annualFuelRow = `
+          <div class="mini-metric-item" style="grid-column: span 2; background: rgba(219,39,119,0.08); border: 1px solid rgba(219,39,119,0.3); border-radius: 8px; padding: 6px 10px; margin-top: 4px;">
+            <span class="mini-metric-lbl" style="color:#DB2777;font-weight:900;">⛽ استهلاك البنزين السنوي (ش1–ش10):</span>
+            <span class="mini-metric-val" style="color:#DB2777;font-weight:900;">${fmtKWD(cm.totalFuelKwd)} (${cm.totalFuelLiters.toFixed(1)} لتر | ${cm.avgFuelFilsPerOrder} فلس/طلب)</span>
+          </div>
+        `;
+        return baseHtml.replace(/<\/div>\s*$/, annualFuelRow + '</div>');
+      }
+      return baseHtml;
+    };
+
+    const _v19OrigOpenDriverModal = openDriverModal;
+    openDriverModal = function(riderId) {
+      _v19OrigOpenDriverModal(riderId);
+      const r = DB.fleet[riderId];
+      if (!r || !r.cumM1M9) return;
+      const body = document.getElementById('modalBodyContent');
+      if (!body) return;
+      const cm = r.cumM1M9;
+      body.innerHTML = body.innerHTML.replace(
+        /<td style="color:var\(--orange\);font-size:14px;">([^<]+)<\/td>\s*<td>--<\/td>/,
+        `<td style="color:var(--orange);font-size:14px;">$1</td><td style="color:#DB2777;font-weight:900;">-${fmtKWD(cm.totalFuelAndMobileKwd + r.fuelExpense + 5.0)}<br/><small style="color:var(--text3);">بنزين ش1–10: ${cm.totalFuelKwd.toFixed(3)} د.ك (${cm.totalFuelLiters.toFixed(1)} لتر)</small></td>`
+      );
+    };
+
+    const _v19OrigRenderCumPerfView = renderCumulativePerformanceView;
+    renderCumulativePerformanceView = function() {
+      _v19OrigRenderCumPerfView();
+      const sr = DB.fleet[APP.selectedCumRiderId] || DB.allRidersList[0];
+      const spotBox = document.getElementById('cumDriverSpotlightBox');
+      if (sr && sr.cumM1M9 && spotBox && !spotBox.innerHTML.includes('البنزين السنوي (ش1–ش10)')) {
+        const cm = sr.cumM1M9;
+        spotBox.innerHTML = spotBox.innerHTML
+          .replace('أوردرات (ش1–ش9):', 'أوردرات (ش1–ش10):')
+          .replace(/<div class="mini-metrics-grid"([^>]*)>/, `<div class="mini-metrics-grid"$1><div class="mini-metric-item" style="border:1px solid rgba(219,39,119,0.35);background:rgba(219,39,119,0.06);"><span class="mini-metric-lbl" style="color:#DB2777;">⛽ البنزين السنوي (ش1–ش10):</span><span class="mini-metric-val" style="color:#DB2777;">${fmtKWD(cm.totalFuelKwd)} <small>(${cm.totalFuelLiters.toFixed(0)} لتر | ${cm.avgFuelFilsPerOrder} فلس/طلب)</small></span></div>`);
       }
     };
 
