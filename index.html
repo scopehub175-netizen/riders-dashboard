@@ -14,6 +14,113 @@
   <!-- Leaflet.js for Real Interactive Map of Kuwait -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- GSAP (GreenSock Animation Platform) + Instant Offline Fallback -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script>
+    (function ensureGSAPEngine() {
+      if (typeof window.gsap !== 'undefined') return;
+      function parseEase(easeStr) {
+        return function(t) { return 1 - Math.pow(1 - t, 3); };
+      }
+      function applyVars(el, vars, progress) {
+        if (!el || !el.style) return;
+        if (vars.opacity !== undefined) el.style.opacity = vars.opacity;
+        const tx = vars.x !== undefined ? vars.x : 0;
+        const ty = vars.y !== undefined ? vars.y : 0;
+        const sc = vars.scale !== undefined ? vars.scale : 1;
+        if (vars.x !== undefined || vars.y !== undefined || vars.scale !== undefined) {
+          el.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${sc})`;
+        }
+        if (progress === 1 && vars.clearProps) {
+          el.style.transform = '';
+          if (String(vars.clearProps).includes('opacity') || vars.clearProps === 'all') el.style.opacity = '';
+        }
+      }
+      function toArray(targets) {
+        if (!targets) return [];
+        if (typeof targets === 'string') return Array.from(document.querySelectorAll(targets));
+        if (targets instanceof Element) return [targets];
+        if (Array.isArray(targets) || targets instanceof NodeList || targets instanceof HTMLCollection) return Array.from(targets);
+        return [];
+      }
+      window.gsap = {
+        version: '3.12.5-softui',
+        killTweensOf: function(targets) {
+          toArray(targets).forEach(el => { if (el._gsapRaf) cancelAnimationFrame(el._gsapRaf); });
+        },
+        set: function(targets, vars) {
+          toArray(targets).forEach(el => applyVars(el, vars, 1));
+        },
+        to: function(targets, vars) {
+          const els = toArray(targets);
+          const dur = (vars.duration !== undefined ? vars.duration : 0.28) * 1000;
+          const stagger = (vars.stagger || 0) * 1000;
+          const easeFn = parseEase(vars.ease);
+          els.forEach((el, idx) => {
+            if (!el || !el.style) return;
+            if (el._gsapRaf) cancelAnimationFrame(el._gsapRaf);
+            const delay = (vars.delay || 0) * 1000 + idx * stagger;
+            const startOp = parseFloat(getComputedStyle(el).opacity || '1');
+            const endOp = vars.opacity !== undefined ? vars.opacity : startOp;
+            const endX = vars.x !== undefined ? vars.x : 0;
+            const endY = vars.y !== undefined ? vars.y : 0;
+            const endSc = vars.scale !== undefined ? vars.scale : 1;
+            const startTime = performance.now() + delay;
+            function tick(now) {
+              if (now < startTime) { el._gsapRaf = requestAnimationFrame(tick); return; }
+              const p = dur <= 0 ? 1 : Math.min(1, (now - startTime) / dur);
+              const e = easeFn(p);
+              applyVars(el, {
+                opacity: startOp + (endOp - startOp) * e,
+                x: endX * e,
+                y: endY * e,
+                scale: 1 + (endSc - 1) * e,
+                clearProps: vars.clearProps
+              }, p);
+              if (p < 1) el._gsapRaf = requestAnimationFrame(tick);
+              else if (typeof vars.onComplete === 'function' && idx === els.length - 1) vars.onComplete();
+            }
+            el._gsapRaf = requestAnimationFrame(tick);
+          });
+        },
+        fromTo: function(targets, fromVars, toVars) {
+          const els = toArray(targets);
+          const dur = (toVars.duration !== undefined ? toVars.duration : 0.28) * 1000;
+          const stagger = (toVars.stagger || 0) * 1000;
+          const easeFn = parseEase(toVars.ease);
+          els.forEach((el, idx) => {
+            if (!el || !el.style) return;
+            if (el._gsapRaf) cancelAnimationFrame(el._gsapRaf);
+            const sOp = fromVars.opacity !== undefined ? fromVars.opacity : 1;
+            const eOp = toVars.opacity !== undefined ? toVars.opacity : 1;
+            const sX = fromVars.x || 0, eX = toVars.x || 0;
+            const sY = fromVars.y || 0, eY = toVars.y || 0;
+            const sSc = fromVars.scale !== undefined ? fromVars.scale : 1;
+            const eSc = toVars.scale !== undefined ? toVars.scale : 1;
+            applyVars(el, { opacity: sOp, x: sX, y: sY, scale: sSc }, 0);
+            const delay = (toVars.delay || 0) * 1000 + idx * stagger;
+            const startTime = performance.now() + delay;
+            function tick(now) {
+              if (now < startTime) { el._gsapRaf = requestAnimationFrame(tick); return; }
+              const p = dur <= 0 ? 1 : Math.min(1, (now - startTime) / dur);
+              const e = easeFn(p);
+              applyVars(el, {
+                opacity: sOp + (eOp - sOp) * e,
+                x: sX + (eX - sX) * e,
+                y: sY + (eY - sY) * e,
+                scale: sSc + (eSc - sSc) * e,
+                clearProps: toVars.clearProps !== undefined ? toVars.clearProps : 'transform'
+              }, p);
+              if (p < 1) el._gsapRaf = requestAnimationFrame(tick);
+              else if (typeof toVars.onComplete === 'function' && idx === els.length - 1) toVars.onComplete();
+            }
+            el._gsapRaf = requestAnimationFrame(tick);
+          });
+        }
+      };
+    })();
+  </script>
+
   <style>
     :root {
       --font: 'Cairo', 'Inter', system-ui, -apple-system, sans-serif;
@@ -2222,84 +2329,84 @@
     <div class="sidebar-nav">
       <div class="nav-label">القيادة والعمليات</div>
       <div class="nav-item active" id="nav-overview" onclick="navigate('overview')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(0,113,227,0.12);color:#0071E3;">🏠</span><span>Home | الرئيسية</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(0,113,227,0.12);color:#0071E3;">🏠</span><span>الرئيسية</span></div>
       </div>
 
       <div class="nav-item" id="nav-autopilot" onclick="navigate('autopilot')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(88,86,214,0.12);color:#5856D6;">⚙️</span><span>العمليات (Operations AI)</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(88,86,214,0.12);color:#5856D6;">⚙️</span><span>المستشار الذكي</span></div>
       </div>
 
       <div class="nav-item" id="nav-liveroster" onclick="navigate('liveroster')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">📡</span><span>session | الشفتات والحضور</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">📡</span><span>الشفتات والأونلاين</span></div>
         <span class="nav-badge-alert" id="sidebarOnlineNowBadge">LIVE</span>
       </div>
       <div class="nav-item" id="nav-dailyreport" onclick="openDailyReportStudioModal()">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(245,158,11,0.16);color:#F59E0B;">🌙</span><span>التقرير اليومي (Dark)</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(245,158,11,0.16);color:#F59E0B;">🌙</span><span>التقرير اليومي</span></div>
         <span class="nav-badge-alert" style="background:rgba(16,185,129,0.2)!important;color:#10B981!important;">جديد</span>
       </div>
 
 
       <div class="nav-label">التشغيل والأسطول</div>
       <div class="nav-item" id="nav-orders" onclick="toggleOrdersMenu()">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,149,0,0.14);color:#FF9500;">📦</span><span>Orders | الأوردرات والفئات</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,149,0,0.14);color:#FF9500;">📦</span><span>الأوردرات والفئات</span></div>
         <span id="ordersChevron" style="font-size:10px;opacity:0.6;">▼</span>
       </div>
       <div class="nav-submenu" id="ordersSubmenu">
-        <div class="nav-sub" onclick="navigateOrders('ALL')"><span>🌐</span><span>All | كل الشركات</span></div>
-        <div class="nav-sub" onclick="navigateOrders('SUPT')"><span>🔸</span><span>SUPT | سبورتيف</span></div>
-        <div class="nav-sub" onclick="navigateOrders('FTMN')"><span>🔹</span><span>FTMN | ففتين منت</span></div>
-        <div class="nav-sub" onclick="navigateOrders('FNMN')"><span>🟣</span><span>FNMN | فورتين منت</span></div>
-        <div class="nav-sub" onclick="navigateOrders('SRBS')"><span>🟢</span><span>SRBS | سرب سريع</span></div>
+        <div class="nav-sub" onclick="navigateOrders('ALL')"><span>🌐</span><span>كل الشركات</span></div>
+        <div class="nav-sub" onclick="navigateOrders('SUPT')"><span>🔸</span><span>سبورتيف (SUPT)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('FTMN')"><span>🔹</span><span>ففتين منت (FTMN)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('FNMN')"><span>🟣</span><span>فورتين منت (FNMN)</span></div>
+        <div class="nav-sub" onclick="navigateOrders('SRBS')"><span>🟢</span><span>سرب سريع (SRBS)</span></div>
       </div>
 
       <div class="nav-item" id="nav-fleet" onclick="navigate('fleet')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(0,113,227,0.12);color:#0071E3;">🪪</span><span>Cards | بطاقات السائقين</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(0,113,227,0.12);color:#0071E3;">🪪</span><span>بطاقات السائقين</span></div>
       </div>
       <div class="nav-item" id="nav-contracts" onclick="navigate('contracts')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,149,0,0.16);color:#FF9500;">📜</span><span>العقود والوثائق الـ 7</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,149,0,0.16);color:#FF9500;">📜</span><span>العقود والوثائق</span></div>
         <span class="nav-badge-alert" id="sidebarContractsBadge">7</span>
       </div>
       <div class="nav-item" id="nav-attendance" onclick="navigate('attendance')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">📅</span><span>سجل الحضور التفصيلي</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">📅</span><span>سجل الحضور</span></div>
       </div>
       <div class="nav-item" id="nav-performance" onclick="navigate('performance')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(90,200,250,0.16);color:#007AFF;">📈</span><span>performance | الأداء والتشخيص</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(90,200,250,0.16);color:#007AFF;">📈</span><span>الأداء والتراكمي</span></div>
       </div>
       <div class="nav-item" id="nav-quality" onclick="navigate('quality')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(16,185,129,0.16);color:#10B981;">🎯</span><span>Quality | الكوالتي وخطة التحسين</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(16,185,129,0.16);color:#10B981;">🎯</span><span>الكوالتي والمشرفين</span></div>
         <span class="nav-badge-alert" style="background:rgba(16,185,129,0.2)!important;color:#10B981!important;">PRO</span>
       </div>
 
       <div class="nav-label">المالية والمخالفات</div>
       <div class="nav-item" id="nav-finance" onclick="navigate('finance')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(0,113,227,0.16);color:#0071E3;">💎</span><span>Finance | المالية والفواتير</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(0,113,227,0.16);color:#0071E3;">💎</span><span>المالية والفواتير</span></div>
         <span class="nav-badge-alert" style="background:rgba(40,205,65,0.2)!important;color:#28CD41!important;">PRO</span>
       </div>
       <div class="nav-item" id="nav-violations" onclick="navigate('violations')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,59,48,0.16);color:#FF3B30;">🚦</span><span>Violations | المخالفات</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,59,48,0.16);color:#FF3B30;">🚦</span><span>المخالفات</span></div>
         <span class="nav-badge-alert" id="sidebarViolationsCount">0</span>
       </div>
       <div class="nav-item" id="nav-cashfuel" onclick="navigate('cashfuel')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,149,0,0.14);color:#FF9500;">📂</span><span>الكاش والوقود والشيتات</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,149,0,0.14);color:#FF9500;">📂</span><span>الكاش والإيداعات</span></div>
         <span class="nav-badge-alert" id="sidebarFuelAlertCount" style="display:none;">0</span>
       </div>
       <div class="nav-item" id="nav-payroll" onclick="navigate('payroll')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">💰</span><span>الرواتب ومركز واتساب</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(52,199,89,0.14);color:#28CD41;">💰</span><span>الرواتب وواتساب</span></div>
       </div>
       <div class="nav-item" id="nav-histbudget" onclick="navigate('histbudget')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(175,82,222,0.14);color:#AF52DE;">🏛️</span><span>أرشيف الشهور والموازنة</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(175,82,222,0.14);color:#AF52DE;">🏛️</span><span>أرشيف الشهور</span></div>
       </div>
 
       <div class="nav-label">الرقابة والصيانة</div>
       <div class="nav-item" id="nav-alerts" onclick="navigate('alerts')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,59,48,0.14);color:#FF3B30;">🚨</span><span>رادار المخاطر والوثائق</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,59,48,0.14);color:#FF3B30;">🚨</span><span>رادار المخاطر</span></div>
         <span class="nav-badge-alert" id="sidebarAlertCount">0</span>
       </div>
       <div class="nav-item" id="nav-maintenance" onclick="navigate('maintenance')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(142,142,147,0.16);color:#636366;">🔧</span><span>الصيانة والزيت والسبير</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(142,142,147,0.16);color:#636366;">🔧</span><span>الصيانة والورشة</span></div>
       </div>
       <div class="nav-item" id="nav-investigations" onclick="navigate('investigations')">
-        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,59,48,0.12);color:#FF3B30;">🔍</span><span>التحقيقات القانونية</span></div>
+        <div class="nav-left"><span class="apple-nav-icon" style="background:rgba(255,59,48,0.12);color:#FF3B30;">🔍</span><span>التحقيقات</span></div>
       </div>
     </div>
 
@@ -2328,63 +2435,166 @@
     <button class="mob-nav-btn" onclick="toggleMobileFieldMode()"><span>🖥️</span><span>سطح المكتب</span></button>
   </nav>
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <button class="top-btn apple-icon-btn" onclick="toggleSidebarCollapse()" title="إظهار / إخفاء القائمة الجانبية">
-        <span style="font-size:15px;">☰</span> <span>القائمة</span>
+  <!-- TOPBAR (V22 ORGANIZED SOFT UI & LIQUID GRADIENT HEADER) -->
+  <header class="topbar soft-ui-topbar">
+    <!-- 1. Right Group: Sidebar Toggle & Active Page Breadcrumb -->
+    <div class="topbar-brand-crumb">
+      <button class="top-btn soft-pill-btn" onclick="toggleSidebarCollapse()" title="إظهار / إخفاء القائمة الجانبية">
+        <span style="font-size:16px;">☰</span> <span>القائمة</span>
       </button>
       <div class="breadcrumb" id="topBreadcrumb">
-        <span style="color:var(--text3);font-weight:600;">C.O Fleet</span>
-        <span style="color:var(--text3);">›</span>
-        <b id="currentCrumb" style="color:var(--text);font-size:15px;font-weight:800;">الرئيسية</b>
+        <span class="crumb-root">C.O Fleet</span>
+        <span class="crumb-sep">›</span>
+        <b id="currentCrumb" class="crumb-active">الرئيسية</b>
       </div>
     </div>
 
-    <!-- Apple Spotlight Search -->
-    <div class="global-search-wrap">
+    <!-- 2. Center Expanded Spotlight Search Bar (Enlarged & Soft UI) -->
+    <div class="global-search-wrap soft-search-expanded">
+      <span class="soft-search-icon">🔍</span>
       <input type="text" id="globalCommandInput" class="global-search-input"
-             placeholder="🔍 بحث Spotlight (اسم السائق، ID، اللوحة، الهاتف)..."
+             placeholder="ابحث فوراً باسم السائق (عربي / إنجليزي)، الرقم الوظيفي ID، اللوحة، أو الهاتف..."
              autocomplete="off" oninput="handleGlobalSearch(this.value)" />
       <kbd class="search-kbd">⌘K</kbd>
       <div id="globalSearchDropdown" class="autocomplete-dropdown"></div>
     </div>
 
-    <div class="topbar-actions">
-      <button class="top-btn apple-launchpad-btn" onclick="openAppleLaunchpadModal()" title="خريطة أقسام الموقع السريعة لعدم التوهان">
-        <span>🧭</span> <span>كل الأقسام (12)</span>
+    <!-- 3. Left Organized Action Groups (Clean Single-Row Soft UI Pills & Menus) -->
+    <div class="topbar-actions soft-topbar-actions">
+      <!-- A. All Sections Launchpad -->
+      <button class="top-btn soft-pill-accent" onclick="openAppleLaunchpadModal()" title="خريطة كافة أقسام الداشبورد السريعة">
+        <span>🧭</span> <span>كل الأقسام</span>
       </button>
 
-      <div class="sync-live-pill" style="background:rgba(0,113,227,0.12)!important;border:1px solid rgba(0,113,227,0.35)!important;color:var(--blue)!important;cursor:pointer;" onclick="openDynamicMonthsManagerModal()" title="إدارة الشهور الديناميكية (أكتوبر، نوفمبر، ديسمبر، يناير...) وأرشفة الأداء والأوردرات">
-        <span>📅</span>
-        <span id="topActiveMonthLabel" style="font-weight:900;">الشهر: نوفمبر 2026 (ديناميكي)</span>
-      </div>
-      <div class="sync-live-pill" onclick="syncAllData(true)" title="اضغط للمزامنة الفورية مع Google Sheets">
-        <span class="status-dot" id="topSyncDot" style="width:7px;height:7px;"></span>
-        <span id="topSyncLabel">مزامنة حية</span>
+      <!-- B. Quick Upload Hub Dropdown (Cash, Daily Deposits, Shifts, Multi-Upload) -->
+      <div class="pdf-dropdown-wrap" id="topbarQuickUploadDropdownWrap">
+        <button class="top-btn soft-pill-green" onclick="toggleTopbarMenu(event, 'topbarQuickUploadMenu')" title="رفع شيت الإيداعات اليومي أو الكاش أو الشفتات فوراً">
+          <span>📤</span> <span>رفع الشيتات</span> <span style="font-size:10px;opacity:0.8;">▼</span>
+        </button>
+        <div class="pdf-dropdown-menu soft-dropdown-panel" id="topbarQuickUploadMenu" onclick="event.stopPropagation()" style="width:320px;">
+          <div style="font-size:13px;font-weight:900;color:var(--text);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <span>⚡ بوابة الرفع الفوري للشيتات</span>
+            <span class="badge badge-good">تحديث لحظي</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <button class="btn-action" style="width:100%;justify-content:flex-start;background:linear-gradient(135deg,#059669,#10B981)!important;padding:9px 14px!important;" onclick="closeAllTopbarMenus();triggerGlobalSlotUpload('DAILY_DEPOSITS');">
+              <span>💵</span> <span>رفع شيت الإيداعات اليومي (Daily Deposits)</span>
+            </button>
+            <button class="btn-action" style="width:100%;justify-content:flex-start;background:linear-gradient(135deg,#0284C7,#2563EB)!important;padding:9px 14px!important;" onclick="closeAllTopbarMenus();document.getElementById('quickMultiUploadInput')?.click();">
+              <span>📂</span> <span>رفع شيتات الكاش أو عدة شيتات معاً (Auto)</span>
+            </button>
+            <button class="btn-action" style="width:100%;justify-content:flex-start;background:linear-gradient(135deg,#4F46E5,#7C3AED)!important;padding:9px 14px!important;" onclick="closeAllTopbarMenus();document.getElementById('v18GlobalWeeklyShiftsInput')?.click();">
+              <span>📅</span> <span>رفع شيت الشفتات الأسبوعية (7 أيام)</span>
+            </button>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:2px;">
+              <button class="btn-secondary" style="justify-content:center;font-size:11.5px!important;" onclick="closeAllTopbarMenus();triggerGlobalSlotUpload('PD_SUPT');">🔸 كاش SUPT</button>
+              <button class="btn-secondary" style="justify-content:center;font-size:11.5px!important;" onclick="closeAllTopbarMenus();triggerGlobalSlotUpload('PD_FTMN');">🔹 كاش FTMN</button>
+              <button class="btn-secondary" style="justify-content:center;font-size:11.5px!important;" onclick="closeAllTopbarMenus();triggerGlobalSlotUpload('PD_FNMN');">🟣 كاش FNMN</button>
+              <button class="btn-secondary" style="justify-content:center;font-size:11.5px!important;" onclick="closeAllTopbarMenus();triggerGlobalSlotUpload('PD_SRBS');">🟢 كاش SRBS</button>
+            </div>
+            <button class="btn-secondary" style="width:100%;justify-content:center;margin-top:4px;" onclick="closeAllTopbarMenus();navigate('cashfuel');">
+              ⚙️ فتح مركز إدارة الكاش والإيداعات والوقود
+            </button>
+          </div>
+        </div>
       </div>
 
-      <button class="top-btn" onclick="navigate('liveroster')" title="المتواجدون في الشفت الآن">
-        <span>📡</span> <span>الأونلاين</span>
-      </button>
+      <!-- C. Sync & Active Month Unified Pill + Menu -->
+      <div class="pdf-dropdown-wrap" id="topbarSyncMonthWrap">
+        <div class="sync-live-pill soft-sync-pill" onclick="toggleTopbarMenu(event, 'topbarSyncMonthMenu')" title="المزامنة الحية، اختيار الشهر النشط، وحالة الأونلاين">
+          <span class="status-dot" id="topSyncDot" style="width:8px;height:8px;"></span>
+          <span id="topSyncLabel" style="font-weight:800;">مزامنة</span>
+          <span style="opacity:0.35;">|</span>
+          <span id="topActiveMonthLabel" style="font-weight:900;color:var(--blue);">نوفمبر 2026</span>
+          <span style="font-size:10px;opacity:0.7;">▼</span>
+        </div>
+        <div class="pdf-dropdown-menu soft-dropdown-panel" id="topbarSyncMonthMenu" onclick="event.stopPropagation()" style="width:310px;">
+          <div style="font-size:13px;font-weight:900;color:var(--text);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">
+            🔄 مركز المزامنة الحية والشهور والجيميل
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <button class="btn-action" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();syncAllData(true);">
+              <span>⚡</span> <span>مزامنة فورية مع Google Sheets الآن</span>
+            </button>
+            <button class="btn-secondary" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();openDynamicMonthsManagerModal();">
+              <span>📅</span> <span>تغيير الشهر النشط وإدارة أرشيف الشهور</span>
+            </button>
+            <button class="btn-secondary" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();navigate('liveroster');">
+              <span>📡</span> <span>المتواجدون أونلاين في الشفت الآن</span>
+            </button>
+            <button class="btn-secondary" style="width:100%;justify-content:flex-start;color:#059669!important;" onclick="closeAllTopbarMenus();openGmailLiveReportConfigModal();">
+              <span>📧</span> <span>إعدادات ربط الجيميل (Gmail) والتقرير المباشر</span>
+            </button>
+            <button class="btn-secondary" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();openSheetSettingsModal();">
+              <span>☁️</span> <span>إعدادات السحابة والنسخ الاحتياطي</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
+      <!-- D. Unified Reports Center (Daily, Monthly, Annual, Executive PDF + Checklists) -->
       <div class="pdf-dropdown-wrap" id="drTopbarDropdownContainer">
-        <button class="top-btn" onclick="openDailyReportStudioModal()" title="إعداد وتصدير التقرير اليومي بالوضع الليلي" style="background:linear-gradient(135deg,#0F172A,#1E293B)!important;color:#38BDF8!important;border:1px solid #38BDF8!important;font-weight:900!important;padding:6px 12px!important;border-top-right-radius:980px!important;border-bottom-right-radius:980px!important;border-top-left-radius:0!important;border-bottom-left-radius:0!important;box-shadow:0 4px 12px rgba(56,189,248,0.18);">
+        <button class="top-btn soft-pill-dark" onclick="openDailyReportStudioModal()" title="فتح استوديو التقرير اليومي (شامل رادار الكاش)">
           <span>🌙</span> <span>التقرير اليومي</span>
         </button>
-        <button class="top-btn" onclick="toggleDailyReportCheckDropdown(event, 'drTopbarCheckMenu')" title="اختيار وتحديد العناصر والكروت والفئات التي يشملها التقرير اليومي" style="background:#1E293B!important;color:#34D399!important;border:1px solid #38BDF8!important;border-right:none!important;font-weight:900!important;padding:6px 9px!important;border-top-left-radius:980px!important;border-bottom-left-radius:980px!important;border-top-right-radius:0!important;border-bottom-right-radius:0!important;">
-          <span>☑️</span> <span style="font-size:10px;">▼</span>
+        <button class="top-btn soft-pill-reports" onclick="toggleTopbarMenu(event, 'topbarUnifiedReportsMenu')" title="مركز التقارير الشامل (اليومي، الشهري، السنوي، التنفيذي PDF، وتقرير الكاش المباشر)">
+          <span>📊</span> <span>التقارير</span> <span style="font-size:10px;">▼</span>
         </button>
-        <div class="pdf-dropdown-menu" id="drTopbarCheckMenu" onclick="event.stopPropagation()" style="width:410px;max-height:82vh;overflow-y:auto;background:#0F172A!important;color:#F8FAFC!important;border:1px solid #38BDF8!important;box-shadow:0 20px 50px rgba(0,0,0,0.85)!important;"></div>
-      </div>
 
-      <div class="pdf-dropdown-wrap" id="pdfDropdownContainer">
-        <button class="top-btn apple-primary-pill" onclick="generateExecutiveCompanyPDF()" style="border-top-left-radius:0!important;border-bottom-left-radius:0!important;">
-          <span>📄</span> <span>تقرير PDF</span>
-        </button>
-        <button class="top-btn apple-primary-pill" onclick="togglePdfOptionsDropdown(event)" title="اختيار البنود والشارتس المطلوبة في التقرير PDF" style="border-top-right-radius:0!important;border-bottom-right-radius:0!important;border-right:1px solid rgba(255,255,255,0.28)!important;padding:6px 9px!important;">
-          <span>☑️</span> <span>▼</span>
-        </button>
+        <!-- Hidden checklist menus preserved for direct toggle access -->
+        <div class="pdf-dropdown-menu" id="drTopbarCheckMenu" onclick="event.stopPropagation()" style="width:420px;max-height:82vh;overflow-y:auto;background:#0F172A!important;color:#F8FAFC!important;border:1px solid #38BDF8!important;box-shadow:0 20px 50px rgba(0,0,0,0.85)!important;"></div>
+
+        <div class="pdf-dropdown-menu soft-dropdown-panel" id="topbarUnifiedReportsMenu" onclick="event.stopPropagation()" style="width:375px;max-height:85vh;overflow-y:auto;">
+          <div style="font-size:13.5px;font-weight:900;color:var(--text);margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <span>📊 مركز التقارير الرسمية والتخصيص</span>
+            <span class="badge badge-bike">5 تقارير</span>
+          </div>
+
+          <!-- 1. Daily Report -->
+          <div class="soft-report-menu-row">
+            <button class="btn-action" style="flex:1;justify-content:flex-start;background:linear-gradient(135deg,#0F172A,#1E293B)!important;color:#38BDF8!important;border:1px solid #38BDF8!important;" onclick="closeAllTopbarMenus();openDailyReportStudioModal();">
+              <span>🌙</span> <span>1. التقرير اليومي (شامل رادار الكاش)</span>
+            </button>
+            <button class="btn-secondary" style="padding:7px 11px!important;" onclick="closeAllTopbarMenus();toggleDailyReportCheckDropdown(event, 'drTopbarCheckMenu');" title="تحديد عناصر التقرير اليومي">☑️ العناصر</button>
+          </div>
+
+          <!-- 2. Monthly Report -->
+          <div class="soft-report-menu-row" data-v18-rep-menu-wrap="1" data-v18-rep-type="MONTHLY" data-v18-rep-menu-id="v18TopbarMonthlyCheckMenu" style="position:relative;">
+            <button class="btn-action" style="flex:1;justify-content:flex-start;background:linear-gradient(135deg,#DC2626,#EA580C)!important;" onclick="closeAllTopbarMenus();exportOctoberMonthlyPerformancePDF();">
+              <span>📈</span> <span>2. التقرير الشهري للأداء والموازنة</span>
+            </button>
+            <button class="btn-secondary" style="padding:7px 11px!important;" onclick="toggleV18ReportCheckMenu(event, 'v18TopbarMonthlyCheckMenu')" title="تحديد عناصر التقرير الشهري">☑️ العناصر</button>
+            <div class="v18-menu-holder"></div>
+          </div>
+
+          <!-- 3. Annual Report M1-M10 -->
+          <div class="soft-report-menu-row" data-v18-rep-menu-wrap="1" data-v18-rep-type="ANNUAL" data-v18-rep-menu-id="v18TopbarAnnualCheckMenu" style="position:relative;">
+            <button class="btn-action" style="flex:1;justify-content:flex-start;background:linear-gradient(135deg,#4F46E5,#7C3AED)!important;" onclick="closeAllTopbarMenus();exportAnnualComprehensiveReportM1ToM10PDF();">
+              <span>📘</span> <span>3. التقرير السنوي الشامل (ش1–ش10)</span>
+            </button>
+            <button class="btn-secondary" style="padding:7px 11px!important;" onclick="toggleV18ReportCheckMenu(event, 'v18TopbarAnnualCheckMenu')" title="تحديد عناصر التقرير السنوي">☑️ العناصر</button>
+            <div class="v18-menu-holder"></div>
+          </div>
+
+          <!-- 4. Executive Company PDF -->
+          <div class="soft-report-menu-row" id="pdfDropdownContainer">
+            <button class="btn-action" style="flex:1;justify-content:flex-start;background:linear-gradient(135deg,#0284C7,#2563EB)!important;" onclick="closeAllTopbarMenus();generateExecutiveCompanyPDF();">
+              <span>📄</span> <span>4. التقرير التنفيذي للشركة (PDF)</span>
+            </button>
+            <button class="btn-secondary" style="padding:7px 11px!important;" onclick="closeAllTopbarMenus();togglePdfOptionsDropdown(event);" title="تحديد بنود التقرير التنفيذي PDF">☑️ البنود</button>
+          </div>
+
+          <!-- 5. Quality & Live Cash Reports -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;padding-top:8px;border-top:1px dashed var(--border);">
+            <button class="btn-secondary" style="justify-content:center;font-size:11.5px!important;color:#059669!important;" onclick="closeAllTopbarMenus();openDriveCashScheduleLink();">
+              🟢 تقرير الكاش المباشر
+            </button>
+            <button class="btn-secondary" style="justify-content:center;font-size:11.5px!important;color:var(--purple)!important;" onclick="closeAllTopbarMenus();navigate('quality');">
+              🎯 تقرير الكوالتي (11 معيار)
+            </button>
+          </div>
+        </div>
+
         <div class="pdf-dropdown-menu" id="pdfCustomDropdownMenu" onclick="event.stopPropagation()">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">
             <b style="font-size:13px;color:var(--text);">☑️ بنود التقرير التنفيذي PDF</b>
@@ -2405,19 +2615,31 @@
           <button class="btn-action" style="width:100%;justify-content:center;margin-top:10px;" onclick="closePdfOptionsDropdown();generateExecutiveCompanyPDF();">🖨️ توليد وطباعة التقرير المخصص الآن</button>
         </div>
       </div>
-      <div id="topbarAiBtnGroup" style="display:inline-flex;align-items:center;background:rgba(88,86,214,0.14);border-radius:980px;padding:1px;">
-        <button class="top-btn" style="background:transparent!important;color:var(--purple)!important;padding:5px 10px 5px 6px!important;" onclick="toggleAiChatDrawer()" title="المساعد الذكي لتعديل الداشبورد والإجابة عن الأسئلة">
+
+      <!-- E. AI Assistant Pill -->
+      <div id="topbarAiBtnGroup" style="display:inline-flex;align-items:center;">
+        <button class="top-btn soft-pill-purple" onclick="toggleAiChatDrawer()" title="المساعد الذكي للتحليل والإجابة الفورية">
           <span>🤖</span> <span>مساعد AI</span>
         </button>
-        <button onclick="hideTopbarAiButton(event)" title="إخفاء زر المساعد الذكي" style="background:rgba(239,68,68,0.16);color:#EF4444;border:none;border-radius:50%;width:20px;height:20px;font-size:10px;font-weight:900;cursor:pointer;margin-left:4px;display:inline-flex;align-items:center;justify-content:center;">✕</button>
       </div>
 
-      <button class="top-btn apple-icon-only" onclick="openSheetSettingsModal()" title="إعدادات السحابة والنسخ الاحتياطي">☁️</button>
-      <button class="top-btn apple-icon-only" onclick="openTvWallboardModal()" title="شاشة العرض للمكتب TV">📺</button>
-      <button class="top-btn apple-icon-only" onclick="togglePrivacyMode()" id="privacyBtn" title="إخفاء/إظهار أرباح الشركة">👁️<span id="privacyBtnTxt" style="display:none;"></span></button>
-      <button class="top-btn apple-icon-only" onclick="toggleMobileFieldMode()" title="وضع الموبايل">📱</button>
-      <button class="top-btn apple-icon-only" onclick="toggleTheme()" title="تبديل المظهر النهاري / الليلي"><span id="themeIcon">🌙</span></button>
-      <div id="liveClock" style="font-size:12px;font-weight:700;color:var(--text2);font-variant-numeric:tabular-nums;padding-right:4px;">--:--</div>
+      <!-- F. Compact Quick Tools & Display Menu -->
+      <div class="pdf-dropdown-wrap" id="topbarToolsWrap">
+        <button class="top-btn apple-icon-only soft-icon-circle" onclick="toggleTheme()" title="تبديل المظهر النهاري / الليلي"><span id="themeIcon">🌙</span></button>
+        <button class="top-btn apple-icon-only soft-icon-circle" onclick="togglePrivacyMode()" id="privacyBtn" title="إخفاء / إظهار أرباح الشركة">👁️<span id="privacyBtnTxt" style="display:none;"></span></button>
+        <button class="top-btn apple-icon-only soft-icon-circle" onclick="toggleTopbarMenu(event, 'topbarQuickToolsMenu')" title="أدوات العرض، التلفزيون، الموبايل، والسحابة">⚙️</button>
+        <div class="pdf-dropdown-menu soft-dropdown-panel" id="topbarQuickToolsMenu" onclick="event.stopPropagation()" style="width:240px;left:0;right:auto;">
+          <div style="font-size:12.5px;font-weight:900;color:var(--text);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);">⚙️ أدوات العرض والنظام</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <button class="btn-secondary" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();openTvWallboardModal();">📺 شاشة العرض للمكتب (TV)</button>
+            <button class="btn-secondary" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();toggleMobileFieldMode();">📱 وضع الموبايل الميداني</button>
+            <button class="btn-secondary" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();openGmailLiveReportConfigModal();">📧 ربط الجيميل والتقرير الحي</button>
+            <button class="btn-secondary" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();openSheetSettingsModal();">☁️ إعدادات السحابة والنسخ</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="liveClock" class="soft-clock-badge">--:--</div>
     </div>
   </header>
 
@@ -2427,299 +2649,6 @@
 
       <!-- ================= PAGE 1: OVERVIEW ================= -->
       <section id="page-overview" class="page-section active">
-
-        <!-- V21 IMAGE-2 EXECUTIVE TOP NAVIGATION BAR -->
-        <div class="v21-exec-navbar">
-          <div class="v21-exec-brand-group">
-            <span class="v21-exec-logo-txt" onclick="navigate('overview')">C.O FLEET</span>
-            <span class="v21-exec-divider"></span>
-            <nav class="v21-exec-nav-links">
-              <button type="button" class="v21-exec-nav-tab active" onclick="navigate('overview');switchOverviewWorkspace('pulse');">Overview | الرئيسية</button>
-              <button type="button" class="v21-exec-nav-tab" onclick="navigate('fleet')">Drivers | السائقون</button>
-              <button type="button" class="v21-exec-nav-tab" onclick="navigate('liveroster')">Logistics | اللوجستيات والشفتات</button>
-              <button type="button" class="v21-exec-nav-tab" onclick="navigate('finance')">Financials | المالية والفواتير</button>
-              <button type="button" class="v21-exec-nav-tab" onclick="navigate('cashfuel')">Cash &amp; Sheets | الكاش والشيتات</button>
-            </nav>
-          </div>
-          <div class="v21-exec-right-controls">
-            <button type="button" class="v21-month-dropdown-btn" onclick="openDynamicMonthsManagerModal()" title="تغيير الشهر النشط أو إدارة أرشيف الشهور">
-              <span id="v21TopMonthPillTxt">October 2026 / نوفمبر 2026</span>
-              <span style="font-size:11px;color:#64748B;">⌄</span>
-            </button>
-            <div class="v21-live-clock-pill" title="التوقيت الحي للعمليات">
-              <span style="width:8px;height:8px;border-radius:50%;background:#10B981;display:inline-block;"></span>
-              <span>Live</span>
-              <span id="v21ExecLiveTime">00:51</span>
-            </div>
-            <button type="button" class="v21-sq-icon-btn" onclick="document.getElementById('globalCommandInput')?.focus()" title="بحث سريع (Spotlight Search)">🔍</button>
-            <button type="button" class="v21-sq-icon-btn" onclick="navigate('cashfuel')" title="بوابات رفع شيتات الكاش والإيداعات والوقود">☁️</button>
-            <button type="button" class="v21-sq-icon-btn" onclick="openSheetSettingsModal()" title="إعدادات السحابة والربط">⚙️</button>
-            <button type="button" class="v21-sq-icon-btn" onclick="navigate('alerts')" title="رادار المخاطر والتنبيهات">🔔</button>
-          </div>
-        </div>
-
-        <!-- V21 IMAGE-2 EXECUTIVE BENTO GRID (ROW 1: HERO KPI GRID + SLA/KUWAIT STATUS + FLEET DISTRIBUTION MAP) -->
-        <div class="v21-bento-row-top" data-ov-group="pulse">
-          <!-- Card 1: Hero / KPI grid (2x3) -->
-          <div class="v21-bento-card" style="padding:16px 18px;">
-            <div class="v21-card-hdr" style="margin-bottom:8px;">
-              <span class="v21-card-title">Hero / KPI grid — شبكة المؤشرات القيادية</span>
-              <button type="button" class="v21-dots-btn" onclick="navigateOrders('ALL')" title="عرض تفاصيل الأوردرات">•••</button>
-            </div>
-            <div class="v21-hero-kpi-grid">
-              <!-- Cell 1: Total Orders (Official Oct / Cumulative) -->
-              <div class="v21-hero-cell" onclick="navigateOrders('ALL')">
-                <div class="v21-cell-top">
-                  <span class="v21-cell-lbl">Total Orders<br/><small style="color:#64748B;font-size:10.5px;">إجمالي الأوردرات المعتمدة</small></span>
-                  <span class="v21-cell-ico">🛒</span>
-                </div>
-                <div class="v21-cell-val" id="v21HeroTotalOrders">40,323</div>
-                <div class="v21-cell-btm">
-                  <div class="v21-prog-track"><div class="v21-prog-fill" id="v21HeroOrdersBar" style="width:76%;background:#6366F1;"></div></div>
-                  <span style="color:#334155;" id="v21HeroOrdersPct">100%</span>
-                </div>
-              </div>
-
-              <!-- Cell 2: Active Drivers -->
-              <div class="v21-hero-cell" onclick="navigate('liveroster')">
-                <div class="v21-cell-top">
-                  <span class="v21-cell-lbl">Active Drivers<br/><small style="color:#64748B;font-size:10.5px;">السائقون النشطون / الأسطول</small></span>
-                  <span class="v21-cell-ico">👥</span>
-                </div>
-                <div class="v21-cell-val" id="v21HeroActiveDrivers">109</div>
-                <div class="v21-cell-btm">
-                  <div class="v21-prog-track"><div class="v21-prog-fill" id="v21HeroDriversBar" style="width:82%;background:#10B981;"></div></div>
-                  <span style="color:#10B981;" id="v21HeroDriversTrend">↑ 1.3%</span>
-                </div>
-              </div>
-
-              <!-- Cell 3: Average Daily Delivery UTR -->
-              <div class="v21-hero-cell" onclick="navigate('performance')">
-                <div class="v21-cell-top">
-                  <span class="v21-cell-lbl">Average Daily Delivery UTR<br/><small style="color:#64748B;font-size:10.5px;">متوسط التوصيل اليومي للأسطول</small></span>
-                  <span class="v21-cell-ico">⚡</span>
-                </div>
-                <div class="v21-cell-val" id="v21HeroAvgUtr">17.3</div>
-                <div class="v21-cell-btm">
-                  <span style="color:#64748B;">Trend hour</span>
-                  <span style="color:#10B981;" id="v21HeroUtrTrend">↑ 3.82</span>
-                </div>
-              </div>
-
-              <!-- Cell 4: Active Month / Current Live Orders -->
-              <div class="v21-hero-cell" onclick="navigateOrders('ALL')">
-                <div class="v21-cell-top">
-                  <span class="v21-cell-lbl">Total Orders (Active)<br/><small style="color:#64748B;font-size:10.5px;">أوردرات الشهر النشط</small></span>
-                  <span class="v21-cell-ico">📦</span>
-                </div>
-                <div class="v21-cell-val" id="v21HeroActiveMonthOrders">10,323</div>
-                <div class="v21-cell-btm">
-                  <div class="v21-prog-track"><div class="v21-prog-fill" style="width:68%;background:#10B981;"></div></div>
-                  <span style="color:#10B981;" id="v21HeroActiveOrdersDelta">↑ 0,320</span>
-                </div>
-              </div>
-
-              <!-- Cell 5: Average Daily Delivery -->
-              <div class="v21-hero-cell" onclick="navigate('attendance')">
-                <div class="v21-cell-top">
-                  <span class="v21-cell-lbl">Average Daily Delivery<br/><small style="color:#64748B;font-size:10.5px;">مستوفو التارجت والالتزام</small></span>
-                  <span class="v21-cell-ico">🕒</span>
-                </div>
-                <div class="v21-cell-val" id="v21HeroAvgDaily">89</div>
-                <div class="v21-cell-btm">
-                  <div class="v21-prog-track"><div class="v21-prog-fill" style="width:74%;background:#10B981;"></div></div>
-                  <span style="color:#10B981;" id="v21HeroAvgDailyTrend">↑ 0.8%</span>
-                </div>
-              </div>
-
-              <!-- Cell 6: Overall Service Quality -->
-              <div class="v21-hero-cell" onclick="navigate('quality')">
-                <div class="v21-cell-top">
-                  <span class="v21-cell-lbl">Overall Service Quality<br/><small style="color:#64748B;font-size:10.5px;">جودة الخدمة ومعيار SLA</small></span>
-                  <span class="v21-cell-ico">🛡️</span>
-                </div>
-                <div class="v21-cell-val" id="v21HeroSlaLabel">SLA</div>
-                <div class="v21-cell-btm">
-                  <span style="color:#64748B;">Trend hour</span>
-                  <span style="color:#EF4444;" id="v21HeroSlaDelta">↓ 1.53</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 2: Overall Service Quality SLA & Kuwait Status -->
-          <div class="v21-bento-card" style="padding:18px 20px;">
-            <div style="padding-bottom:14px;border-bottom:1px solid #F1F5F9;cursor:pointer;" onclick="navigate('quality')">
-              <div class="v21-cell-top" style="margin-bottom:8px;">
-                <span class="v21-cell-lbl" style="font-size:13px;font-weight:700;">Overall Service<br/>Quality</span>
-                <span class="v21-cell-ico">☑️</span>
-              </div>
-              <div class="v21-cell-val" style="font-size:32px;margin-bottom:12px;">SLA</div>
-              <div class="v21-cell-btm">
-                <div class="v21-prog-track"><div class="v21-prog-fill" style="width:88%;background:#60A5FA;"></div></div>
-                <span style="color:#0F172A;font-weight:800;" id="v21SlaComplianceVal">100%</span>
-              </div>
-            </div>
-            <div style="padding-top:14px;cursor:pointer;" onclick="switchOverviewWorkspace('map')">
-              <div class="v21-cell-top" style="margin-bottom:8px;">
-                <span class="v21-cell-lbl" style="font-size:13px;font-weight:700;">Kuwait Status<br/><small style="color:#64748B;font-size:10.5px;">كفاءة التشغيل بالكويت</small></span>
-                <span class="v21-cell-ico">📈</span>
-              </div>
-              <div class="v21-cell-val" style="font-size:32px;margin-bottom:12px;" id="v21KuwaitStatusMain">90%</div>
-              <div class="v21-cell-btm">
-                <div class="v21-prog-track"><div class="v21-prog-fill" id="v21KuwaitStatusBar" style="width:90%;background:#38BDF8;"></div></div>
-                <span style="color:#0F172A;font-weight:800;" id="v21KuwaitStatusSub">99%</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 3: Fleet Distribution (Stylized Kuwait Heatmap Card from Image 2) -->
-          <div class="v21-bento-card" style="padding:16px 18px;">
-            <div class="v21-card-hdr" style="margin-bottom:8px;">
-              <span class="v21-card-title">Fleet Distribution — انتشار الأسطول بالكويت</span>
-              <button type="button" class="v21-dots-btn" onclick="switchOverviewWorkspace('map')" title="فتح الخريطة التفاعلية الكاملة">•••</button>
-            </div>
-            <div style="position:relative;flex:1;min-height:195px;border-radius:14px;overflow:hidden;background:linear-gradient(145deg,#DCE4EE 0%,#CBD5E1 100%);border:1px solid #E2E8F0;cursor:pointer;" onclick="switchOverviewWorkspace('map')">
-              <!-- Stylized Vector Map of Kuwait matching Image 2 -->
-              <svg viewBox="0 0 420 240" style="width:100%;height:100%;display:block;" preserveAspectRatio="xMidYMid slice">
-                <defs>
-                  <radialGradient id="kwHeatBlue" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.85"/>
-                    <stop offset="45%" stop-color="#60A5FA" stop-opacity="0.4"/>
-                    <stop offset="100%" stop-color="#93C5FD" stop-opacity="0"/>
-                  </radialGradient>
-                  <radialGradient id="kwHeatGreen" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#10B981" stop-opacity="0.85"/>
-                    <stop offset="50%" stop-color="#34D399" stop-opacity="0.38"/>
-                    <stop offset="100%" stop-color="#6EE7B7" stop-opacity="0"/>
-                  </radialGradient>
-                </defs>
-                <!-- Arabian Gulf Water -->
-                <rect width="420" height="240" fill="#CFD8E3"/>
-                <!-- Kuwait Landmass & Bubiyan Island -->
-                <path d="M 0,0 L 295,0 L 308,28 L 285,52 L 265,68 L 282,82 L 325,75 L 348,88 L 330,108 L 270,115 L 252,102 L 240,108 L 258,125 L 315,122 L 342,135 L 358,175 L 378,225 L 385,240 L 0,240 Z" fill="#F4F6F9" stroke="#CBD5E1" stroke-width="1.5"/>
-                <!-- Bubiyan Island -->
-                <path d="M 305,22 L 365,30 L 380,68 L 350,82 L 312,62 Z" fill="#E8EEF5" stroke="#CBD5E1" stroke-width="1"/>
-                <!-- Highway Ring Roads & Arterials -->
-                <path d="M 75,168 Q 165,138 242,118 L 298,118 M 242,118 L 208,65 M 242,118 L 295,148 L 328,205 M 298,118 L 325,152 L 295,198" fill="none" stroke="#60A5FA" stroke-width="2.2" stroke-opacity="0.75" stroke-linecap="round"/>
-                <!-- Glowing Heatmap Clusters (Jahra, Ardiya, Hawally, Sabah Al Salem, Fahaheel) -->
-                <circle cx="242" cy="118" r="34" fill="url(#kwHeatBlue)"/>
-                <circle cx="298" cy="120" r="38" fill="url(#kwHeatGreen)"/>
-                <circle cx="316" cy="148" r="32" fill="url(#kwHeatBlue)"/>
-                <circle cx="288" cy="196" r="28" fill="url(#kwHeatGreen)"/>
-                <!-- Core Node Dots -->
-                <circle cx="242" cy="118" r="4.5" fill="#2563EB" stroke="#FFFFFF" stroke-width="1.5"/>
-                <circle cx="298" cy="120" r="5" fill="#059669" stroke="#FFFFFF" stroke-width="1.5"/>
-                <circle cx="316" cy="148" r="4.5" fill="#2563EB" stroke="#FFFFFF" stroke-width="1.5"/>
-                <circle cx="288" cy="196" r="4" fill="#10B981" stroke="#FFFFFF" stroke-width="1.5"/>
-                <!-- Zone Labels -->
-                <text x="235" y="105" font-size="9.5" font-weight="800" fill="#1E293B" text-anchor="middle">العارضية (Ardiya)</text>
-                <text x="302" y="107" font-size="9.5" font-weight="800" fill="#065F46" text-anchor="middle">حولي (Hawally)</text>
-                <text x="348" y="152" font-size="9.5" font-weight="800" fill="#1E3A8A" text-anchor="middle">صباح السالم</text>
-                <text x="245" y="198" font-size="9.5" font-weight="800" fill="#065F46" text-anchor="middle">الجهراء / الأحمدي</text>
-              </svg>
-              <div style="position:absolute;bottom:8px;right:10px;left:10px;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.88);backdrop-filter:blur(6px);padding:5px 10px;border-radius:8px;font-size:11px;font-weight:700;color:#0F172A;border:1px solid rgba(203,213,225,0.7);">
-                <span>📍 4 مناطق تمركز رئيسية بالكويت</span>
-                <span style="color:#2563EB;" id="v21MapActiveRidersBadge">109 سائق نشط ←</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- V21 IMAGE-2 EXECUTIVE BENTO GRID (ROW 2: DATA VISUALIZATION GRAPHS + VEHICLE COHORT RINGS + ACTIVE SESSION & DISPATCH + FINANCIAL QUICK-CARD) -->
-        <div class="v21-bento-row-bottom" data-ov-group="pulse">
-          <!-- Card 4: Data Visualization Graphs -->
-          <div class="v21-bento-card">
-            <div>
-              <div class="v21-card-hdr" style="margin-bottom:4px;">
-                <span class="v21-card-title">Data Visualization Graphs</span>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:600;color:#475569;margin-bottom:8px;">
-                <span>Daily Completed Orders</span>
-                <span>Active Shift Hours</span>
-              </div>
-            </div>
-            <div style="position:relative;height:195px;width:100%;">
-              <canvas id="v21BentoSplineChart"></canvas>
-            </div>
-          </div>
-
-          <!-- Card 5: Vehicle Category/Cohort -->
-          <div class="v21-bento-card" onclick="switchOverviewWorkspace('cohorts')" style="cursor:pointer;">
-            <div class="v21-card-hdr" style="margin-bottom:4px;">
-              <span class="v21-card-title">Vehicle Category/Cohort</span>
-            </div>
-            <div style="position:relative;height:205px;width:100%;display:flex;align-items:center;justify-content:center;">
-              <canvas id="v21BentoCohortRingsChart"></canvas>
-              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center;">
-                <span style="font-size:11px;font-weight:800;color:#1E293B;line-height:1.25;">Vehicle<br/>Category/<br/>Cohort</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 6: Active Session & Dispatch status -->
-          <div class="v21-bento-card">
-            <div class="v21-card-hdr" style="margin-bottom:8px;">
-              <span class="v21-card-title">Active Session &amp; Dispatch status</span>
-              <button type="button" class="v21-dots-btn" onclick="navigate('liveroster')" title="فتح صفحة الشفتات والأونلاين">•••</button>
-            </div>
-            <div style="flex:1;overflow-y:auto;max-height:210px;">
-              <table class="v21-dispatch-tbl">
-                <thead>
-                  <tr>
-                    <th style="text-align:right;">ID ⌄</th>
-                    <th style="text-align:right;">Vehicle Type</th>
-                    <th style="text-align:center;">Status</th>
-                  </tr>
-                </thead>
-                <tbody id="v21ActiveDispatchTbody"></tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Card 7: Financial Quick-Card (3 Pastel Cards from Image 2) -->
-          <div class="v21-bento-card">
-            <div class="v21-card-hdr" style="margin-bottom:10px;">
-              <span class="v21-card-title">Financial Quick-Card</span>
-              <button type="button" class="v21-dots-btn" onclick="navigate('finance')" title="فتح صفحة المالية والفواتير">•••</button>
-            </div>
-            <div class="v21-pastel-stack">
-              <div class="v21-pastel-item v21-pastel-blue" onclick="navigate('finance')">
-                <div>
-                  <div class="v21-pastel-lbl">Company Revenue | إيرادات الشركة</div>
-                  <div class="v21-pastel-val secret-profit-val" id="v21QuickRevVal">37,165 د.ك</div>
-                </div>
-                <div class="v21-pastel-right">
-                  <div class="v21-pastel-delta" style="color:#2563EB;" id="v21QuickRevDelta">+40,323</div>
-                  <div class="v21-pastel-sub">Revenue</div>
-                </div>
-              </div>
-
-              <div class="v21-pastel-item v21-pastel-green" onclick="navigate('payroll')">
-                <div>
-                  <div class="v21-pastel-lbl">Driver Payroll | أجور السائقين</div>
-                  <div class="v21-pastel-val" id="v21QuickPayrollVal">13,592 د.ك</div>
-                </div>
-                <div class="v21-pastel-right">
-                  <div class="v21-pastel-delta" style="color:#059669;" id="v21QuickPayrollDelta">+7,568 د.ك</div>
-                  <div class="v21-pastel-sub">Net Paid</div>
-                </div>
-              </div>
-
-              <div class="v21-pastel-item v21-pastel-pink" onclick="navigate('cashfuel')">
-                <div>
-                  <div class="v21-pastel-lbl">Operational Fuel &amp; Cash | البنزين والكاش</div>
-                  <div class="v21-pastel-val" id="v21QuickFuelVal">1,862 د.ك</div>
-                </div>
-                <div class="v21-pastel-right">
-                  <div class="v21-pastel-delta" style="color:#DC2626;" id="v21QuickCashDelta">-0.000 د.ك</div>
-                  <div class="v21-pastel-sub">Pending Cash</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
 
         <!-- Apple Cupertino Hero & Live Status Strip -->
         <div class="apple-hero-card">
@@ -3323,7 +3252,7 @@
       <section id="page-autopilot" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">🧠 المستشار التشغيلي الذكي ومختبر المحاكاة (AI Autopilot & Decision Simulators)</h1>
+            <h1 class="page-title">🧠 المستشار الذكي ومحاكاة القرارات</h1>
             
           </div>
         </div>
@@ -3522,7 +3451,7 @@
       <section id="page-liveroster" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">📡 مركز الشفتات اليومية، المتواجدين أونلاين الآن، والربط مع داشبورد طلبات</h1>
+            <h1 class="page-title">📡 الشفتات اليومية والمتواجدون أونلاين</h1>
             
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -3880,7 +3809,7 @@
       <section id="page-histbudget" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">📈 أرشيف رواتب الشهور (شهر 1 إلى 10)، تسلسل المديونيات، وموازنة ونمو الشركة</h1>
+            <h1 class="page-title">🏛️ أرشيف الشهور والموازنة العامة</h1>
             <p style="font-size:12.5px;color:var(--text2);margin-top:4px;font-weight:700;">شامل الإقفال الرسمي الكامل لشهر أكتوبر 2026 (فواتير طلبات للـ 4 شركات، الكاش المستحق 31-10-2026، استهلاك البنزين 1,862 د.ك، والرواتب طبقاً للشرائح الجديدة) والحصيلة السنوية (ش1 – ش10)</p>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -4063,7 +3992,7 @@
       <section id="page-cashfuel" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">📂 مركز إدارة شيتات الكاش، الإيداعات، الوقود، وكاشف هدر البنزين</h1>
+            <h1 class="page-title">💵 الكاش والإيداعات اليومية والوقود</h1>
             
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -4213,7 +4142,7 @@
       <section id="page-alerts" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">🚨 رادار المخاطر والتنبيهات والجدول الزمني لتجديد الوثائق (Risk & Expiry Timeline)</h1>
+            <h1 class="page-title">🚨 رادار المخاطر وتجديد الوثائق</h1>
             
           </div>
         </div>
@@ -4268,7 +4197,7 @@
       <section id="page-orders" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title"><span id="ordersPageCompanyTitle">ALL</span> - لوحة متابعة الأوردرات والتارجت وساعات الشفت (WH)</h1>
+            <h1 class="page-title">📦 الأوردرات والتارجت وساعات الشفت — <span id="ordersPageCompanyTitle">كل الشركات</span></h1>
             
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -4349,7 +4278,7 @@
       <section id="page-fleet" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">إدارة الأسطول والسائقين 360° (Fleet Management & Payslip Cards)</h1>
+            <h1 class="page-title">🪪 بطاقات السائقين وكشوف الحساب 360°</h1>
             
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -4398,7 +4327,7 @@
       <section id="page-contracts" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">📜 العقود والوثائق الرسمية الـ 7 للسائقين والمركبات (Contracts & 7 Documents Radar)</h1>
+            <h1 class="page-title">📜 العقود والوثائق الرسمية الـ 7</h1>
             
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -4480,7 +4409,7 @@
       <section id="page-attendance" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">الحضور والغياب والعقود والالتزام (Attendance & Compliance)</h1>
+            <h1 class="page-title">📅 سجل الحضور والالتزام اليومي</h1>
             
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -4545,7 +4474,7 @@
       <section id="page-performance" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">📈 performance | الأداء التشغيلي والأداء التراكمي الخاص بالسائقين</h1>
+            <h1 class="page-title">📈 الأداء التشغيلي والتراكمي للسائقين</h1>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
             <button class="btn-action" style="background:var(--blue)!important;" onclick="switchPerfWorkspaceTab('cumulative')">📚 الأداء التراكمي الخاص بالسائقين (ش1 – ش9)</button>
@@ -4715,7 +4644,7 @@
       <section id="page-quality" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">🎯 الكوالتي، إسناد المشرفين، وخطة التحسين الشاملة (Quality & 180° Control Center)</h1>
+            <h1 class="page-title">🎯 الكوالتي وإسناد المشرفين وخطة التحسين</h1>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
             <div style="display:flex;align-items:center;gap:6px;background:var(--card-alt);padding:5px 10px;border-radius:10px;border:1.5px solid var(--blue);">
@@ -4822,16 +4751,28 @@
           <button class="btn-secondary" onclick="autoDistributeSupervisorsByZone()" title="توزيع ذكي للسائقين على المشرفين الـ 5">🔄 توزيع المشرفين تلقائياً</button>
         </div>
 
-        <!-- Master Summary Table of the Selected N Drivers (11 Required Metrics + Supervisor Dropdown) -->
+        <!-- Master Summary Table of the Selected N Drivers (11 Required Metrics + Supervisor Dropdown + Driver Export Checkboxes) -->
         <div class="notes-box">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
-            <h3 style="font-size:15.5px;font-weight:900;" id="qualityTableHeading">📋 مصفوفة الكوالتي للمعايير الـ 11 وإسناد المشرفين</h3>
-            <span class="badge badge-good" id="qualitySelectedSummaryBadge">المعروض: 10 سائقين</span>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+            <div>
+              <h3 style="font-size:16px;font-weight:900;" id="qualityTableHeading">📋 مصفوفة الكوالتي للمعايير الـ 11 وإسناد المشرفين (مع تحديد السائقين للتصدير)</h3>
+              <p style="font-size:12px;color:var(--text2);font-weight:700;margin-top:2px;">ضع علامة (☑️) أمام السائقين المطلوب إصدارهم في تقرير الكوالتي وخطة التحسين PDF أو Excel:</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+              <span class="badge badge-good" id="qualitySelectedSummaryBadge">المعروض: 10 سائقين</span>
+              <span class="badge badge-bike" id="qualityCheckedExportCountBadge" style="font-size:12px;padding:5px 11px;">☑️ المحدد للتصدير: الكل</span>
+              <button type="button" class="btn-secondary" style="padding:5px 11px!important;font-size:11.5px!important;" onclick="selectAllVisibleQualityDrivers(true)">☑️ تحديد كل المعروض</button>
+              <button type="button" class="btn-secondary" style="padding:5px 11px!important;font-size:11.5px!important;" onclick="selectAllVisibleQualityDrivers(false)">⬜ إلغاء التحديد</button>
+              <button type="button" class="btn-action" style="background:linear-gradient(135deg,#059669,#10B981)!important;padding:6px 14px!important;font-size:12px!important;" onclick="exportQualityDarkExecutivePDF()">🖨️ تصدير السائقين المحددين PDF</button>
+            </div>
           </div>
-          <div class="tbl-wrap" style="max-height:460px;overflow-y:auto;margin-bottom:0;">
+          <div class="tbl-wrap" style="max-height:480px;overflow-y:auto;margin-bottom:0;">
             <table>
               <thead>
                 <tr>
+                  <th style="width:46px;text-align:center;">
+                    <input type="checkbox" id="qualityMasterSelectAllChk" checked onchange="selectAllVisibleQualityDrivers(this.checked)" title="تحديد / إلغاء تحديد كل السائقين بالجدول" style="width:17px;height:17px;accent-color:var(--blue);cursor:pointer;" />
+                  </th>
                   <th>#</th>
                   <th>اسم السائق</th>
                   <th>ID / الشركة / الزون</th>
@@ -4865,7 +4806,7 @@
       <section id="page-maintenance" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">🔧 الصيانة، فواتير الورش، تغيير الزيت الذكي، وسجل المركبات البديلة</h1>
+            <h1 class="page-title">🔧 الصيانة وتغيير الزيت والمركبات البديلة</h1>
             
           </div>
           <button class="btn-action" style="" onclick="exportSelectedMaintenancePDF()">📄 تصدير الفواتير المحددة (PDF)</button>
@@ -5052,7 +4993,7 @@
       <section id="page-payroll" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">💰 محرك الرواتب، رسوم شحن الموبايل، ومركز واتساب الجماعي</h1>
+            <h1 class="page-title">💰 مسير الرواتب ومركز واتساب</h1>
             
           </div>
           <button class="btn-action" onclick="exportPayrollCSV()">📤 تصدير مسير الرواتب (CSV)</button>
@@ -5134,7 +5075,7 @@
       <section id="page-investigations" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">التحقيقات والإجراءات الإدارية (Investigations)</h1>
+            <h1 class="page-title">⚖️ التحقيقات والإجراءات الإدارية</h1>
             
           </div>
         </div>
@@ -5196,7 +5137,7 @@
       <section id="page-violations" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">🚦 إدارة المخالفات المرورية والإدارية (Traffic & Admin Violations Center)</h1>
+            <h1 class="page-title">🚦 المخالفات المرورية والإدارية</h1>
             
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -5368,7 +5309,7 @@
       <section id="page-finance" class="page-section">
         <div class="page-header">
           <div>
-            <h1 class="page-title">💎 Finance | الإدارة المالية، فواتير طلبات، مسير الرواتب (70%/75%)، والمحاكي الذكي</h1>
+            <h1 class="page-title">💎 المالية وفواتير طلبات والمحاكي الذكي</h1>
             
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -5419,8 +5360,9 @@
                 <h3 style="font-size:15px;font-weight:900;">📤 بوابات رفع شيتات فواتير طلبات (Invoices) وشيتات الكاش للـ 4 شركات (`SUPT`, `FTMN`, `FNMN`, `SRBS`)</h3>
                 <p style="font-size:12px;color:var(--text2);">يمكنك رفع فاتورة كل شركة على حدة أو رفع شيت مجمع يحتوي على الشركات الأربع (مثل شيت `Base Payment_Table.csv` المدمج حالياً)</p>
               </div>
-              <div style="display:flex;gap:8px;">
-                <button class="btn-action" onclick="document.getElementById('uploadUnifiedTalabatInvInput').click()">📤 رفع فاتورة طلبات (شركة أو مجمع .csv/.xlsx)</button>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn-action" style="background:linear-gradient(135deg,#059669,#10B981)!important;" onclick="triggerGlobalSlotUpload('DAILY_DEPOSITS')">💵 رفع شيت الإيداعات اليومي (Deposits)</button>
+                <button class="btn-action" onclick="document.getElementById('uploadUnifiedTalabatInvInput').click()">📤 رفع فاتورة طلبات أو شيت كاش (.csv/.xlsx)</button>
                 <input type="file" id="uploadUnifiedTalabatInvInput" multiple accept=".csv,.xlsx,.xls" style="display:none;" onchange="handleUploadTalabatInvoiceFiles(event)" />
               </div>
             </div>
@@ -5443,7 +5385,7 @@
           <div class="profit-grid" id="finInvoiceKpiGrid"></div>
 
           <!-- Single vs Double Orders Breakdown Table & Batch % Ranking -->
-          <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:16px;margin-bottom:18px;">
+          <div class="soft-responsive-2col-grid" style="display:grid;grid-template-columns:minmax(0, 1.25fr) minmax(0, 1fr);gap:18px;margin-bottom:18px;">
             <div class="notes-box" style="margin-bottom:0;">
               <h3 style="font-size:15px;font-weight:900;margin-bottom:6px;color:var(--blue);">📦 تفصيل عدد وقيمة الأوردرات الفردية والزوجية من فاتورة طلبات</h3>
               <p style="font-size:12px;color:var(--text2);margin-bottom:10px;">
@@ -22283,6 +22225,7 @@
         deficitGroupTotalOrders,
         deficitGroupRequiredOrders,
         ordersDeficitBelowTargetTotal,
+        driverDailyRows,
         cohortsBreakdown,
         top5Drivers,
         bottom5Drivers,
@@ -27888,7 +27831,7 @@
       let deficitGroupTotalOrders = 0, deficitGroupRequiredOrders = 0, ordersDeficitBelowTargetTotal = 0;
       let totDriverSalariesAfterCash = 0;
 
-      d.driverDailyRows.forEach(row => {
+      (d.driverDailyRows || []).forEach(row => {
         const r = row.rider;
         const isCar = r.vehicleType === 'Car';
         const rTarget = isCar ? 15 : 13;
@@ -33240,5 +33183,2175 @@
 
   </script>
 <div id="v15DynamicMonthsModal" class="modal-overlay"></div><div id="v15DrilldownDebtViolModal" class="modal-overlay"></div><span id="attTrendSummaryTxt" style="display:none;"></span>
+
+  <!-- =========================================================================
+       C.O FLEET V22 — SOFT UI, LIQUID GRADIENTS, GSAP MOTION, ZERO-CLIPPING
+       VIEWPORT, BULLETPROOF DAILY DEPOSITS, GMAIL LIVE REPORT & CASH RADAR
+       ========================================================================= -->
+  <style>
+    :root {
+      --sw: 242px !important;
+      --bg: #EEF2F8 !important;
+      --card: rgba(255, 255, 255, 0.94) !important;
+      --card-alt: #F4F7FB !important;
+      --border: rgba(148, 163, 184, 0.22) !important;
+      --text: #0F172A !important;
+      --text2: #334155 !important;
+      --text3: #64748B !important;
+      --sb: rgba(255, 255, 255, 0.92) !important;
+      --sb-h: rgba(37, 99, 235, 0.07) !important;
+      --blue: #2563EB !important;
+      --green: #10B981 !important;
+      --red: #EF4444 !important;
+      --yellow: #F59E0B !important;
+      --purple: #6366F1 !important;
+      --orange: #F97316 !important;
+      --r: 24px !important;
+      --r-sm: 16px !important;
+      --sh: 0 10px 30px -5px rgba(15, 23, 42, 0.055), 0 4px 14px -2px rgba(15, 23, 42, 0.035), inset 0 1px 0 0 rgba(255, 255, 255, 0.9) !important;
+      --sh-md: 0 18px 42px -8px rgba(15, 23, 42, 0.09), 0 8px 20px -4px rgba(15, 23, 42, 0.045), inset 0 1px 0 0 rgba(255, 255, 255, 0.95) !important;
+      --sh-lg: 0 28px 64px -12px rgba(15, 23, 42, 0.16), 0 12px 28px -6px rgba(15, 23, 42, 0.08) !important;
+      --grad-liquid-primary: linear-gradient(135deg, #2563EB 0%, #4F46E5 50%, #7C3AED 100%);
+      --grad-liquid-emerald: linear-gradient(135deg, #059669 0%, #10B981 55%, #34D399 100%);
+      --grad-liquid-sunset: linear-gradient(135deg, #EA580C 0%, #F97316 55%, #F59E0B 100%);
+      --grad-liquid-dark: linear-gradient(135deg, #0F172A 0%, #1E293B 60%, #334155 100%);
+    }
+
+    [data-theme='dark'] {
+      --bg: #090D16 !important;
+      --card: rgba(21, 28, 42, 0.94) !important;
+      --card-alt: #1A2333 !important;
+      --border: rgba(148, 163, 184, 0.16) !important;
+      --text: #F8FAFC !important;
+      --text2: #CBD5E1 !important;
+      --text3: #94A3B8 !important;
+      --sb: rgba(15, 23, 42, 0.92) !important;
+      --sb-h: rgba(56, 189, 248, 0.1) !important;
+      --sh: 0 12px 32px -4px rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.06) !important;
+      --sh-md: 0 20px 48px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.08) !important;
+      --sh-lg: 0 30px 70px -10px rgba(0, 0, 0, 0.78) !important;
+    }
+
+    /* Liquid Ambient Mesh Background & Crispy Readable Font Sizes */
+    body {
+      background-color: var(--bg) !important;
+      background-image:
+        radial-gradient(at 12% 8%, rgba(37, 99, 235, 0.08) 0px, transparent 48%),
+        radial-gradient(at 88% 12%, rgba(99, 102, 241, 0.08) 0px, transparent 48%),
+        radial-gradient(at 50% 92%, rgba(16, 185, 129, 0.07) 0px, transparent 50%) !important;
+      background-attachment: fixed !important;
+      font-size: 14.5px !important;
+      line-height: 1.6 !important;
+      overflow-x: hidden !important;
+    }
+
+    /* Fix Viewport & Grid Overflow so NO page ever clips content on left/right */
+    .main {
+      width: calc(100% - var(--sw)) !important;
+      max-width: calc(100vw - var(--sw)) !important;
+      overflow-x: hidden !important;
+      padding-top: 70px !important;
+    }
+    body.sidebar-collapsed .main {
+      width: 100% !important;
+      max-width: 100vw !important;
+    }
+    .content {
+      padding: 20px 22px !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .page-section,
+    .subtab-panel,
+    .kpi-card,
+    .profit-card,
+    .notes-box,
+    .form-box,
+    .chart-card,
+    .rider-card,
+    .upload-slot-card,
+    .exec-strip-grid > *,
+    .charts-grid > *,
+    .calendar-analytics-layout > *,
+    .soft-responsive-2col-grid > * {
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    @media (max-width: 1260px) {
+      .soft-responsive-2col-grid,
+      .charts-grid,
+      .exec-strip-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* Tables: Never force 800px min-width on compact tables; allow natural fit + smooth scroll on wide tables */
+    .tbl-wrap {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: auto !important;
+      border-radius: 20px !important;
+      border: 1px solid var(--border) !important;
+      box-shadow: var(--sh) !important;
+      background: var(--card) !important;
+      position: relative;
+      scroll-behavior: smooth;
+    }
+    .tbl-wrap table {
+      min-width: 100% !important;
+      width: 100% !important;
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+    }
+    thead th {
+      font-size: 13px !important;
+      font-weight: 800 !important;
+      padding: 12px 13px !important;
+      background: var(--card-alt) !important;
+      color: var(--text2) !important;
+      border-bottom: 1.5px solid var(--border) !important;
+    }
+    tbody td {
+      font-size: 13.8px !important;
+      font-weight: 700 !important;
+      padding: 11px 13px !important;
+      color: var(--text) !important;
+    }
+
+    /* Interactive Table Horizontal Scroll Helper Bar (Right / Left Smooth Navigation) */
+    .soft-tbl-scroll-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(90deg, rgba(37,99,235,0.06), rgba(99,102,241,0.06));
+      border: 1px solid rgba(37, 99, 235, 0.16);
+      border-radius: 14px;
+      padding: 6px 12px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text2);
+    }
+    .soft-scroll-btn-grp {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .soft-scroll-pan-btn {
+      background: var(--card);
+      color: var(--blue);
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      border-radius: 99px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+      transition: all 0.16s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .soft-scroll-pan-btn:hover {
+      background: var(--grad-liquid-primary);
+      color: #FFFFFF;
+      border-color: transparent;
+      transform: translateY(-1px);
+    }
+
+    /* Soft UI Cards, Large Border Radius & Liquid Gradients */
+    .kpi-card, .chart-card, .notes-box, .form-box, .filter-bar, .rider-card, .apple-hero-card {
+      border-radius: var(--r) !important;
+      box-shadow: var(--sh) !important;
+      border: 1px solid var(--border) !important;
+      background: var(--card) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.22s ease !important;
+    }
+    .kpi-card:hover, .profit-card:hover, .rider-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--sh-md) !important;
+    }
+    .profit-card {
+      border-radius: 22px !important;
+      box-shadow: var(--sh) !important;
+      padding: 18px 20px !important;
+      transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+    }
+    .profit-card::before {
+      height: 5px !important;
+      background: var(--grad-liquid-primary);
+    }
+    .profit-card.grad-profit::before, .profit-card.grad-total::before, .profit-card.grad-cash-col::before {
+      background: var(--grad-liquid-emerald) !important;
+    }
+    .profit-card.grad-maint::before, .profit-card.grad-cash-pre::before {
+      background: var(--grad-liquid-sunset) !important;
+    }
+
+    /* Organized Soft UI Topbar */
+    .soft-ui-topbar {
+      height: 70px !important;
+      padding: 0 20px !important;
+      background: var(--sb) !important;
+      backdrop-filter: saturate(190%) blur(24px) !important;
+      -webkit-backdrop-filter: saturate(190%) blur(24px) !important;
+      border-bottom: 1px solid var(--border) !important;
+      box-shadow: 0 8px 28px -6px rgba(15, 23, 42, 0.06) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 14px !important;
+      flex-wrap: nowrap !important;
+    }
+    .topbar-brand-crumb {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .crumb-root {
+      color: var(--text3);
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .crumb-sep {
+      color: var(--text3);
+      font-size: 13px;
+    }
+    .crumb-active {
+      color: var(--text);
+      font-size: 15.5px;
+      font-weight: 900;
+      background: rgba(37, 99, 235, 0.08);
+      padding: 4px 12px;
+      border-radius: 99px;
+      border: 1px solid rgba(37, 99, 235, 0.16);
+    }
+
+    /* Enlarged Soft UI Search Bar */
+    .soft-search-expanded {
+      flex: 1 1 380px !important;
+      min-width: 340px !important;
+      max-width: 580px !important;
+      position: relative !important;
+    }
+    .soft-search-icon {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .soft-search-expanded .global-search-input {
+      width: 100% !important;
+      height: 44px !important;
+      padding: 8px 42px 8px 48px !important;
+      border-radius: 999px !important;
+      font-size: 13.8px !important;
+      font-weight: 700 !important;
+      background: var(--card-alt) !important;
+      border: 1.5px solid var(--border) !important;
+      box-shadow: inset 0 2px 5px rgba(15, 23, 42, 0.04), 0 2px 10px rgba(15, 23, 42, 0.02) !important;
+      color: var(--text) !important;
+      transition: all 0.2s ease !important;
+    }
+    .soft-search-expanded .global-search-input:focus {
+      background: var(--card) !important;
+      border-color: var(--blue) !important;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15), 0 8px 20px rgba(37, 99, 235, 0.08) !important;
+    }
+
+    /* Organized Topbar Action Pills */
+    .soft-topbar-actions {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      flex-wrap: nowrap !important;
+      flex-shrink: 0 !important;
+    }
+    .soft-pill-btn, .soft-pill-accent, .soft-pill-green, .soft-pill-dark, .soft-pill-reports, .soft-pill-purple {
+      height: 38px !important;
+      padding: 0 14px !important;
+      border-radius: 999px !important;
+      font-size: 12.5px !important;
+      font-weight: 800 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+      transition: all 0.18s ease !important;
+      white-space: nowrap !important;
+    }
+    .soft-pill-accent {
+      background: rgba(37, 99, 235, 0.1) !important;
+      color: var(--blue) !important;
+      border: 1px solid rgba(37, 99, 235, 0.24) !important;
+    }
+    .soft-pill-green {
+      background: var(--grad-liquid-emerald) !important;
+      color: #FFFFFF !important;
+      border: none !important;
+    }
+    .soft-pill-dark {
+      background: var(--grad-liquid-dark) !important;
+      color: #38BDF8 !important;
+      border: 1px solid rgba(56, 189, 248, 0.4) !important;
+    }
+    .soft-pill-reports {
+      background: var(--grad-liquid-primary) !important;
+      color: #FFFFFF !important;
+      border: none !important;
+    }
+    .soft-pill-purple {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(139, 92, 246, 0.18)) !important;
+      color: var(--purple) !important;
+      border: 1px solid rgba(99, 102, 241, 0.28) !important;
+    }
+    .soft-sync-pill {
+      height: 38px !important;
+      padding: 0 14px !important;
+      border-radius: 999px !important;
+      background: var(--card-alt) !important;
+      border: 1px solid var(--border) !important;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 7px !important;
+      cursor: pointer !important;
+      font-size: 12.5px !important;
+      white-space: nowrap !important;
+    }
+    .soft-icon-circle {
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 50% !important;
+      background: var(--card-alt) !important;
+      border: 1px solid var(--border) !important;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05) !important;
+    }
+    .soft-clock-badge {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--text2);
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      border-radius: 99px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .soft-dropdown-panel {
+      border-radius: 22px !important;
+      padding: 16px !important;
+      box-shadow: var(--sh-lg) !important;
+      border: 1px solid var(--border) !important;
+      background: var(--card) !important;
+      backdrop-filter: blur(22px) !important;
+    }
+    .soft-report-menu-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+
+    /* Sidebar Soft UI Refinement */
+    .sidebar {
+      width: var(--sw) !important;
+      background: var(--sb) !important;
+      border-left: 1px solid var(--border) !important;
+      box-shadow: -8px 0 28px rgba(15, 23, 42, 0.04) !important;
+    }
+    .sidebar-nav .nav-item {
+      border-radius: 14px !important;
+      padding: 8.5px 11px !important;
+      font-size: 13.2px !important;
+      font-weight: 700 !important;
+      margin-bottom: 2px;
+      transition: all 0.16s ease !important;
+    }
+    .sidebar-nav .nav-item.active {
+      background: var(--grad-liquid-primary) !important;
+      color: #FFFFFF !important;
+      font-weight: 800 !important;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28) !important;
+    }
+
+    /* Organized Section & Page Titles */
+    .page-header {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 16px 22px;
+      margin-bottom: 18px;
+      box-shadow: var(--sh);
+    }
+    .page-title {
+      font-size: 20px !important;
+      font-weight: 900 !important;
+      letter-spacing: -0.3px;
+    }
+  </style>
+
+  <script>
+    /* =========================================================================
+       V22 MASTER ENGINE:
+       1. BULLETPROOF STORAGE ENGINE (Fixes QuotaExceededError stale read bug + IndexedDB backup)
+       2. UNIVERSAL MULTI-TAB & MULTI-FORMAT DAILY DEPOSITS ENGINE (0% Failure)
+       3. REAL GMAIL & CLOUD LIVE CASH REPORT SYNC HUB
+       4. DAILY REPORT CASH RADAR (Pre-Deposit, Last Deposit, Non-Deposit Days, Net After Deposit)
+       5. QUALITY MATRIX DRIVER SELECTION CHECKBOXES FOR CUSTOM PDF/EXCEL EXPORT
+       6. GSAP ULTRA-FAST PAGE NAVIGATION & INTERACTIVE HORIZONTAL TABLE SCROLLERS
+       ========================================================================= */
+
+    // -------------------------------------------------------------------------
+    // 1. FIX SAFESTORAGE QUOTA BUG & ADD INDEXEDDB PERSISTENCE FOR UPLOADED SHEETS
+    // -------------------------------------------------------------------------
+    (function upgradeSafeStorageAndIndexedDBV22() {
+      // Populate _memStore from _nativeLS on initial startup so _memStore is hot
+      try {
+        if (_nativeLS) {
+          for (let i = 0; i < _nativeLS.length; i++) {
+            const k = _nativeLS.key(i);
+            if (k && !(k in _memStore)) {
+              _memStore[k] = _nativeLS.getItem(k);
+            }
+          }
+        }
+      } catch (e) {}
+
+      // Remove redundant 3.5MB duplicate of EMBEDDED_BUNDLE inside monthlyArchiveSnapshots in localStorage
+      // so localStorage always has plenty of free quota for uploaded sheets & deposits!
+      try {
+        if (_nativeLS && _nativeLS.getItem(STORAGE_KEYS.monthlyArchiveSnapshots)) {
+          _nativeLS.removeItem(STORAGE_KEYS.monthlyArchiveSnapshots);
+        }
+      } catch (e) {}
+
+      // IndexedDB helper for large sheet persistence across reloads
+      const IDB_NAME = 'COFleetWorkspaceDB_V22';
+      const IDB_STORE = 'kv_store';
+      let _idbPromise = null;
+      function getIDB() {
+        if (_idbPromise) return _idbPromise;
+        _idbPromise = new Promise((resolve) => {
+          if (typeof indexedDB === 'undefined') { resolve(null); return; }
+          try {
+            const req = indexedDB.open(IDB_NAME, 1);
+            req.onupgradeneeded = (ev) => {
+              const db = ev.target.result;
+              if (!db.objectStoreNames.contains(IDB_STORE)) {
+                db.createObjectStore(IDB_STORE);
+              }
+            };
+            req.onsuccess = (ev) => resolve(ev.target.result);
+            req.onerror = () => resolve(null);
+          } catch (err) {
+            resolve(null);
+          }
+        });
+        return _idbPromise;
+      }
+
+      async function idbSet(k, v) {
+        const db = await getIDB();
+        if (!db) return;
+        try {
+          const tx = db.transaction(IDB_STORE, 'readwrite');
+          tx.objectStore(IDB_STORE).put(String(v), k);
+        } catch (e) {}
+      }
+
+      async function idbRemove(k) {
+        const db = await getIDB();
+        if (!db) return;
+        try {
+          const tx = db.transaction(IDB_STORE, 'readwrite');
+          tx.objectStore(IDB_STORE).delete(k);
+        } catch (e) {}
+      }
+
+      // CRITICAL FIX: safeStorage.getItem ALWAYS checks _memStore FIRST so an in-session
+      // upload is NEVER shadowed by a stale localStorage value when QuotaExceededError happens!
+      safeStorage.getItem = function(k) {
+        if (Object.prototype.hasOwnProperty.call(_memStore, k) && _memStore[k] !== undefined && _memStore[k] !== null) {
+          return _memStore[k];
+        }
+        try {
+          if (_nativeLS) {
+            const v = _nativeLS.getItem(k);
+            if (v !== null) {
+              _memStore[k] = v;
+              return v;
+            }
+          }
+        } catch (e) {}
+        return null;
+      };
+
+      safeStorage.setItem = function(k, v) {
+        const strVal = String(v);
+        _memStore[k] = strVal;
+        // Skip writing redundant multi-megabyte embedded archive snapshots to localStorage
+        if (k === STORAGE_KEYS.monthlyArchiveSnapshots && strVal.length > 250000) {
+          idbSet(k, strVal);
+          return;
+        }
+        try {
+          if (_nativeLS) {
+            _nativeLS.setItem(k, strVal);
+          }
+        } catch (quotaErr) {
+          // Free space in localStorage and retry immediately!
+          try {
+            if (_nativeLS) {
+              _nativeLS.removeItem(STORAGE_KEYS.monthlyArchiveSnapshots);
+              _nativeLS.removeItem(k);
+              _nativeLS.setItem(k, strVal);
+            }
+          } catch (e2) {}
+        }
+        idbSet(k, strVal);
+      };
+
+      safeStorage.removeItem = function(k) {
+        delete _memStore[k];
+        try { if (_nativeLS) _nativeLS.removeItem(k); } catch (e) {}
+        idbRemove(k);
+      };
+
+      // Restore any uploadedSheets / dailyDeposits from IndexedDB if bigger/newer than localStorage
+      getIDB().then(db => {
+        if (!db) return;
+        try {
+          const tx = db.transaction(IDB_STORE, 'readonly');
+          const store = tx.objectStore(IDB_STORE);
+          [STORAGE_KEYS.uploadedSheets, STORAGE_KEYS.dailyDeposits, STORAGE_KEYS.removedDefaultSheets].forEach(key => {
+            const req = store.get(key);
+            req.onsuccess = () => {
+              if (req.result && typeof req.result === 'string') {
+                const cur = _memStore[key];
+                if (!cur || cur === '{}' || req.result.length > cur.length) {
+                  _memStore[key] = req.result;
+                  try { if (_nativeLS) _nativeLS.setItem(key, req.result); } catch (e) {}
+                  initSheetsStorage();
+                  normalizeFleetDatabase();
+                  updateGlobalAlertCounters();
+                  renderOverviewUploadedChips();
+                  renderCurrentPage();
+                }
+              }
+            };
+          });
+        } catch (e) {}
+      });
+    })();
+
+    // -------------------------------------------------------------------------
+    // 2. GLOBAL FILE UPLOAD TRIGGER & UNIVERSAL DAILY DEPOSITS ENGINE (V22)
+    // -------------------------------------------------------------------------
+    STORAGE_KEYS.gmailLiveConfig = 'cofleet_gmail_live_config_v22';
+    STORAGE_KEYS.dailyDepositMeta = 'cofleet_daily_deposit_meta_v22';
+
+    function triggerGlobalSlotUpload(slotKey) {
+      let inp = document.getElementById('v22GlobalSlotFileInput_' + slotKey);
+      if (!inp) {
+        inp = document.createElement('input');
+        inp.type = 'file';
+        inp.id = 'v22GlobalSlotFileInput_' + slotKey;
+        inp.accept = '.xlsx,.xls,.csv';
+        inp.style.display = 'none';
+        inp.onchange = (ev) => {
+          if (slotKey === 'SHIFTS') handleUploadShiftsFile(ev);
+          else if (slotKey === 'ONLINE') handleUploadOnlineFile(ev);
+          else handleSingleSlotUpload(slotKey, ev);
+        };
+        document.body.appendChild(inp);
+      }
+      inp.value = '';
+      inp.click();
+    }
+
+    // Arabic & English Smart Name Normalization for 100% Driver Matching
+    function normalizeArabicNameForMatchV22(str) {
+      return String(str || '')
+        .toLowerCase()
+        .replace(/[أإآٱ]/g, 'ا')
+        .replace(/ة/g, 'ه')
+        .replace(/[ىئ]/g, 'ي')
+        .replace(/ؤ/g, 'و')
+        .replace(/[ً-ٰٟ]/g, '') // strip tashkeel
+        .replace(/ال/g, '') // strip definite article prefix
+        .replace(/1a\s*-\s*b\s*-\s*/g, '')
+        .replace(/1a\s*-\s*/g, '')
+        .replace(/(ftmn|supt|fnmn|srbs|new|use|from|add)/g, '')
+        .replace(/[^a-z0-9؀-ۿ\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function findRiderByAnyIdOrNameV22(idCandidates, nameCandidates) {
+      // 1. Try ID candidates first
+      for (const rawId of idCandidates) {
+        const cleanId = normalizeDigitsV19(rawId).replace(/\.0+$/, '').replace(/[^0-9]/g, '').trim();
+        if (!cleanId) continue;
+        if (DB.fleet && DB.fleet[cleanId]) return DB.fleet[cleanId];
+        if (typeof ALT_ID_MAP !== 'undefined' && ALT_ID_MAP[cleanId] && DB.fleet[ALT_ID_MAP[cleanId]]) {
+          return DB.fleet[ALT_ID_MAP[cleanId]];
+        }
+      }
+      // If an explicit 6-8 digit numeric ID was provided in the row and is NOT in our fleet, do not false-match by name
+      const explicitUnknownId = idCandidates.some(rawId => {
+        const c = normalizeDigitsV19(rawId).replace(/\.0+$/, '').replace(/[^0-9]/g, '').trim();
+        return /^\d{6,8}$/.test(c) && !DB.fleet[c] && !(typeof ALT_ID_MAP !== 'undefined' && ALT_ID_MAP[c]);
+      });
+      if (explicitUnknownId && nameCandidates.length === 0) return null;
+
+      // 2. Try Name candidates (exact, normalized, or 2+ token match)
+      const riders = DB.allRidersList || Object.values(DB.fleet || {});
+      for (const rawName of nameCandidates) {
+        const nm = String(rawName || '').trim();
+        if (!nm || nm.length < 3) continue;
+        const byFleetFn = findRiderInFleet('', nm);
+        if (byFleetFn) return byFleetFn;
+
+        const normTarget = normalizeArabicNameForMatchV22(nm);
+        if (!normTarget || normTarget.length < 4) continue;
+        const targetTokens = normTarget.split(' ').filter(t => t.length >= 2);
+
+        // Exact normalized match
+        let match = riders.find(r =>
+          normalizeArabicNameForMatchV22(r.nameAr) === normTarget ||
+          normalizeArabicNameForMatchV22(r.nameEn) === normTarget
+        );
+        if (match) return match;
+
+        // Substring normalized match
+        match = riders.find(r => {
+          const nAr = normalizeArabicNameForMatchV22(r.nameAr);
+          const nEn = normalizeArabicNameForMatchV22(r.nameEn);
+          return (nAr.length >= 5 && (nAr.includes(normTarget) || normTarget.includes(nAr))) ||
+                 (nEn.length >= 5 && (nEn.includes(normTarget) || normTarget.includes(nEn)));
+        });
+        if (match) return match;
+
+        // Token intersection match (at least 2 tokens match)
+        if (targetTokens.length >= 2) {
+          let bestRider = null;
+          let bestScore = 0;
+          riders.forEach(r => {
+            const rTokens = (normalizeArabicNameForMatchV22(r.nameAr) + ' ' + normalizeArabicNameForMatchV22(r.nameEn)).split(' ').filter(Boolean);
+            const common = targetTokens.filter(t => rTokens.some(rt => rt === t || (t.length >= 4 && (rt.startsWith(t) || t.startsWith(rt))))).length;
+            if (common >= 2 && common > bestScore) {
+              bestScore = common;
+              bestRider = r;
+            }
+          });
+          if (bestRider) return bestRider;
+        }
+      }
+      return null;
+    }
+
+    // Universal Daily Deposits Parser V22:
+    // Handles:
+    //  - Standard 2/3/4/5-col Deposit sheets ([ID, Deposit], [Name, ID, Deposit], [#, NameAr, NameEn, ID, Deposit])
+    //  - Combined Cash+Deposit sheets ([#, Name, ID, PreDeposit, DailyDeposit, NetCash])
+    //  - 72/73/74-col Talabat PendingDues sheets (extracts Office Deposit, Bank Transfer, or latest 01-C..31-C collection)
+    //  - Date-matrix Deposit sheets (columns are dates 1/11, 2/11.. or 01-C..31-C)
+    function parseDailyDepositsSheetUniversalV22(rows) {
+      const depositsByRiderId = {};
+      const depositDateByRiderId = {};
+      if (!Array.isArray(rows) || rows.length === 0) {
+        return { depositsByRiderId, depositDateByRiderId, matchedCount: 0, totalAmount: 0 };
+      }
+
+      // Check if this is a 72/73/74-col Talabat PendingDues sheet uploaded into Daily Deposits
+      const maxCols = Math.max(...rows.slice(0, 15).map(r => (Array.isArray(r) ? r.length : 0)), 0);
+      if (maxCols >= 40) {
+        const pdRecs = parseSinglePendingDuesOrCashSheetV20(rows, '');
+        pdRecs.forEach(rec => {
+          const rider = findRiderByAnyIdOrNameV22([rec.rawId], [rec.rawName, rec.rawNameAr]);
+          if (rider) {
+            const depVal = rec.lastColVal > 0 ? rec.lastColVal : (rec.collection > 0 ? rec.collection : 0);
+            if (depVal > 0) {
+              depositsByRiderId[rider.id] = Number(((depositsByRiderId[rider.id] || 0) + depVal).toFixed(3));
+              if (rec.lastColDay > 0) depositDateByRiderId[rider.id] = `يوم ${rec.lastColDay}`;
+            }
+          }
+        });
+        const totalAmount = Object.values(depositsByRiderId).reduce((a, b) => a + b, 0);
+        return { depositsByRiderId, depositDateByRiderId, matchedCount: Object.keys(depositsByRiderId).length, totalAmount };
+      }
+
+      let headerIdx = -1;
+      let explicitIdCol = -1;
+      let explicitNameCols = [];
+      let explicitDepCol = -1;
+      let explicitPreCashCol = -1;
+      let explicitNetCashCol = -1;
+      let dateCols = [];
+
+      for (let rIdx = 0; rIdx < Math.min(12, rows.length); rIdx++) {
+        const row = rows[rIdx] || [];
+        const cellsLower = row.map(c => String(c || '').toLowerCase().trim());
+        const joined = cellsLower.join(' | ');
+        if (
+          joined.includes('deposit') || joined.includes('إيداع') || joined.includes('ايداع') ||
+          joined.includes('توريد') || joined.includes('تحصيل') || joined.includes('مسدد') ||
+          joined.includes('مدفوع') || joined.includes('مبلغ') || joined.includes('amount') ||
+          joined.includes('rider') || joined.includes('سائق') || joined.includes('الاسم') ||
+          joined.includes('كاش') || joined.includes('cash') || joined.includes('id')
+        ) {
+          headerIdx = rIdx;
+          cellsLower.forEach((h, cIdx) => {
+            if (!h) return;
+            if (explicitIdCol === -1 && (h === 'id' || h.includes('rider id') || h.includes('hurrir id') || h.includes('الرقم الوظيفي') || h.includes('كود') || h.includes('اي دي') || h.includes('الشركة / id'))) {
+              explicitIdCol = cIdx;
+            } else if (h.includes('name') || h.includes('اسم') || h.includes('السائق')) {
+              explicitNameCols.push(cIdx);
+            } else if (
+              h.includes('deposit') || h.includes('إيداع') || h.includes('ايداع') ||
+              h.includes('توريد') || h.includes('المطروح') || h.includes('المسدد') ||
+              h.includes('المدفوع') || h.includes('تحصيل اليوم') || h === 'التحصيلات' || h.includes('اخر ايداع') || h.includes('آخر إيداع')
+            ) {
+              if (explicitDepCol === -1) explicitDepCol = cIdx;
+            } else if (h.includes('قبل الإيداع') || h.includes('قبل الايداع') || h.includes('pendingdues') || h.includes('pending dues') || h.includes('المستحق قبل')) {
+              explicitPreCashCol = cIdx;
+            } else if (h.includes('بعد الإيداع') || h.includes('بعد الايداع') || h.includes('صافي الكاش') || h.includes('صافي المستحق') || h.includes('المتبقي')) {
+              explicitNetCashCol = cIdx;
+            } else if (/^\d{1,2}[\/\-]\d{1,2}([\/\-]\d{2,4})?$/.test(h) || /^\d{1,2}\s*-\s*c$/i.test(h)) {
+              dateCols.push({ col: cIdx, label: String(row[cIdx]).trim() });
+            } else if (explicitDepCol === -1 && (h.includes('مبلغ') || h.includes('amount') || h.includes('القيمة') || h === 'kwd' || h === 'د.ك' || h === 'الكاش' || h === 'cash')) {
+              explicitDepCol = cIdx;
+            }
+          });
+          break;
+        }
+      }
+
+      const startRow = headerIdx >= 0 ? headerIdx + 1 : 0;
+      for (let i = startRow; i < rows.length; i++) {
+        const row = rows[i];
+        if (!Array.isArray(row) || row.length === 0) continue;
+
+        const rowStr = row.join(' ').trim();
+        if (!rowStr) continue;
+        if (/^(total|الإجمالي|الاجمالي|المجموع|توتال)/i.test(rowStr.trim())) continue;
+
+        const idCandidates = [];
+        const nameCandidates = [];
+        const numericCells = [];
+
+        if (explicitIdCol >= 0 && row[explicitIdCol] !== undefined) {
+          const cellVal = String(row[explicitIdCol]).trim();
+          const idMatch = normalizeDigitsV19(cellVal).match(/(\d{5,9})/);
+          if (idMatch) idCandidates.push(idMatch[1]);
+          else idCandidates.push(cellVal);
+        }
+        explicitNameCols.forEach(nc => {
+          if (row[nc] !== undefined && String(row[nc]).trim() !== '') {
+            nameCandidates.push(String(row[nc]).trim());
+          }
+        });
+
+        row.forEach((cell, cIdx) => {
+          if (cell === null || cell === undefined || String(cell).trim() === '') return;
+          const s = normalizeDigitsV19(cell).trim();
+          const sNoDec = s.replace(/\.0+$/, '');
+
+          // Extract embedded 6-8 digit Rider ID even if inside "SUPT 4197815" or "(4197815)"
+          const embeddedIdMatch = sNoDec.match(/(\d{6,8})/);
+          if (embeddedIdMatch && (DB.fleet[embeddedIdMatch[1]] || (typeof ALT_ID_MAP !== 'undefined' && ALT_ID_MAP[embeddedIdMatch[1]]) || !s.includes('.'))) {
+            const candId = embeddedIdMatch[1];
+            if (!idCandidates.includes(candId)) idCandidates.push(candId);
+            if (sNoDec === candId) return;
+          }
+
+          // Skip pure date strings
+          if (/^\d{1,4}[-\/]\d{1,2}([-\/]\d{1,4})?$/.test(s)) return;
+
+          // Collect name candidates
+          if (/[A-Za-z؀-ۿ]{3,}/.test(s) && !/^(kwd|supt|ftmn|fnmn|srbs|total|اجمالي|إجمالي|د\.ك|Working|Offline)$/i.test(s)) {
+            const cleanedName = s.replace(/💬/g, '').replace(/📍.*$/, '').trim();
+            if (cleanedName.length >= 3 && !nameCandidates.includes(cleanedName)) {
+              nameCandidates.push(cleanedName);
+            }
+            if (!/\d+\.\d+/.test(s)) return;
+          }
+
+          // Parse numeric amount
+          const rawNum = parseCleanCashNumV20(s);
+          const absNum = Math.abs(rawNum);
+          if (absNum > 0 && absNum < 15000 && !DB.fleet[String(Math.round(absNum))]) {
+            const isSerialCol0 = (cIdx === 0 && row.length >= 3 && Number.isInteger(absNum) && absNum <= 300);
+            if (!isSerialCol0) {
+              numericCells.push({ col: cIdx, val: absNum, raw: rawNum });
+            }
+          }
+        });
+
+        const rider = findRiderByAnyIdOrNameV22(idCandidates, nameCandidates);
+        if (!rider) continue;
+
+        let depAmt = 0;
+        let depDateStr = '';
+
+        // Priority 1: Explicit Deposit Column
+        if (explicitDepCol >= 0 && row[explicitDepCol] !== undefined) {
+          const v = Math.abs(parseCleanCashNumV20(row[explicitDepCol]));
+          if (v > 0 && v < 15000 && !DB.fleet[String(Math.round(v))]) {
+            depAmt = v;
+          }
+        }
+
+        // Priority 2: Date Columns (e.g. 1/11, 2/11 ... 8/11)
+        if (depAmt <= 0 && dateCols.length > 0) {
+          let sumDates = 0;
+          dateCols.forEach(dc => {
+            const v = Math.abs(parseCleanCashNumV20(row[dc.col]));
+            if (v > 0 && v < 10000) {
+              sumDates += v;
+              depDateStr = dc.label;
+            }
+          });
+          if (sumDates > 0) depAmt = Number(sumDates.toFixed(3));
+        }
+
+        // Priority 3: If row has 3 numeric values where A - B ≈ C (PreDeposit, DailyDeposit, NetCash)
+        if (depAmt <= 0 && numericCells.length >= 3) {
+          for (let a = 0; a < numericCells.length - 2; a++) {
+            const vPre = numericCells[a].val;
+            const vDep = numericCells[a + 1].val;
+            const vNet = numericCells[a + 2].val;
+            if (Math.abs((vPre - vDep) - vNet) <= 0.05 && vDep > 0) {
+              depAmt = vDep;
+              break;
+            }
+          }
+        }
+
+        // Priority 4: Standard 1 or 2 numeric columns ([ID, Name, Deposit] or [#, Name, ID, Deposit])
+        if (depAmt <= 0 && numericCells.length > 0) {
+          if (explicitPreCashCol >= 0 && explicitNetCashCol >= 0) {
+            const preV = Math.abs(parseCleanCashNumV20(row[explicitPreCashCol]));
+            const netV = Math.abs(parseCleanCashNumV20(row[explicitNetCashCol]));
+            if (preV > netV) depAmt = Number((preV - netV).toFixed(3));
+          } else {
+            depAmt = numericCells[numericCells.length - 1].val;
+          }
+        }
+
+        if (depAmt > 0) {
+          depositsByRiderId[rider.id] = Number(((depositsByRiderId[rider.id] || 0) + depAmt).toFixed(3));
+          if (depDateStr) depositDateByRiderId[rider.id] = depDateStr;
+        }
+      }
+
+      const totalAmount = Number(Object.values(depositsByRiderId).reduce((a, b) => a + b, 0).toFixed(3));
+      return {
+        depositsByRiderId,
+        depositDateByRiderId,
+        matchedCount: Object.keys(depositsByRiderId).length,
+        totalAmount
+      };
+    }
+
+    // Upgrade readExcelFileToRows so multi-sheet Daily Deposit workbooks also combine all sheets!
+    const _v20OrigReadExcel = readExcelFileToRows;
+    readExcelFileToRows = function(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const allSheets = {};
+            let primaryRows = [];
+            const combinedMultiTabRows = [];
+            let sharedHeader = null;
+
+            workbook.SheetNames.forEach((sName, idx) => {
+              const sheet = workbook.Sheets[sName];
+              const sRows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
+              allSheets[sName] = sRows;
+              if (idx === 0 || (primaryRows.length <= 1 && sRows && sRows.length > 1)) {
+                primaryRows = sRows;
+              }
+              if (sRows && sRows.length > 1 && workbook.SheetNames.length > 1) {
+                const flat = sRows.slice(0, 10).map(r => (r || []).join(' ')).join(' ').toUpperCase();
+                const looksLikeCashOrDep = (
+                  flat.includes('PENDING') || flat.includes('TOTAL SALES') || flat.includes('HURRIR') ||
+                  flat.includes('المستحق') || flat.includes('كاش') || flat.includes('DEPOSIT') ||
+                  flat.includes('إيداع') || flat.includes('ايداع') || flat.includes('توريد') ||
+                  flat.includes('RIDER') || flat.includes('السائق')
+                );
+                if (looksLikeCashOrDep) {
+                  let hIdx = 0;
+                  for (let rIdx = 0; rIdx < Math.min(10, sRows.length); rIdx++) {
+                    const rStr = (sRows[rIdx] || []).join(' ').toUpperCase();
+                    if (rStr.includes('RIDER') || rStr.includes('HURRIR') || rStr.includes('ID') || rStr.includes('اسم') || rStr.includes('السائق') || rStr.includes('إيداع') || rStr.includes('ايداع')) {
+                      hIdx = rIdx;
+                      break;
+                    }
+                  }
+                  if (!sharedHeader) {
+                    sharedHeader = sRows[hIdx];
+                    combinedMultiTabRows.push(sharedHeader);
+                  }
+                  for (let rIdx = hIdx + 1; rIdx < sRows.length; rIdx++) {
+                    combinedMultiTabRows.push(sRows[rIdx]);
+                  }
+                }
+              }
+            });
+
+            const finalRows = combinedMultiTabRows.length > primaryRows.length ? combinedMultiTabRows : primaryRows;
+            resolve({ workbook, rows: finalRows, sheetName: workbook.SheetNames[0], allSheets });
+          } catch (err) {
+            reject(err);
+          }
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+      });
+    };
+
+    // Upgrade handleSingleSlotUpload & handleSmartMultiUpload & handleUploadTalabatInvoiceFiles
+    // so uploading a Daily Deposit sheet from ANY button on ANY page works 100% and triggers Gmail auto-sync!
+    handleSingleSlotUpload = async function(slotKey, event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      try {
+        const { rows, workbook, allSheets } = await readExcelFileToRows(file);
+        let targetRows = rows;
+
+        if (slotKey === 'DAILY_DEPOSITS' && allSheets && Object.keys(allSheets).length > 1) {
+          // Combine all non-empty sheets in the workbook for Daily Deposits so no tab is missed
+          const merged = [];
+          Object.values(allSheets).forEach(sRows => {
+            if (Array.isArray(sRows) && sRows.length > 0) {
+              sRows.forEach(r => merged.push(r));
+            }
+          });
+          if (merged.length > targetRows.length) targetRows = merged;
+        } else if (workbook && Array.isArray(workbook.SheetNames) && workbook.SheetNames.length > 1) {
+          const targetCo = slotKey.startsWith('PD_') ? slotKey.replace('PD_', '') : '';
+          if (targetCo) {
+            const matchingSheet = workbook.SheetNames.find(sn => String(sn).toUpperCase().includes(targetCo));
+            if (matchingSheet) {
+              const candRows = XLSX.utils.sheet_to_json(workbook.Sheets[matchingSheet], { header: 1, raw: false, defval: '' });
+              if (candRows && candRows.length > 1) targetRows = candRows;
+            }
+          }
+        }
+
+        saveUploadedSheetToSlot(slotKey, file.name, targetRows);
+        event.target.value = '';
+
+        const coLabelMap = {
+          PD_SUPT: 'شركة سبورتيف (SUPT)',
+          PD_FTMN: 'شركة ففتين منت (FTMN)',
+          PD_FNMN: 'شركة فورتين منت (FNMN)',
+          PD_SRBS: 'شركة سرب سريع (SRBS)',
+          DAILY_DEPOSITS: 'شيت الإيداعات اليومية (Daily Deposits)'
+        };
+        const slotAr = coLabelMap[slotKey] || slotKey;
+
+        if (slotKey === 'DAILY_DEPOSITS') {
+          const checkParsed = parseDailyDepositsSheetUniversalV22(targetRows);
+          rebuildAllAndRender(`✅ تم رفع شيت الإيداعات اليومي (${file.name}) بنجاح: تم تحديث إيداعات (${checkParsed.matchedCount}) سائق بإجمالي (${checkParsed.totalAmount.toFixed(3)} د.ك) في كل صفحات الداشبورد!`);
+          triggerAutoGmailLiveReportSync(`رفع شيت الإيداعات اليومي (${file.name})`);
+        } else {
+          rebuildAllAndRender(`✅ تم رفع وربط ملف (${file.name}) في خانة [${slotAr}] وتحديث جميع المؤشرات والتقرير المباشر فوراً!`);
+          if (slotKey.startsWith('PD_')) {
+            triggerAutoGmailLiveReportSync(`رفع شيت كاش ${slotAr} (${file.name})`);
+          }
+        }
+      } catch (err) {
+        showToast('⚠️ حدث خطأ أثناء قراءة ملف الإكسل: ' + err.message);
+      }
+    };
+
+    handleSmartMultiUpload = async function(event) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+      let count = 0;
+      let depSummary = '';
+
+      for (const file of files) {
+        try {
+          const { rows, allSheets } = await readExcelFileToRows(file);
+          const fnUpper = file.name.toUpperCase();
+          let slotKey = null;
+
+          const isDepositFileName = (
+            fnUpper.includes('DEPOSIT') || fnUpper.includes('ايداع') || fnUpper.includes('إيداع') ||
+            fnUpper.includes('توريد') || fnUpper.includes('تحصيل') || fnUpper.includes('سداد') ||
+            /^\d{1,2}[-\/_]\d{1,2}([-\/_]\d{2,4})?\.(XLSX|XLS|CSV)$/i.test(fnUpper)
+          );
+
+          if (fnUpper.includes('شفتات') || fnUpper.includes('SHIFT')) {
+            slotKey = 'SHIFTS';
+          } else if (fnUpper.includes('ONLINE') || fnUpper.includes('اونلاين') || fnUpper.includes('أونلاين')) {
+            slotKey = 'ONLINE';
+          } else if (fnUpper.includes('REPORT (5)') || fnUpper.includes('REPORT 5') || fnUpper.includes('REPORT5')) {
+            slotKey = 'REPORT5';
+          } else if (fnUpper.includes('REPORT (6)') || fnUpper.includes('REPORT 6') || fnUpper.includes('REPORT6') || fnUpper.includes('RPORT 6')) {
+            slotKey = 'REPORT6';
+          } else if (isDepositFileName) {
+            slotKey = 'DAILY_DEPOSITS';
+          } else if (
+            fnUpper.includes('PENDING') || fnUpper.includes('DUES') || fnUpper.includes('CASH') ||
+            fnUpper.includes('كاش') || fnUpper.includes('المستحق') ||
+            fnUpper.includes('FNMN') || fnUpper.includes('FTMN') || fnUpper.includes('SRBS') || fnUpper.includes('SUPT') ||
+            fnUpper.includes('فورتين') || fnUpper.includes('ففتين') || fnUpper.includes('سرب') || fnUpper.includes('سبورتيف')
+          ) {
+            slotKey = detectPendingDuesCompanyV21(file.name, rows);
+          } else {
+            const flatHeader = (rows || []).slice(0, 15).map(r => (r || []).join(' ')).join(' ').toUpperCase();
+            if (flatHeader.includes('CURRENT SESSION') || flatHeader.includes('RIDER STATE')) slotKey = 'ONLINE';
+            else if (flatHeader.includes('STARTING POINT') || flatHeader.includes('SESSION TAG')) slotKey = 'SHIFTS';
+            else if (flatHeader.includes('OUTLET NAME') || flatHeader.includes('TRXDATE')) slotKey = 'REPORT5';
+            else if (flatHeader.includes('PURSE BALANCE') || flatHeader.includes('CARD TECH')) slotKey = 'REPORT6';
+            else if (flatHeader.includes('PENDING DUES') || flatHeader.includes('TOTAL SALES') || flatHeader.includes('HURRIR ID')) {
+              slotKey = detectPendingDuesCompanyV21(file.name, rows);
+            } else {
+              slotKey = 'DAILY_DEPOSITS';
+            }
+          }
+
+          if (slotKey) {
+            let finalRows = rows;
+            if (slotKey === 'DAILY_DEPOSITS' && allSheets && Object.keys(allSheets).length > 1) {
+              const merged = [];
+              Object.values(allSheets).forEach(sr => { if (Array.isArray(sr)) sr.forEach(r => merged.push(r)); });
+              if (merged.length > finalRows.length) finalRows = merged;
+            }
+            saveUploadedSheetToSlot(slotKey, file.name, finalRows);
+            if (slotKey === 'DAILY_DEPOSITS') {
+              const res = parseDailyDepositsSheetUniversalV22(finalRows);
+              depSummary = ` (منها إيداعات لـ ${res.matchedCount} سائق بقيمة ${res.totalAmount.toFixed(3)} د.ك)`;
+            }
+            count++;
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      event.target.value = '';
+      rebuildAllAndRender(`✅ تم رفع وربط (${count}) شيت بنجاح${depSummary} وتحديث كافة صفحات الداشبورد والتقرير المباشر فوراً!`);
+      triggerAutoGmailLiveReportSync(`رفع متعدد (${count} شيت)${depSummary}`);
+    };
+
+    // Also make handleUploadTalabatInvoiceFiles on Finance page smart-route Cash or Daily Deposit files if uploaded there!
+    const _v21OrigUploadTalabatInv = handleUploadTalabatInvoiceFiles;
+    handleUploadTalabatInvoiceFiles = async function(event) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+      const invFiles = [];
+      let routedCashOrDep = 0;
+
+      for (const file of files) {
+        const fnUpper = file.name.toUpperCase();
+        const { rows } = await readExcelFileToRows(file);
+        const flatHeader = (rows || []).slice(0, 10).map(r => (r || []).join(' ')).join(' ').toUpperCase();
+        const isTalabatInvoice = flatHeader.includes('EVALUATED HOURS') || flatHeader.includes('TOTAL BASE PAYMENT') || flatHeader.includes('NET PICKUPS') || fnUpper.includes('BASE PAYMENT');
+        if (!isTalabatInvoice) {
+          const isDep = fnUpper.includes('DEPOSIT') || fnUpper.includes('ايداع') || fnUpper.includes('إيداع') || fnUpper.includes('توريد') || /^\d{1,2}[-\/_]\d{1,2}/.test(fnUpper) || (rows[0] && rows[0].length <= 6 && !flatHeader.includes('HURRIR'));
+          const slotKey = isDep ? 'DAILY_DEPOSITS' : detectPendingDuesCompanyV21(file.name, rows);
+          saveUploadedSheetToSlot(slotKey, file.name, rows);
+          routedCashOrDep++;
+        } else {
+          invFiles.push(file);
+        }
+      }
+
+      if (routedCashOrDep > 0 && invFiles.length === 0) {
+        event.target.value = '';
+        rebuildAllAndRender(`✅ تم رفع وربط (${routedCashOrDep}) شيت كاش / إيداعات يومية بنجاح وتحديث صفحة المالية والداشبورد بالكامل!`);
+        triggerAutoGmailLiveReportSync(`رفع شيت كاش/إيداع من صفحة المالية`);
+        return;
+      }
+      return _v21OrigUploadTalabatInv(event);
+    };
+
+    // Upgrade normalizeFleetDatabase to run parseDailyDepositsSheetUniversalV22 and sync all rider fields
+    const _v21PrevNormFleet = normalizeFleetDatabase;
+    normalizeFleetDatabase = function() {
+      _v21PrevNormFleet();
+
+      const depParsed = (DB.dailyDepositSheet && Array.isArray(DB.dailyDepositSheet.rows))
+        ? parseDailyDepositsSheetUniversalV22(DB.dailyDepositSheet.rows)
+        : { depositsByRiderId: {}, depositDateByRiderId: {}, matchedCount: 0, totalAmount: 0 };
+
+      const sheetDepositsMap = depParsed.depositsByRiderId || {};
+      const sheetDepositDatesMap = depParsed.depositDateByRiderId || {};
+      const depSheetLabel = DB.dailyDepositSheet?.filename
+        ? DB.dailyDepositSheet.filename.replace(/\.(xlsx|xls|csv)$/i, '')
+        : 'إيداع يومي';
+
+      DB.allRidersList.forEach(r => {
+        const fromSheet = parseFloat(sheetDepositsMap[r.id]) || 0;
+        const fromManual = parseFloat(DB.manualDailyDeposits && DB.manualDailyDeposits[r.id]) || 0;
+        r.sheetDailyDeposit = Number(fromSheet.toFixed(3));
+        r.manualDailyDeposit = Number(fromManual.toFixed(3));
+        r.dailyDeposit = Number(Math.max(0, fromSheet + fromManual).toFixed(3));
+
+        // Always keep r.lastDepositAmount & r.lastDepositDate updated with the latest dailyDeposit or Cash sheet collection
+        if (r.dailyDeposit > 0) {
+          r.lastDepositAmount = r.dailyDeposit;
+          r.lastDepositDate = sheetDepositDatesMap[r.id] || depSheetLabel;
+        } else if (!r.lastDepositAmount || r.lastDepositAmount < 0) {
+          r.lastDepositAmount = 0;
+        }
+
+        r.pendingCash = Number(Math.max(0, r.pendingCash || 0).toFixed(3));
+        r.netPendingCash = Number(Math.max(0, r.pendingCash - r.dailyDeposit).toFixed(3));
+        r.undepositedCash = r.netPendingCash;
+        r.cashPenalty = r.netPendingCash > 20 ? Number(((r.netPendingCash - 20) * 0.15).toFixed(3)) : 0;
+
+        // If netPendingCash is 0 after deposit, nonDepositDaysCount becomes 0
+        if (r.netPendingCash <= 0.05) {
+          r.nonDepositDaysCount = 0;
+        }
+
+        // Recompute 75% cap salary deduction with updated netPendingCash
+        const grossEarnedAfterPen = Math.max(0, r.driverEarned - r.missingPenalty + (r.housing || 0));
+        const maxTotalDed75 = Number((grossEarnedAfterPen * 0.75).toFixed(3));
+        let remCap = maxTotalDed75;
+        const cashDed75 = Number(Math.min(Math.max(0, r.netPendingCash || 0), remCap).toFixed(3));
+        remCap = Number(Math.max(0, remCap - cashDed75).toFixed(3));
+        const augDed75 = String(r.id) === '1908630' ? 0 : Number(Math.min(Math.max(0, r.invAugDeduction || 0), remCap).toFixed(3));
+        remCap = Number(Math.max(0, remCap - augDed75).toFixed(3));
+        const violDed75 = Number(Math.min(Math.max(0, r.violationsTotalRaw || 0), remCap).toFixed(3));
+        remCap = Number(Math.max(0, remCap - violDed75).toFixed(3));
+        const rawDebt = Math.max(0, (r.latestHistRemainingDebt || 0) + (parseFloat(DB.localAdj[r.id]?.debt) || 0));
+        const debtDed75 = Number(Math.min(rawDebt, remCap).toFixed(3));
+
+        r.cashDeducted75 = cashDed75;
+        r.cashCarriedOver75 = Number(Math.max(0, r.netPendingCash - cashDed75).toFixed(3));
+        r.violationsDeducted70 = violDed75;
+        r.debtDeducted75 = debtDed75;
+        r.totalDeductionsApplied75 = Number((cashDed75 + augDed75 + violDed75 + debtDed75).toFixed(3));
+        r.driverNet = Number(Math.max(0, grossEarnedAfterPen - r.totalDeductionsApplied75).toFixed(3));
+      });
+
+      // Ensure 100% unified cash totals across Overview, Finance, Cash Page & Daily Report (internal fleet only)
+      DB.extraCompanyCashSummary = { totalSales: 0, totalCollections: 0, totalTips: 0, preDepositDues: 0 };
+      refreshLiveCashReportUrlV21();
+    };
+
+    // Fix computeFinanceAggregates & renderFinancePage so Finance KPI card shows exact Pre-Deposit, Daily Deposit, and Net After Deposit
+    const _v21OrigComputeFinanceAgg = computeFinanceAggregates;
+    computeFinanceAggregates = function(coFilter = 'ALL') {
+      const agg = _v21OrigComputeFinanceAgg(coFilter);
+      const riders = DB.allRidersList.filter(r => coFilter === 'ALL' || r.co === coFilter);
+      let cashPreDep = 0, cashDailyDep = 0, cashUncollected = 0;
+      riders.forEach(r => {
+        cashPreDep += (r.pendingCash || 0);
+        cashDailyDep += (r.dailyDeposit || 0);
+        cashUncollected += (r.netPendingCash || 0);
+      });
+      if (coFilter === 'ALL' && DB.extraCompanyCashSummary) {
+        cashPreDep += (DB.extraCompanyCashSummary.preDepositDues || 0);
+        cashUncollected += (DB.extraCompanyCashSummary.preDepositDues || 0);
+      }
+      agg.cashPreDep = Number(cashPreDep.toFixed(3));
+      agg.cashDailyDep = Number(cashDailyDep.toFixed(3));
+      agg.cashUncollected = Number(cashUncollected.toFixed(3));
+      return agg;
+    };
+
+    const _v21OrigRenderFinancePage = renderFinancePage;
+    renderFinancePage = function() {
+      _v21OrigRenderFinancePage();
+      const agg = computeFinanceAggregates(APP.activeFinanceCO);
+      const slotsGrid = document.getElementById('financeUploadSlotsGrid');
+      if (slotsGrid) {
+        const cos = ['SUPT', 'FTMN', 'FNMN', 'SRBS'];
+        const depLoaded = !!DB.dailyDepositSheet;
+        slotsGrid.innerHTML = cos.map(co => {
+          const coRows = DB.talabatInvoices.filter(x => x.co === co);
+          const pdLoaded = !!DB.pendingDuesSheets[co];
+          return `
+            <div class="upload-slot-card loaded">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <b>🧾 فاتورة وكاش (${co})</b>
+                  <span class="badge badge-${co.toLowerCase()}">${coRows.length} سجل فاتورة</span>
+                </div>
+                <div style="font-size:11.5px;color:var(--text2);margin-top:4px;">
+                  إيراد طلبات: <b>${fmtKWD(agg.byCo[co]?.basePay || 0)}</b> | كاش: <b>${pdLoaded ? 'مربوط ✅' : 'غير مرفوع'}</b>
+                </div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <button class="btn-action" style="flex:1;justify-content:center;font-size:11px;padding:5px 8px;" onclick="document.getElementById('uploadUnifiedTalabatInvInput').click()">📤 فاتورة ${co}</button>
+                <button class="btn-secondary" style="font-size:11px;padding:5px 8px;" onclick="triggerGlobalSlotUpload('PD_${co}')">💵 كاش ${co}</button>
+              </div>
+            </div>
+          `;
+        }).join('') + `
+          <div class="upload-slot-card ${depLoaded ? 'loaded' : ''}" style="border-color:rgba(16,185,129,0.55)!important;">
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <b>💵 شيت الإيداعات اليومية (Deposits)</b>
+                <span class="badge ${depLoaded ? 'badge-good' : 'badge-warn'}">${depLoaded ? '✅ مربوط ومفعل' : '⚪ جاهز للرفع'}</span>
+              </div>
+              <div style="font-size:11.5px;color:var(--text2);margin-top:4px;">
+                إجمالي الإيداعات المطروحة: <b style="color:var(--blue);">-${fmtKWD(agg.cashDailyDep || 0)}</b>
+                ${depLoaded ? `<br/><small style="color:var(--green);">📄 ${DB.dailyDepositSheet.filename}</small>` : ''}
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn-action" style="flex:1;justify-content:center;font-size:11px;padding:5px 8px;background:var(--grad-liquid-emerald)!important;" onclick="triggerGlobalSlotUpload('DAILY_DEPOSITS')">📤 رفع شيت الإيداعات اليومي</button>
+              ${depLoaded ? `<button class="btn-danger" style="font-size:11px;padding:5px 8px;" onclick="removeUploadedSheet('DAILY_DEPOSITS')">🗑️</button>` : ''}
+            </div>
+          </div>
+        `;
+      }
+      // Also update the Cash KPI description in finInvoiceKpiGrid to show both Before Deposit and Daily Deposit deducted
+      const kpiGrid = document.getElementById('finInvoiceKpiGrid');
+      if (kpiGrid) {
+        const cashCardDesc = kpiGrid.querySelector('.profit-card.grad-cash-net .p-desc');
+        if (cashCardDesc) {
+          cashCardDesc.innerHTML = `قبل الإيداع: <b>${fmtKWD(agg.cashPreDep)}</b> | إيداع مطروح: <b>-${fmtKWD(agg.cashDailyDep || 0)}</b>`;
+        }
+      }
+    };
+
+    // -------------------------------------------------------------------------
+    // 3. REAL GMAIL & LIVE CLOUD REPORT SYNC HUB (Requirement 3)
+    // -------------------------------------------------------------------------
+    function getGmailLiveConfigV22() {
+      const saved = JSON.parse(safeStorage.getItem(STORAGE_KEYS.gmailLiveConfig) || 'null') || {};
+      return {
+        gmailAddress: saved.gmailAddress || '',
+        webhookUrl: saved.webhookUrl || '',
+        autoSyncOnUpload: saved.autoSyncOnUpload !== undefined ? !!saved.autoSyncOnUpload : true,
+        lastSyncedAt: saved.lastSyncedAt || ''
+      };
+    }
+
+    function saveGmailLiveConfigV22(cfg) {
+      const cur = getGmailLiveConfigV22();
+      const next = { ...cur, ...cfg, lastSyncedAt: new Date().toLocaleString('ar-KW') };
+      safeStorage.setItem(STORAGE_KEYS.gmailLiveConfig, JSON.stringify(next));
+      refreshLiveCashReportUrlV21();
+      if (APP.activePage === 'cashfuel') renderCashFuelPage();
+      return next;
+    }
+
+    function sendLiveCashReportViaGmailNow(silentWebhookOnly = false) {
+      refreshLiveCashReportUrlV21();
+      const cfg = getGmailLiveConfigV22();
+      const emailInput = document.getElementById('v22GmailTargetAddressInput');
+      if (emailInput && emailInput.value.trim()) {
+        cfg.gmailAddress = emailInput.value.trim();
+        saveGmailLiveConfigV22({ gmailAddress: cfg.gmailAddress });
+      }
+
+      const riders = [...(DB.allRidersList || [])].sort((a, b) => b.netPendingCash - a.netPendingCash || b.pendingCash - a.pendingCash);
+      const totPre = riders.reduce((s, r) => s + (r.pendingCash || 0), 0);
+      const totDep = riders.reduce((s, r) => s + (r.dailyDeposit || 0), 0);
+      const totNet = riders.reduce((s, r) => s + (r.netPendingCash || 0), 0);
+      const over20 = riders.filter(r => r.netPendingCash > 20).length;
+      const nowStr = new Date().toLocaleString('ar-KW');
+
+      const subject = `تقرير الكاش والإيداعات اليومية المباشر — C.O FLEET (${nowStr}) | الصافي: ${totNet.toFixed(3)} د.ك`;
+      const bodyLines = [
+        `📋 التقرير المباشر المحدث لجدولة الكاش والإيداعات اليومية — C.O FLEET`,
+        `⏱️ توقيت التحديث الحي: ${nowStr}`,
+        `====================================================`,
+        `• إجمالي الكاش المستحق قبل الإيداع: ${totPre.toFixed(3)} د.ك`,
+        `• إجمالي الإيداعات اليومية المطروحة: -${totDep.toFixed(3)} د.ك`,
+        `• صافي الكاش المستحق بعد التوريد: ${totNet.toFixed(3)} د.ك`,
+        `• عدد السائقين المتجاوزين لحد 20 د.ك: ${over20} سائق`,
+        `====================================================`,
+        `📊 رادار الكاش التفصيلي لأعلى السائقين مديونية:`
+      ];
+
+      riders.filter(r => r.pendingCash > 0 || r.dailyDeposit > 0 || r.netPendingCash > 0).slice(0, 60).forEach((r, idx) => {
+        const lastDep = r.dailyDeposit > 0 ? r.dailyDeposit : (r.lastDepositAmount || 0);
+        bodyLines.push(
+          `${idx + 1}. ${r.nameAr} (${r.co} - ${r.id}) | قبل الإيداع: ${r.pendingCash.toFixed(3)} د.ك | آخر إيداع: ${lastDep.toFixed(3)} د.ك | أيام عدم التوريد: ${r.nonDepositDaysCount || 0} يوم | الصافي بعد التوريد: ${r.netPendingCash.toFixed(3)} د.ك`
+        );
+      });
+
+      const bodyText = bodyLines.join('\n');
+
+      // 1. If a Google Apps Script Webhook URL is configured, push real-time JSON + HTML payload to Gmail/Sheets
+      if (cfg.webhookUrl && cfg.webhookUrl.startsWith('http')) {
+        try {
+          fetch(cfg.webhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              to: cfg.gmailAddress || '',
+              subject,
+              textBody: bodyText,
+              htmlBody: buildLiveCashScheduleReportHtmlV21(false),
+              totals: { preDeposit: totPre, dailyDeposit: totDep, netAfterDeposit: totNet, over20Count: over20 },
+              updatedAt: nowStr
+            })
+          }).catch(() => {});
+        } catch (e) {}
+      }
+
+      saveGmailLiveConfigV22({ lastSyncedAt: nowStr });
+
+      if (silentWebhookOnly) {
+        return;
+      }
+
+      // 2. Open Official Gmail Web Compose pre-filled with recipient, subject, and live report data
+      const toParam = encodeURIComponent(cfg.gmailAddress || '');
+      const suParam = encodeURIComponent(subject);
+      const bodyParam = encodeURIComponent(bodyText);
+      const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${toParam}&su=${suParam}&body=${bodyParam}`;
+      const win = window.open(gmailComposeUrl, '_blank');
+      if (!win) {
+        window.location.href = `mailto:${cfg.gmailAddress || ''}?subject=${suParam}&body=${bodyParam}`;
+      }
+      showToast(`📧 تم فتح ومزامنة التقرير المباشر مع Gmail (${cfg.gmailAddress || 'جاهز للإرسال'}) بأحدث بيانات الكاش والإيداعات!`);
+    }
+
+    function triggerAutoGmailLiveReportSync(reasonLabel) {
+      refreshLiveCashReportUrlV21();
+      const cfg = getGmailLiveConfigV22();
+      saveGmailLiveConfigV22({ lastSyncedAt: new Date().toLocaleString('ar-KW') });
+      if (cfg.autoSyncOnUpload && cfg.webhookUrl && cfg.webhookUrl.startsWith('http')) {
+        sendLiveCashReportViaGmailNow(true);
+      }
+      const badgeEl = document.getElementById('v22GmailLiveStatusBadge');
+      if (badgeEl) {
+        badgeEl.innerHTML = `🟢 متزامن مع الجيميل والداشبورد (${new Date().toLocaleTimeString('ar-KW')}) — ${reasonLabel}`;
+      }
+    }
+
+    function openGmailLiveReportConfigModal() {
+      let modal = document.getElementById('v22GmailLiveModalOverlay');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'v22GmailLiveModalOverlay';
+        modal.className = 'modal-overlay';
+        document.body.appendChild(modal);
+      }
+      const cfg = getGmailLiveConfigV22();
+      const totPre = (DB.allRidersList || []).reduce((s, r) => s + (r.pendingCash || 0), 0);
+      const totDep = (DB.allRidersList || []).reduce((s, r) => s + (r.dailyDeposit || 0), 0);
+      const totNet = (DB.allRidersList || []).reduce((s, r) => s + (r.netPendingCash || 0), 0);
+
+      modal.innerHTML = `
+        <div class="modal-box" style="max-width:680px;">
+          <div class="modal-header">
+            <div>
+              <h2 style="font-size:18px;font-weight:900;color:var(--text);">📧 ربط التقرير المباشر بالجيميل (Gmail Live Sync & Auto-Report)</h2>
+              <p style="font-size:12px;color:var(--text2);margin-top:2px;">يتحدث تلقائياً مع كل شيت كاش أو شيت إيداع يومي ويرسل ملخص وجدولة الكاش مباشرة إلى بريدك في Gmail</p>
+            </div>
+            <button class="modal-close-btn" onclick="document.getElementById('v22GmailLiveModalOverlay').classList.remove('open')">✕</button>
+          </div>
+          <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
+            <div style="background:rgba(16,185,129,0.08);border:1.5px solid rgba(16,185,129,0.35);border-radius:16px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+              <div>
+                <div style="font-size:12px;font-weight:800;color:#059669;">🟢 حالة البيانات الحية في التقرير الآن:</div>
+                <div style="font-size:13px;font-weight:900;color:var(--text);margin-top:3px;">
+                  قبل الإيداع: <span style="color:var(--orange);">${totPre.toFixed(3)} د.ك</span> |
+                  الإيداعات اليومية: <span style="color:var(--blue);">-${totDep.toFixed(3)} د.ك</span> |
+                  الصافي بعد التوريد: <span style="color:var(--red);">${totNet.toFixed(3)} د.ك</span>
+                </div>
+              </div>
+              <span class="badge badge-good">${cfg.lastSyncedAt ? 'آخر تحديث: ' + cfg.lastSyncedAt : 'محدث الآن'}</span>
+            </div>
+
+            <div class="form-group">
+              <label>📧 البريد الإلكتروني المربوط (Gmail) لاستلام وإرسال التقرير المباشر:</label>
+              <input type="email" id="v22ModalGmailInput" class="filter-input" style="direction:ltr;text-align:left;font-size:13.5px;font-weight:800;" placeholder="example@gmail.com" value="${cfg.gmailAddress}" />
+            </div>
+
+            <div class="form-group">
+              <label>🔗 رابط Google Apps Script Web App (اختياري للإرسال التلقائي الخلفي 100% بدون نافذة):</label>
+              <input type="url" id="v22ModalWebhookInput" class="filter-input" style="direction:ltr;text-align:left;font-size:12.5px;" placeholder="https://script.google.com/macros/s/.../exec" value="${cfg.webhookUrl}" />
+              <small style="font-size:11px;color:var(--text3);">عند إدخال بريد Gmail بالأعلى، يمكنك إرسال التقرير بضغطة زر عبر Gmail الرسمي أو تفعيل المزامنة التلقائية مع كل شيت كاش أو إيداع يومي.</small>
+            </div>
+
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--text);cursor:pointer;background:var(--card-alt);padding:10px 14px;border-radius:12px;border:1px solid var(--border);">
+              <input type="checkbox" id="v22ModalAutoSyncChk" ${cfg.autoSyncOnUpload ? 'checked' : ''} style="width:17px;height:17px;accent-color:var(--green);" />
+              <span>⚡ تحديث ومزامنة التقرير المباشر تلقائياً فور رفع أي شيت كاش أو شيت إيداع يومي</span>
+            </label>
+
+            <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:6px;">
+              <button class="btn-secondary" onclick="openDriveCashScheduleLink()">🌐 معاينة التقرير الحي</button>
+              <button class="btn-action" style="background:var(--grad-liquid-emerald)!important;" onclick="saveGmailModalAndSend(true)">📧 حفظ وإرسال التقرير إلى Gmail الآن</button>
+              <button class="btn-action" onclick="saveGmailModalAndSend(false)">💾 حفظ الإعدادات</button>
+            </div>
+          </div>
+        </div>
+      `;
+      modal.classList.add('open');
+    }
+
+    function saveGmailModalAndSend(sendNow) {
+      const gmailAddress = document.getElementById('v22ModalGmailInput')?.value.trim() || '';
+      const webhookUrl = document.getElementById('v22ModalWebhookInput')?.value.trim() || '';
+      const autoSyncOnUpload = !!document.getElementById('v22ModalAutoSyncChk')?.checked;
+      saveGmailLiveConfigV22({ gmailAddress, webhookUrl, autoSyncOnUpload });
+      document.getElementById('v22GmailLiveModalOverlay')?.classList.remove('open');
+      if (sendNow) {
+        sendLiveCashReportViaGmailNow(false);
+      } else {
+        showToast('✅ تم حفظ إعدادات ربط Gmail والتقرير المباشر بنجاح!');
+      }
+    }
+
+    // Upgrade renderCashFuelPage to show the Enhanced Gmail-Linked Live Report Bar & Cash Radar columns
+    const _v21OrigRenderCashFuel = renderCashFuelPage;
+    renderCashFuelPage = function() {
+      _v21OrigRenderCashFuel();
+
+      const schedBox = document.getElementById('v15CashDriversScheduleBox');
+      if (!schedBox) return;
+
+      const cashCo = document.getElementById('cashTableCoFilter')?.value || 'ALL';
+      const cashSearch = (document.getElementById('cashTableSearch')?.value || '').toLowerCase().trim();
+      const sortedDrivers = DB.allRidersList.filter(r => {
+        if (cashCo !== 'ALL' && r.co !== cashCo) return false;
+        if (cashSearch && !r.nameAr.toLowerCase().includes(cashSearch) && !r.nameEn.toLowerCase().includes(cashSearch) && !r.id.toLowerCase().includes(cashSearch)) return false;
+        return true;
+      }).sort((a, b) => b.netPendingCash - a.netPendingCash || b.pendingCash - a.pendingCash);
+
+      const totPre = sortedDrivers.reduce((s, r) => s + (r.pendingCash || 0), 0);
+      const totDep = sortedDrivers.reduce((s, r) => s + (r.dailyDeposit || 0), 0);
+      const totCash = sortedDrivers.reduce((s, r) => s + (r.netPendingCash || 0), 0);
+      const loadedPdCos = ['SUPT', 'FTMN', 'FNMN', 'SRBS'].filter(c => !!DB.pendingDuesSheets?.[c]);
+      const depLoaded = !!(DB.dailyDepositSheet || Object.keys(DB.manualDailyDeposits || {}).length > 0);
+      const depFileName = DB.dailyDepositSheet?.filename || (Object.keys(DB.manualDailyDeposits || {}).length > 0 ? `إيداعات يدوية (${Object.keys(DB.manualDailyDeposits).length})` : 'غير مرفوع بعد');
+      const liveStamp = APP._liveCashUpdatedAt || new Date().toLocaleTimeString('ar-KW');
+      const gmailCfg = getGmailLiveConfigV22();
+
+      schedBox.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+          <div>
+            <h3 style="font-size:16px;font-weight:900;color:var(--text);">📋 جدولة ورادار الكاش المحدث لحظياً (مرتب تنازلياً + تحويل مباشر للواتساب 💬 والجيميل 📧)</h3>
+            <p style="font-size:12.5px;color:var(--text2);font-weight:700;margin-top:3px;">
+              عدد السائقين: <b>${sortedDrivers.length}</b> •
+              المستحق قبل الإيداع: <b style="color:var(--orange);">${fmtKWD(totPre)}</b> •
+              آخر إيداع يومي مطروح (${depFileName}): <b style="color:var(--blue);">-${fmtKWD(totDep)}</b> •
+              <b>صافي الكاش المستحق بعد التوريد: <span style="color:var(--red);font-size:14px;">${fmtKWD(totCash)}</span></b>
+            </p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-action" style="background:var(--grad-liquid-emerald)!important;" onclick="triggerGlobalSlotUpload('DAILY_DEPOSITS')">💵 رفع شيت الإيداعات اليومي</button>
+            <button class="btn-action" style="background:linear-gradient(135deg,#EA4335,#D93025)!important;" onclick="sendLiveCashReportViaGmailNow(false)">📧 إرسال التقرير عبر Gmail</button>
+            <button class="btn-action" style="background:var(--grad-liquid-primary)!important;" onclick="openDriveCashScheduleLink()">🌐 فتح التقرير المباشر الحي</button>
+            <button class="btn-secondary" onclick="copyDriveCashScheduleLink()">📋 نسخ التقرير</button>
+            <button class="btn-secondary" onclick="exportInteractiveCashScheduleReport()">🖨️ طباعة PDF</button>
+          </div>
+        </div>
+
+        <!-- Real Gmail & Live Cloud Auto-Updating Bar -->
+        <div style="display:flex;gap:10px;align-items:center;background:linear-gradient(90deg,rgba(16,185,129,0.08),rgba(37,99,235,0.07));padding:11px 15px;border-radius:16px;border:1.5px solid rgba(16,185,129,0.35);margin-bottom:14px;flex-wrap:wrap;">
+          <span style="font-size:12.5px;font-weight:900;color:#059669;" id="v22GmailLiveStatusBadge">🟢 رابط وحالة التقرير المباشر (مرتبط بالجيميل ويتحدث تلقائياً مع كل شيت كاش أو إيداع يومي):</span>
+          <input type="email" id="v22GmailTargetAddressInput" class="filter-input" style="width:220px;direction:ltr;text-align:left;font-size:12.5px;font-weight:800;border-color:rgba(16,185,129,0.45);" placeholder="أدخل بريد Gmail للربط المباشر..." value="${gmailCfg.gmailAddress}" onchange="saveGmailLiveConfigV22({gmailAddress: this.value.trim()})" />
+          <input type="text" id="v15DriveCashLinkInput" class="filter-input" style="flex:1;min-width:240px;direction:ltr;font-size:12px;font-weight:700;" value="تحديث حي (${liveStamp}) — كاش [${loadedPdCos.join(', ')}] + إيداعات (-${totDep.toFixed(3)} د.ك) = صافي ${totCash.toFixed(3)} د.ك" readonly onclick="this.select()" />
+          <button class="btn-action" style="padding:6px 13px!important;font-size:11.5px!important;background:linear-gradient(135deg,#EA4335,#C5221F)!important;" onclick="sendLiveCashReportViaGmailNow(false)">📧 إرسال للجيميل الآن</button>
+          <button class="btn-secondary" style="padding:6px 11px!important;font-size:11.5px!important;" onclick="openGmailLiveReportConfigModal()">⚙️ إعدادات الربط</button>
+        </div>
+
+        <div class="tbl-wrap" style="max-height:440px;overflow-y:auto;margin-bottom:0;">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:45px;text-align:center;">#</th>
+                <th>الاسم بالعربي (واتساب 💬)</th>
+                <th>الاسم بالإنجليزي (WhatsApp 💬)</th>
+                <th>الزون / الشركة / ID</th>
+                <th>الكاش المستحق قبل الإيداع</th>
+                <th>آخر إيداع تم</th>
+                <th>عدد أيام عدم التوريد</th>
+                <th>الكاش المستحق بعد التوريد</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sortedDrivers.map((r, idx) => {
+                const waUrl = buildDirectWhatsAppUrlForRider(r);
+                const zAr = r.zone === 'Jahra' ? 'الجهراء' : r.zone === 'Hawally' ? 'حولي' : r.zone === 'Sabah Al Salem' ? 'صباح السالم' : 'العارضية';
+                const lastDepVal = r.dailyDeposit > 0 ? r.dailyDeposit : (r.lastDepositAmount || 0);
+                return `
+                  <tr>
+                    <td style="text-align:center;font-weight:900;">${idx + 1}</td>
+                    <td>
+                      <a href="${waUrl}" target="_blank" class="wa-direct-link" onclick="event.stopPropagation();">
+                        <span style="color:#10B981;">💬</span> <span>${r.nameAr}</span>
+                      </a>
+                    </td>
+                    <td style="direction:ltr;text-align:left;">
+                      <a href="${waUrl}" target="_blank" class="wa-direct-link" style="color:var(--blue);" onclick="event.stopPropagation();">
+                        <span>${r.nameEn}</span>
+                      </a>
+                    </td>
+                    <td><span class="badge badge-${r.co.toLowerCase()}">${r.co}</span> <code>${r.id}</code> <span class="badge badge-bike">📍 ${zAr}</span></td>
+                    <td style="font-weight:900;color:var(--orange);">${fmtKWD(r.pendingCash)}</td>
+                    <td style="font-weight:900;color:var(--blue);">
+                      ${r.dailyDeposit > 0 ? `-${fmtKWD(r.dailyDeposit)} <span class="badge badge-good" style="font-size:10px;">إيداع اليوم</span>` : (lastDepVal > 0 ? `${fmtKWD(lastDepVal)} <small style="color:var(--text3);">(${r.lastDepositDate || 'سابق'})</small>` : fmtKWD(0))}
+                    </td>
+                    <td>
+                      <span class="badge ${(r.nonDepositDaysCount || 0) > 2 ? 'badge-failed' : (r.nonDepositDaysCount || 0) > 0 ? 'badge-warn' : 'badge-good'}">
+                        ⏳ ${r.nonDepositDaysCount || 0} يوم
+                      </span>
+                    </td>
+                    <td class="${r.netPendingCash > 20 ? 'val-neg' : r.netPendingCash > 0 ? '' : 'val-pos'}" style="font-weight:900;font-size:14.5px;">
+                      ${fmtKWD(r.netPendingCash)}
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    };
+
+    // -------------------------------------------------------------------------
+    // 4. INCLUDE CASH RADAR IN DAILY REPORT (Requirement 5)
+    //    (الكاش المستحق قبل الإيداع - آخر إيداع تم - عدد أيام عدم التوريد - الكاش المستحق بعد التوريد)
+    // -------------------------------------------------------------------------
+    if (!DR_SECTION_KEYS.includes('cashradar')) {
+      DR_SECTION_KEYS.push('cashradar');
+    }
+    if (!DR_SECTIONS_META.some(s => s.key === 'cashradar')) {
+      DR_SECTIONS_META.push({
+        key: 'cashradar',
+        label: '13. رادار الكاش (المستحق قبل الإيداع، آخر إيداع، أيام عدم التوريد، والمستحق بعد التوريد)'
+      });
+    }
+    if (!DR_GRANULAR_GROUPS.some(g => g.groupTitle && g.groupTitle.includes('رادار الكاش'))) {
+      DR_GRANULAR_GROUPS.push({
+        groupTitle: '💵 رادار الكاش في التقرير اليومي (4 مؤشرات + جدول الرادار)',
+        items: [
+          { key: 'cr_kpi_pre',     label: 'كرت: الكاش المستحق قبل الإيداع' },
+          { key: 'cr_kpi_lastdep', label: 'كرت: آخر إيداع تم' },
+          { key: 'cr_kpi_nondays', label: 'كرت: عدد أيام عدم التوريد' },
+          { key: 'cr_kpi_net',     label: 'كرت: الكاش المستحق بعد التوريد' },
+          { key: 'cr_table_main',  label: 'جدول: رادار الكاش التفصيلي للسائقين' }
+        ]
+      });
+    }
+
+    // Add checkbox 13 in Daily Report Studio modal sidebar if present
+    window.addEventListener('DOMContentLoaded', () => {
+      const sec12Chk = document.getElementById('drSec_sups');
+      if (sec12Chk && sec12Chk.parentElement && sec12Chk.parentElement.parentElement && !document.getElementById('drSec_cashradar')) {
+        const lbl = document.createElement('label');
+        lbl.style.cssText = sec12Chk.parentElement.style.cssText;
+        lbl.innerHTML = `<input type="checkbox" id="drSec_cashradar" checked onchange="saveDailyReportManualInputs()" /> <span>13. رادار الكاش والتوريدات اليومية</span>`;
+        sec12Chk.parentElement.parentElement.appendChild(lbl);
+      }
+    });
+
+    const _v21OrigLoadDrState = loadDailyReportManualState;
+    loadDailyReportManualState = function() {
+      const st = _v21OrigLoadDrState();
+      if (st.enabledSections && st.enabledSections.cashradar === undefined) {
+        st.enabledSections.cashradar = true;
+      }
+      return st;
+    };
+
+    const _v21OrigComputeDailyReportDataset = computeDailyReportDataset;
+    computeDailyReportDataset = function() {
+      const d = _v21OrigComputeDailyReportDataset();
+      const coFilter = d.coFilter || 'ALL';
+      const manualState = d.manualState;
+      const riders = (DB.allRidersList || []).filter(r => coFilter === 'ALL' || r.co === coFilter);
+
+      let totCashPreDeposit = 0;
+      let totCashDailyDeposit = 0;
+      let totCashLastDeposit = 0;
+      let totCashNetAfterDeposit = 0;
+      let cashOver20Count = 0;
+      let maxNonDepositDays = 0;
+      let totalNonDepositDaysSum = 0;
+
+      const cashRadarRows = riders
+        .filter(r => isDrItemVisible(manualState, `row_cr_${r.id}`))
+        .map(r => {
+          const preDep = Number((r.pendingCash || 0).toFixed(3));
+          const dailyDep = Number((r.dailyDeposit || 0).toFixed(3));
+          const lastDep = dailyDep > 0 ? dailyDep : Number((r.lastDepositAmount || 0).toFixed(3));
+          const lastDepSource = dailyDep > 0
+            ? (DB.dailyDepositSheet?.filename ? `إيداع يومي (${DB.dailyDepositSheet.filename.replace(/\.(xlsx|xls|csv)$/i,'')})` : 'إيداع اليوم')
+            : (lastDep > 0 ? `توريد سابق (يوم ${r.lastDepositDate || '--'})` : 'لا يوجد إيداع');
+          const nonDepDays = parseInt(r.nonDepositDaysCount, 10) || 0;
+          const netAfterDep = Number((r.netPendingCash || 0).toFixed(3));
+
+          totCashPreDeposit += preDep;
+          totCashDailyDeposit += dailyDep;
+          totCashLastDeposit += lastDep;
+          totCashNetAfterDeposit += netAfterDep;
+          if (netAfterDep > 20) cashOver20Count++;
+          if (nonDepDays > maxNonDepositDays) maxNonDepositDays = nonDepDays;
+          totalNonDepositDaysSum += nonDepDays;
+
+          return {
+            id: r.id,
+            nameAr: r.nameAr,
+            nameEn: r.nameEn,
+            co: r.co,
+            zone: r.zone,
+            preDepositCash: preDep,
+            dailyDeposit: dailyDep,
+            lastDepositAmount: lastDep,
+            lastDepositSource: lastDepSource,
+            nonDepositDaysCount: nonDepDays,
+            netAfterDepositCash: netAfterDep,
+            isOver20: netAfterDep > 20,
+            waUrl: buildDirectWhatsAppUrlForRider(r)
+          };
+        })
+        .filter(row => row.preDepositCash > 0 || row.dailyDeposit > 0 || row.netAfterDepositCash > 0 || row.lastDepositAmount > 0)
+        .sort((a, b) => (b.netAfterDepositCash - a.netAfterDepositCash) || (b.preDepositCash - a.preDepositCash));
+
+      d.cashRadar = {
+        totCashPreDeposit: Number(totCashPreDeposit.toFixed(3)),
+        totCashDailyDeposit: Number(totCashDailyDeposit.toFixed(3)),
+        totCashLastDeposit: Number(totCashLastDeposit.toFixed(3)),
+        totCashNetAfterDeposit: Number(totCashNetAfterDeposit.toFixed(3)),
+        cashOver20Count,
+        maxNonDepositDays,
+        avgNonDepositDays: cashRadarRows.length > 0 ? Number((totalNonDepositDaysSum / cashRadarRows.length).toFixed(1)) : 0,
+        rows: cashRadarRows
+      };
+      return d;
+    };
+
+    const _v21OrigBuildDarkDrBody = buildDarkDailyReportBodyHTML;
+    buildDarkDailyReportBodyHTML = function(d, chartUrls = null, isInteractivePreview = false) {
+      const baseHtml = _v21OrigBuildDarkDrBody(d, chartUrls, isInteractivePreview);
+      const st = d.manualState;
+      const sec = st.enabledSections || {};
+      const vis = (key) => isDrItemVisible(st, key);
+
+      if (sec.cashradar === false || !d.cashRadar) {
+        return baseHtml;
+      }
+
+      const cr = d.cashRadar;
+      const cashRadarHtml = `
+        <!-- SECTION 13: رادار الكاش في التقرير اليومي (الكاش المستحق قبل الإيداع - آخر إيداع تم - عدد أيام عدم التوريد - الكاش المستحق بعد التوريد) -->
+        <div style="background:#0F172A;border:1.5px solid #1E293B;border-right:5px solid #F59E0B;border-radius:14px;padding:14px 16px;margin-top:4px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <b style="font-size:15px;font-weight:900;color:#FBBF24;">💵 ${drEditableTerm(isInteractivePreview, st, 'sec_title_cashradar', 'رادار الكاش والتوريدات اليومية (Cash & Deposits Radar)')}</b>
+              <span style="background:rgba(239,68,68,0.18);color:#FCA5A5;border:1px solid rgba(239,68,68,0.4);padding:2px 10px;border-radius:99px;font-size:11px;font-weight:900;">
+                🚨 متجاوزو حد 20 د.ك: ${cr.cashOver20Count} سائق
+              </span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              ${isInteractivePreview ? `
+                <button class="dr-no-export" onclick="triggerGlobalSlotUpload('DAILY_DEPOSITS')" style="background:linear-gradient(135deg,#059669,#10B981);color:#FFF;border:none;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:900;cursor:pointer;">📤 رفع شيت الإيداعات اليومي</button>
+                <button class="dr-no-export" onclick="toggleDailyReportSectionKey('cashradar', false)" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:2px 8px;font-size:10.5px;font-weight:800;cursor:pointer;">✕ إخفاء القسم</button>
+              ` : ''}
+            </div>
+          </div>
+
+          <!-- 4 Cash Radar Summary KPI Cards -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:12px;">
+            ${vis('cr_kpi_pre') ? `
+            <div style="background:#161F30;border:1px solid #26334D;border-top:3px solid #F59E0B;border-radius:11px;padding:10px 13px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'cr_kpi_pre', 'كرت الكاش المستحق قبل الإيداع')}
+              <div style="font-size:11px;color:#94A3B8;font-weight:800;">1. الكاش المستحق قبل الإيداع</div>
+              <div style="font-size:19px;font-weight:900;color:#FBBF24;margin-top:3px;">${cr.totCashPreDeposit.toFixed(3)} د.ك</div>
+              <div style="font-size:10px;color:#CBD5E1;">إجمالي أرصدة شيتات الكاش (PendingDues)</div>
+            </div>` : ''}
+
+            ${vis('cr_kpi_lastdep') ? `
+            <div style="background:#161F30;border:1px solid #26334D;border-top:3px solid #38BDF8;border-radius:11px;padding:10px 13px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'cr_kpi_lastdep', 'كرت آخر إيداع تم')}
+              <div style="font-size:11px;color:#94A3B8;font-weight:800;">2. آخر إيداع تم (التوريد المطروح)</div>
+              <div style="font-size:19px;font-weight:900;color:#38BDF8;margin-top:3px;">-${cr.totCashDailyDeposit > 0 ? cr.totCashDailyDeposit.toFixed(3) : cr.totCashLastDeposit.toFixed(3)} د.ك</div>
+              <div style="font-size:10px;color:#CBD5E1;">شيت الإيداع اليومي: ${cr.totCashDailyDeposit.toFixed(3)} د.ك</div>
+            </div>` : ''}
+
+            ${vis('cr_kpi_nondays') ? `
+            <div style="background:#161F30;border:1px solid #26334D;border-top:3px solid #A855F7;border-radius:11px;padding:10px 13px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'cr_kpi_nondays', 'كرت عدد أيام عدم التوريد')}
+              <div style="font-size:11px;color:#94A3B8;font-weight:800;">3. عدد أيام عدم التوريد</div>
+              <div style="font-size:19px;font-weight:900;color:#C084FC;margin-top:3px;">أقصى تأخير: ${cr.maxNonDepositDays} يوم</div>
+              <div style="font-size:10px;color:#CBD5E1;">متوسط عدم التوريد: ${cr.avgNonDepositDays} يوم (${cr.cashOver20Count} متجاوز)</div>
+            </div>` : ''}
+
+            ${vis('cr_kpi_net') ? `
+            <div style="background:linear-gradient(135deg,#450A0A,#161F30);border:1.5px solid #EF4444;border-radius:11px;padding:10px 13px;position:relative;">
+              ${drCardRemoveBtn(isInteractivePreview, 'cr_kpi_net', 'كرت الكاش المستحق بعد التوريد')}
+              <div style="font-size:11px;color:#FCA5A5;font-weight:800;">4. الكاش المستحق بعد التوريد (الصافي)</div>
+              <div style="font-size:20px;font-weight:900;color:#F87171;margin-top:3px;">${cr.totCashNetAfterDeposit.toFixed(3)} د.ك</div>
+              <div style="font-size:10px;color:#FECACA;">صافي الكاش المعلق بالشارع بعد طرح الإيداع</div>
+            </div>` : ''}
+          </div>
+
+          ${vis('cr_table_main') ? `
+          <div style="position:relative;max-height:${isInteractivePreview ? '340px' : 'none'};overflow-y:auto;">
+            <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+              <thead>
+                <tr style="background:#161F30;color:#38BDF8;">
+                  <th style="padding:6px 7px;border:1px solid #26334D;width:36px;text-align:center;">#</th>
+                  <th style="padding:6px 7px;border:1px solid #26334D;">اسم السائق</th>
+                  <th style="padding:6px 7px;border:1px solid #26334D;">ID / الشركة</th>
+                  <th style="padding:6px 7px;border:1px solid #26334D;color:#FBBF24;">1. الكاش المستحق قبل الإيداع</th>
+                  <th style="padding:6px 7px;border:1px solid #26334D;color:#38BDF8;">2. آخر إيداع تم</th>
+                  <th style="padding:6px 7px;border:1px solid #26334D;color:#C084FC;">3. عدد أيام عدم التوريد</th>
+                  <th style="padding:6px 7px;border:1px solid #26334D;color:#F87171;">4. الكاش المستحق بعد التوريد</th>
+                  <th style="padding:6px 7px;border:1px solid #26334D;">الحالة</th>
+                  ${isInteractivePreview ? `<th class="dr-no-export" style="padding:6px;border:1px solid #26334D;width:30px;text-align:center;">✕</th>` : ''}
+                </tr>
+              </thead>
+              <tbody>
+                ${cr.rows.map((r, idx) => `
+                  <tr style="background:${idx % 2 === 0 ? '#0F172A' : '#131B2E'};">
+                    <td style="padding:5.5px 7px;border:1px solid #26334D;font-weight:900;color:#94A3B8;text-align:center;">${idx + 1}</td>
+                    <td style="padding:5.5px 7px;border:1px solid #26334D;font-weight:800;color:#F8FAFC;">
+                      <a href="${r.waUrl}" target="_blank" style="color:#F8FAFC;text-decoration:none;">💬 ${r.nameAr}</a>
+                      <small style="color:#94A3B8;display:block;font-size:10px;">${r.nameEn}</small>
+                    </td>
+                    <td style="padding:5.5px 7px;border:1px solid #26334D;color:#38BDF8;font-weight:800;">${r.co} <code style="color:#CBD5E1;">${r.id}</code></td>
+                    <td style="padding:5.5px 7px;border:1px solid #26334D;font-weight:900;color:#FBBF24;">${r.preDepositCash.toFixed(3)} د.ك</td>
+                    <td style="padding:5.5px 7px;border:1px solid #26334D;font-weight:900;color:#38BDF8;">
+                      ${r.dailyDeposit > 0 ? `-${r.dailyDeposit.toFixed(3)} د.ك` : (r.lastDepositAmount > 0 ? `${r.lastDepositAmount.toFixed(3)} د.ك` : '0.000 د.ك')}
+                      <small style="display:block;font-size:9.5px;color:#94A3B8;">${r.lastDepositSource}</small>
+                    </td>
+                    <td style="padding:5.5px 7px;border:1px solid #26334D;text-align:center;">
+                      <span style="background:${r.nonDepositDaysCount > 2 ? 'rgba(239,68,68,0.2)' : 'rgba(168,85,247,0.18)'};color:${r.nonDepositDaysCount > 2 ? '#FCA5A5' : '#D8B4FE'};padding:2px 8px;border-radius:99px;font-weight:900;font-size:10.5px;">
+                        ⏳ ${r.nonDepositDaysCount} يوم
+                      </span>
+                    </td>
+                    <td style="padding:5.5px 7px;border:1px solid #26334D;font-weight:900;font-size:12.5px;color:${r.netAfterDepositCash > 20 ? '#F87171' : r.netAfterDepositCash > 0 ? '#FBBF24' : '#34D399'};">
+                      ${r.netAfterDepositCash.toFixed(3)} د.ك
+                    </td>
+                    <td style="padding:5.5px 7px;border:1px solid #26334D;text-align:center;">
+                      <span style="background:${r.isOver20 ? 'rgba(239,68,68,0.18)' : r.netAfterDepositCash > 0 ? 'rgba(245,158,11,0.16)' : 'rgba(16,185,129,0.18)'};color:${r.isOver20 ? '#FCA5A5' : r.netAfterDepositCash > 0 ? '#FDE68A' : '#6EE7B7'};padding:2px 7px;border-radius:99px;font-size:10px;font-weight:800;">
+                        ${r.isOver20 ? '🚨 متجاوز (>20)' : r.netAfterDepositCash > 0 ? '⚠️ رصيد معلق' : '✅ مصفر'}
+                      </span>
+                    </td>
+                    ${isInteractivePreview ? `<td class="dr-no-export" style="padding:4px;border:1px solid #26334D;text-align:center;"><button onclick="removeDailyReportElement('row_cr_${r.id}', 'صف كاش السائق ${r.nameAr}')" title="إزالة هذا الصف" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;border-radius:4px;width:20px;height:20px;cursor:pointer;font-weight:900;">✕</button></td>` : ''}
+                  </tr>
+                `).join('')}
+              </tbody>
+              <tfoot>
+                <tr style="background:#1E293B;color:#FFFFFF;font-weight:900;">
+                  <td colspan="3" style="padding:7px;border:1px solid #334155;">إجمالي رادار الكاش (${cr.rows.length} سائق)</td>
+                  <td style="padding:7px;border:1px solid #334155;color:#FBBF24;">${cr.totCashPreDeposit.toFixed(3)} د.ك</td>
+                  <td style="padding:7px;border:1px solid #334155;color:#38BDF8;">-${cr.totCashDailyDeposit.toFixed(3)} د.ك</td>
+                  <td style="padding:7px;border:1px solid #334155;color:#C084FC;text-align:center;">أقصى: ${cr.maxNonDepositDays} يوم</td>
+                  <td style="padding:7px;border:1px solid #334155;color:#F87171;font-size:13px;">${cr.totCashNetAfterDeposit.toFixed(3)} د.ك</td>
+                  <td style="padding:7px;border:1px solid #334155;text-align:center;color:#FCA5A5;">${cr.cashOver20Count} متجاوز</td>
+                  ${isInteractivePreview ? `<td class="dr-no-export" style="border:1px solid #334155;"></td>` : ''}
+                </tr>
+              </tfoot>
+            </table>
+          </div>` : ''}
+        </div>
+      `;
+
+      return baseHtml + cashRadarHtml;
+    };
+
+    // Also include Cash Radar sheet when exporting Daily Report to Excel (.xlsx)
+    const _v21OrigExportDrExcel = exportDailyReportExcelWorkbook;
+    exportDailyReportExcelWorkbook = function() {
+      if (typeof XLSX === 'undefined') {
+        _v21OrigExportDrExcel();
+        return;
+      }
+      const d = computeDailyReportDataset();
+      const st = d.manualState;
+      const sec = st.enabledSections || {};
+      if (sec.cashradar === false || !d.cashRadar) {
+        _v21OrigExportDrExcel();
+        return;
+      }
+      // Temporarily hook XLSX.writeFile to append the Cash Radar sheet before writing
+      const origWriteFile = XLSX.writeFile;
+      XLSX.writeFile = function(wb, filename) {
+        try {
+          const cr = d.cashRadar;
+          const crSheetRows = [
+            ['رادار الكاش والتوريدات اليومية — C.O FLEET', `تاريخ التقرير: ${d.selDay}`, 'المستحق قبل الإيداع', cr.totCashPreDeposit.toFixed(3), 'الإيداع اليومي المطروح', cr.totCashDailyDeposit.toFixed(3), 'المستحق بعد التوريد', cr.totCashNetAfterDeposit.toFixed(3)],
+            [],
+            ['#', 'الاسم بالعربي', 'الاسم بالإنجليزي', 'الشركة', 'ID', 'الزون', '1. الكاش المستحق قبل الإيداع (د.ك)', '2. آخر إيداع تم (د.ك)', 'تفاصيل آخر إيداع', '3. عدد أيام عدم التوريد', '4. الكاش المستحق بعد التوريد (د.ك)', 'الحالة'],
+            ...cr.rows.map((r, i) => [
+              i + 1, r.nameAr, r.nameEn, r.co, r.id, r.zone,
+              r.preDepositCash.toFixed(3),
+              (r.dailyDeposit > 0 ? r.dailyDeposit : r.lastDepositAmount).toFixed(3),
+              r.lastDepositSource,
+              r.nonDepositDaysCount,
+              r.netAfterDepositCash.toFixed(3),
+              r.isOver20 ? 'متجاوز الحد (>20 د.ك)' : (r.netAfterDepositCash > 0 ? 'رصيد معلق' : 'منتظم')
+            ])
+          ];
+          XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(crSheetRows), 'رادار الكاش والتوريدات');
+        } catch (e) {
+          console.warn('Could not append Cash Radar sheet:', e);
+        } finally {
+          XLSX.writeFile = origWriteFile;
+        }
+        return origWriteFile.call(XLSX, wb, filename);
+      };
+      _v21OrigExportDrExcel();
+    };
+
+    // -------------------------------------------------------------------------
+    // 5. QUALITY MATRIX DRIVER SELECTION FOR EXPORT (Requirement 6)
+    //    (تحديد السائقين الذين يمكن تصديرهم في تقرير الكوالتي من خلال مصفوفة الكوالتي)
+    // -------------------------------------------------------------------------
+    APP.selectedQualityDriverIds = new Set();
+    APP.qualitySelectionInitialized = false;
+
+    function syncQualitySelectedBadgesUI(visibleList) {
+      const vList = visibleList || getFilteredQualityRidersList();
+      if (!APP.qualitySelectionInitialized && vList.length > 0) {
+        vList.forEach(r => APP.selectedQualityDriverIds.add(String(r.id)));
+        APP.qualitySelectionInitialized = true;
+      }
+      const checkedInVisible = vList.filter(r => APP.selectedQualityDriverIds.has(String(r.id)));
+      const badge = document.getElementById('qualityCheckedExportCountBadge');
+      if (badge) {
+        badge.textContent = `☑️ المحدد للتصدير: ${checkedInVisible.length} من ${vList.length} سائق`;
+        badge.className = `badge ${checkedInVisible.length > 0 ? 'badge-good' : 'badge-failed'}`;
+      }
+      const masterChk = document.getElementById('qualityMasterSelectAllChk');
+      if (masterChk) {
+        masterChk.checked = vList.length > 0 && checkedInVisible.length === vList.length;
+        masterChk.indeterminate = checkedInVisible.length > 0 && checkedInVisible.length < vList.length;
+      }
+      // Show/hide dossier cards below based on checkbox selection!
+      vList.forEach(r => {
+        const dosEl = document.getElementById('qDossier_' + r.id);
+        if (dosEl) {
+          dosEl.style.display = (checkedInVisible.length === 0 || APP.selectedQualityDriverIds.has(String(r.id))) ? '' : 'none';
+        }
+      });
+    }
+
+    function toggleQualityDriverSelection(riderId, isChecked) {
+      const idStr = String(riderId);
+      if (isChecked) APP.selectedQualityDriverIds.add(idStr);
+      else APP.selectedQualityDriverIds.delete(idStr);
+      APP.qualitySelectionInitialized = true;
+      const rowEl = document.getElementById('qMasterRow_' + idStr);
+      if (rowEl) {
+        rowEl.style.opacity = isChecked ? '1' : '0.52';
+        rowEl.style.background = isChecked ? 'rgba(37, 99, 235, 0.04)' : 'transparent';
+      }
+      syncQualitySelectedBadgesUI();
+    }
+
+    function selectAllVisibleQualityDrivers(checkBool) {
+      const vList = getFilteredQualityRidersList();
+      APP.qualitySelectionInitialized = true;
+      if (!APP._explicitlyUncheckedQualityIds) APP._explicitlyUncheckedQualityIds = new Set();
+      vList.forEach(r => {
+        const idStr = String(r.id);
+        if (checkBool) {
+          APP.selectedQualityDriverIds.add(idStr);
+          APP._explicitlyUncheckedQualityIds.delete(idStr);
+        } else {
+          APP.selectedQualityDriverIds.delete(idStr);
+          APP._explicitlyUncheckedQualityIds.add(idStr);
+        }
+      });
+      APP._lastQualityFilterKey = vList.map(x => x.id).join(",");
+      renderQualityPage();
+      showToast(checkBool
+        ? `☑️ تم تحديد جميع السائقين المعروضين (${vList.length} سائق) لتصديرهم في تقرير الكوالتي!`
+        : `⬜ تم إلغاء تحديد السائقين — اختر السائقين المطلوب تصديرهم فقط بوضع علامة (☑️).`
+      );
+    }
+
+    const _v20OrigRenderQualityPage = renderQualityPage;
+    renderQualityPage = function() {
+      _v20OrigRenderQualityPage();
+
+      const selectedList = getFilteredQualityRidersList();
+      if (!APP.qualitySelectionInitialized) {
+        selectedList.forEach(r => APP.selectedQualityDriverIds.add(String(r.id)));
+        APP.qualitySelectionInitialized = true;
+      } else {
+        // Ensure if user changed filter/count, newly visible drivers default to checked unless user explicitly unchecked them
+        if (APP._lastQualityFilterKey !== `${selectedList.map(x => x.id).join(',')}`) {
+          const prevKey = APP._lastQualityFilterKey;
+          APP._lastQualityFilterKey = `${selectedList.map(x => x.id).join(',')}`;
+          if (!prevKey) {
+            selectedList.forEach(r => APP.selectedQualityDriverIds.add(String(r.id)));
+          } else {
+            selectedList.forEach(r => {
+              if (!APP._explicitlyUncheckedQualityIds || !APP._explicitlyUncheckedQualityIds.has(String(r.id))) {
+                APP.selectedQualityDriverIds.add(String(r.id));
+              }
+            });
+          }
+        }
+      }
+
+      // Inject the Selection Checkbox cell into each row of #qualityMasterTableTbody
+      const tbody = document.getElementById('qualityMasterTableTbody');
+      if (tbody) {
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        rows.forEach((tr, idx) => {
+          const r = selectedList[idx];
+          if (!r) return;
+          const isChk = APP.selectedQualityDriverIds.has(String(r.id));
+          tr.id = 'qMasterRow_' + r.id;
+          tr.style.opacity = isChk ? '1' : '0.52';
+          tr.style.background = isChk ? 'rgba(37, 99, 235, 0.04)' : 'transparent';
+          if (!tr.querySelector('.q-drv-export-chk-td')) {
+            const td = document.createElement('td');
+            td.className = 'q-drv-export-chk-td';
+            td.style.cssText = 'text-align:center;width:46px;';
+            td.innerHTML = `<input type="checkbox" class="q-drv-export-chk" data-rid="${r.id}" ${isChk ? 'checked' : ''} onchange="handleQualityRowChkChange('${r.id}', this.checked)" style="width:17px;height:17px;accent-color:var(--blue);cursor:pointer;" title="تحديد هذا السائق لتصديره في تقرير الكوالتي" />`;
+            tr.insertBefore(td, tr.firstChild);
+          }
+        });
+      }
+
+      syncQualitySelectedBadgesUI(selectedList);
+    };
+
+    APP._explicitlyUncheckedQualityIds = new Set();
+    function handleQualityRowChkChange(riderId, isChecked) {
+      if (!isChecked) APP._explicitlyUncheckedQualityIds.add(String(riderId));
+      else APP._explicitlyUncheckedQualityIds.delete(String(riderId));
+      toggleQualityDriverSelection(riderId, isChecked);
+    }
+
+    // Wrap exportQualityDarkExecutivePDF so it ONLY exports the drivers checked in the Quality Matrix!
+    const _v20OrigExportQualityPDF = exportQualityDarkExecutivePDF;
+    exportQualityDarkExecutivePDF = function() {
+      const origGetFiltered = getFilteredQualityRidersList;
+      const fullFiltered = origGetFiltered();
+      const checkedDrivers = fullFiltered.filter(r => APP.selectedQualityDriverIds.has(String(r.id)));
+
+      if (checkedDrivers.length === 0) {
+        showToast('⚠️ يرجى تحديد سائق واحد على الأقل بعلامة (☑️) من مصفوفة الكوالتي لتصديره في التقرير!');
+        return;
+      }
+
+      try {
+        getFilteredQualityRidersList = function() {
+          return checkedDrivers;
+        };
+        _v20OrigExportQualityPDF();
+        showToast(`🖨️ تم إصدار تقرير الكوالتي لعدد (${checkedDrivers.length}) سائق محددين من مصفوفة الكوالتي!`);
+      } finally {
+        getFilteredQualityRidersList = origGetFiltered;
+      }
+    };
+
+    // -------------------------------------------------------------------------
+    // 6. TOPBAR MENUS, GSAP FAST PAGE TRANSITIONS & TABLE LEFT/RIGHT SCROLLERS
+    // -------------------------------------------------------------------------
+    function toggleTopbarMenu(event, menuId) {
+      if (event) event.stopPropagation();
+      const menu = document.getElementById(menuId);
+      if (!menu) return;
+      const wasOpen = menu.classList.contains('open');
+      closeAllTopbarMenus();
+      if (!wasOpen) {
+        if (typeof syncReportChecklistMenusUI === 'function') syncReportChecklistMenusUI();
+        menu.classList.add('open');
+        if (window.gsap) {
+          gsap.fromTo(menu, { opacity: 0, y: -8, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.18, ease: 'power2.out' });
+        }
+      }
+    }
+
+    function closeAllTopbarMenus() {
+      ['topbarQuickUploadMenu', 'topbarSyncMonthMenu', 'topbarUnifiedReportsMenu', 'topbarQuickToolsMenu', 'pdfCustomDropdownMenu', 'drTopbarCheckMenu'].forEach(id => {
+        document.getElementById(id)?.classList.remove('open');
+      });
+    }
+
+    document.addEventListener('click', () => {
+      closeAllTopbarMenus();
+    });
+
+    // Prevent V18 from injecting duplicate buttons into the topbar since they are now inside #topbarUnifiedReportsMenu
+    injectV18WeeklyShiftsButtonsAndReportMenus = function() {
+      if (!document.getElementById('v18GlobalWeeklyShiftsInput')) {
+        const inp = document.createElement('input');
+        inp.type = 'file';
+        inp.id = 'v18GlobalWeeklyShiftsInput';
+        inp.accept = '.xlsx,.xls,.csv';
+        inp.style.display = 'none';
+        inp.onchange = (e) => handleUploadWeeklyShiftSchedule(e);
+        document.body.appendChild(inp);
+      }
+      if (typeof syncReportChecklistMenusUI === 'function') syncReportChecklistMenusUI();
+    };
+
+    // neutralise V21 Bento renderer since the user requested removing that Hero/KPI grid
+    renderV21ExecutiveBentoDashboard = function() {};
+
+    // Interactive Left/Right Scroll Navigator for all tables (.tbl-wrap) so user never needs to zoom out!
+    function attachSoftTableScrollNavigators() {
+      const wraps = document.querySelectorAll('.page-section.active .tbl-wrap');
+      wraps.forEach((wrap, idx) => {
+        if (!wrap.id) wrap.id = 'softTblWrap_' + APP.activePage + '_' + idx;
+        let navBar = wrap.previousElementSibling;
+        if (!navBar || !navBar.classList.contains('soft-tbl-scroll-nav')) {
+          navBar = document.createElement('div');
+          navBar.className = 'soft-tbl-scroll-nav';
+          navBar.innerHTML = `
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span>↔️</span>
+              <span>التحكم السلس بالتمرير الأفقي للجدول (اسحب بالماوس أو اضغط للتحرك يميناً ويساراً بدون زووم):</span>
+            </div>
+            <div class="soft-scroll-btn-grp">
+              <button type="button" class="soft-scroll-pan-btn" onclick="scrollTableHorizontally('${wrap.id}', 360)" title="تحريك الجدول لليمين">▶ يمين</button>
+              <button type="button" class="soft-scroll-pan-btn" onclick="scrollTableHorizontally('${wrap.id}', -360)" title="تحريك الجدول لليسار">يسار ◀</button>
+              <button type="button" class="soft-scroll-pan-btn" onclick="scrollTableToEdge('${wrap.id}', 'start')" title="بداية الجدول">⏭️ البداية</button>
+              <button type="button" class="soft-scroll-pan-btn" onclick="scrollTableToEdge('${wrap.id}', 'end')" title="نهاية الجدول">النهاية ⏮️</button>
+            </div>
+          `;
+          wrap.parentNode.insertBefore(navBar, wrap);
+        }
+
+        // Check if table actually overflows horizontally; only show the helper bar when table is wider than container
+        requestAnimationFrame(() => {
+          const tbl = wrap.querySelector('table');
+          const hasOverflow = tbl && (tbl.scrollWidth > wrap.clientWidth + 18 || tbl.querySelectorAll('thead th').length >= 8);
+          navBar.style.display = hasOverflow ? 'flex' : 'none';
+        });
+      });
+    }
+
+    function scrollTableHorizontally(wrapId, deltaX) {
+      const wrap = document.getElementById(wrapId);
+      if (!wrap) return;
+      wrap.scrollBy({ left: deltaX, behavior: 'smooth' });
+    }
+
+    function scrollTableToEdge(wrapId, edge) {
+      const wrap = document.getElementById(wrapId);
+      if (!wrap) return;
+      if (edge === 'start') {
+        wrap.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        // In RTL browsers, scrolling to the left end can be negative or positive depending on browser engine
+        wrap.scrollTo({ left: -wrap.scrollWidth, behavior: 'smooth' });
+        setTimeout(() => {
+          if (wrap.scrollLeft === 0) wrap.scrollTo({ left: wrap.scrollWidth, behavior: 'smooth' });
+        }, 60);
+      }
+    }
+
+    // GSAP High-Speed Page Navigation & Micro-Animations
+    function runGSAPPageEntrance(targetSection) {
+      if (!targetSection || !window.gsap) return;
+      const hdr = targetSection.querySelector('.page-header, .apple-hero-card');
+      const cards = Array.from(targetSection.querySelectorAll('.kpi-card, .profit-card, .notes-box, .form-box, .chart-card, .upload-slot-card')).slice(0, 14);
+      if (hdr) {
+        gsap.fromTo(hdr, { opacity: 0.35, y: 8 }, { opacity: 1, y: 0, duration: 0.22, ease: 'power2.out', clearProps: 'transform' });
+      }
+      if (cards.length > 0) {
+        gsap.fromTo(cards,
+          { opacity: 0.4, y: 10, scale: 0.99 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.24, stagger: 0.018, ease: 'power2.out', clearProps: 'transform' }
+        );
+      }
+    }
+
+    // Concise Page Titles & Instant GSAP Navigation Override
+    const CONCISE_PAGE_TITLES_V22 = {
+      overview: '🏠 الرئيسية',
+      autopilot: '🧠 المستشار الذكي',
+      liveroster: '📡 الشفتات والأونلاين',
+      cashfuel: '💵 الكاش والإيداعات',
+      histbudget: '🏛️ أرشيف الشهور',
+      alerts: '🚨 رادار المخاطر',
+      orders: '📦 الأوردرات والفئات',
+      fleet: '🪪 بطاقات السائقين',
+      contracts: '📜 العقود والوثائق',
+      attendance: '📅 سجل الحضور',
+      performance: '📈 الأداء والتراكمي',
+      quality: '🎯 الكوالتي والمشرفين',
+      maintenance: '🔧 الصيانة والورشة',
+      payroll: '💰 الرواتب وواتساب',
+      investigations: '⚖️ التحقيقات',
+      violations: '🚦 المخالفات',
+      finance: '💎 المالية والفواتير'
+    };
+
+    navigate = function(pageId) {
+      APP.activePage = pageId;
+      document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById('page-' + pageId);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-sub').forEach(el => el.classList.remove('active'));
+      const navItem = document.getElementById('nav-' + pageId);
+      if (navItem) navItem.classList.add('active');
+
+      const crumbEl = document.getElementById('currentCrumb');
+      if (crumbEl) crumbEl.textContent = CONCISE_PAGE_TITLES_V22[pageId] || pageId;
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      // Render immediately and animate smoothly with GSAP
+      renderCurrentPage();
+      requestAnimationFrame(() => {
+        runGSAPPageEntrance(target);
+        attachSoftTableScrollNavigators();
+        if (typeof initSmoothTableDragScroll === 'function') initSmoothTableDragScroll();
+      });
+    };
+
+    const _v21OrigNavigateOrders = navigateOrders;
+    navigateOrders = function(co) {
+      _v21OrigNavigateOrders(co);
+      const crumbEl = document.getElementById('currentCrumb');
+      if (crumbEl) crumbEl.textContent = `📦 الأوردرات (${co === 'ALL' ? 'كل الشركات' : co})`;
+      const target = document.getElementById('page-orders');
+      requestAnimationFrame(() => {
+        runGSAPPageEntrance(target);
+        attachSoftTableScrollNavigators();
+      });
+    };
+
+    // Shorten active month label in topbar so it stays crisp and compact
+    const _v21OrigUpdateMonthTopbar = typeof updateTopbarActiveMonthBadge === 'function' ? updateTopbarActiveMonthBadge : null;
+    function refreshTopbarCompactMonthLabelV22() {
+      const lbl = document.getElementById('topActiveMonthLabel');
+      if (lbl && typeof getActiveMonthInfo === 'function') {
+        const m = getActiveMonthInfo();
+        lbl.textContent = `${m.nameAr}`;
+      }
+    }
+
+    // Re-initialize with V22 enhancements
+    initSheetsStorage();
+    normalizeFleetDatabase();
+    updateGlobalAlertCounters();
+    renderOverviewUploadedChips();
+    refreshTopbarCompactMonthLabelV22();
+    renderCurrentPage();
+    requestAnimationFrame(() => {
+      runGSAPPageEntrance(document.querySelector('.page-section.active'));
+      attachSoftTableScrollNavigators();
+      if (typeof syncAllDailyReportCheckMenus === 'function') syncAllDailyReportCheckMenus();
+    });
+  </script>
+
 </body>
 </html>
