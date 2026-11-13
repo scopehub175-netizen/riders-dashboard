@@ -2432,7 +2432,7 @@
     <button class="mob-nav-btn" onclick="navigate('liveroster')"><span>📡</span><span>الأونلاين</span></button>
     <button class="mob-nav-btn" onclick="navigate('cashfuel')"><span>📂</span><span>الشيتات</span></button>
     <button class="mob-nav-btn" onclick="navigate('fleet')"><span>🚗</span><span>السائقين</span></button>
-    <button class="mob-nav-btn" onclick="toggleMobileFieldMode()"><span>🖥️</span><span>سطح المكتب</span></button>
+    <!-- Removed desktop mode toggle per user request -->
   </nav>
 
   <!-- TOPBAR (V22 ORGANIZED SOFT UI & LIQUID GRADIENT HEADER) -->
@@ -2461,10 +2461,7 @@
 
     <!-- 3. Left Organized Action Groups (Clean Single-Row Soft UI Pills & Menus) -->
     <div class="topbar-actions soft-topbar-actions">
-      <!-- A. All Sections Launchpad -->
-      <button class="top-btn soft-pill-accent" onclick="openAppleLaunchpadModal()" title="خريطة كافة أقسام الداشبورد السريعة">
-        <span>🧭</span> <span>كل الأقسام</span>
-      </button>
+      <!-- A. All Sections Launchpad removed per user request -->
 
       <!-- B. Quick Upload Hub Dropdown (Cash, Daily Deposits, Shifts, Multi-Upload) -->
       <div class="pdf-dropdown-wrap" id="topbarQuickUploadDropdownWrap">
@@ -2547,7 +2544,7 @@
         <div class="pdf-dropdown-menu soft-dropdown-panel" id="topbarUnifiedReportsMenu" onclick="event.stopPropagation()" style="width:375px;max-height:85vh;overflow-y:auto;">
           <div style="font-size:13.5px;font-weight:900;color:var(--text);margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
             <span>📊 مركز التقارير الرسمية والتخصيص</span>
-            <span class="badge badge-bike">5 تقارير</span>
+            <span class="badge badge-bike">3 تقارير</span>
           </div>
 
           <!-- 1. Daily Report -->
@@ -2558,23 +2555,7 @@
             <button class="btn-secondary" style="padding:7px 11px!important;" onclick="closeAllTopbarMenus();toggleDailyReportCheckDropdown(event, 'drTopbarCheckMenu');" title="تحديد عناصر التقرير اليومي">☑️ العناصر</button>
           </div>
 
-          <!-- 2. Monthly Report -->
-          <div class="soft-report-menu-row" data-v18-rep-menu-wrap="1" data-v18-rep-type="MONTHLY" data-v18-rep-menu-id="v18TopbarMonthlyCheckMenu" style="position:relative;">
-            <button class="btn-action" style="flex:1;justify-content:flex-start;background:linear-gradient(135deg,#DC2626,#EA580C)!important;" onclick="closeAllTopbarMenus();exportOctoberMonthlyPerformancePDF();">
-              <span>📈</span> <span>2. التقرير الشهري للأداء والموازنة</span>
-            </button>
-            <button class="btn-secondary" style="padding:7px 11px!important;" onclick="toggleV18ReportCheckMenu(event, 'v18TopbarMonthlyCheckMenu')" title="تحديد عناصر التقرير الشهري">☑️ العناصر</button>
-            <div class="v18-menu-holder"></div>
-          </div>
-
-          <!-- 3. Annual Report M1-M10 -->
-          <div class="soft-report-menu-row" data-v18-rep-menu-wrap="1" data-v18-rep-type="ANNUAL" data-v18-rep-menu-id="v18TopbarAnnualCheckMenu" style="position:relative;">
-            <button class="btn-action" style="flex:1;justify-content:flex-start;background:linear-gradient(135deg,#4F46E5,#7C3AED)!important;" onclick="closeAllTopbarMenus();exportAnnualComprehensiveReportM1ToM10PDF();">
-              <span>📘</span> <span>3. التقرير السنوي الشامل (ش1–ش10)</span>
-            </button>
-            <button class="btn-secondary" style="padding:7px 11px!important;" onclick="toggleV18ReportCheckMenu(event, 'v18TopbarAnnualCheckMenu')" title="تحديد عناصر التقرير السنوي">☑️ العناصر</button>
-            <div class="v18-menu-holder"></div>
-          </div>
+          <!-- Monthly & Annual reports removed from topbar per user request -->
 
           <!-- 4. Executive Company PDF -->
           <div class="soft-report-menu-row" id="pdfDropdownContainer">
@@ -2629,10 +2610,8 @@
         <button class="top-btn apple-icon-only soft-icon-circle" onclick="togglePrivacyMode()" id="privacyBtn" title="إخفاء / إظهار أرباح الشركة">👁️<span id="privacyBtnTxt" style="display:none;"></span></button>
         <button class="top-btn apple-icon-only soft-icon-circle" onclick="toggleTopbarMenu(event, 'topbarQuickToolsMenu')" title="أدوات العرض، التلفزيون، الموبايل، والسحابة">⚙️</button>
         <div class="pdf-dropdown-menu soft-dropdown-panel" id="topbarQuickToolsMenu" onclick="event.stopPropagation()" style="width:240px;left:0;right:auto;">
-          <div style="font-size:12.5px;font-weight:900;color:var(--text);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);">⚙️ أدوات العرض والنظام</div>
+          <div style="font-size:12.5px;font-weight:900;color:var(--text);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);">⚙️ أدوات النظام والسحابة</div>
           <div style="display:flex;flex-direction:column;gap:6px;">
-            <button class="btn-secondary" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();openTvWallboardModal();">📺 شاشة العرض للمكتب (TV)</button>
-            <button class="btn-secondary" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();toggleMobileFieldMode();">📱 وضع الموبايل الميداني</button>
             <button class="btn-secondary" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();openGmailLiveReportConfigModal();">📧 ربط الجيميل والتقرير الحي</button>
             <button class="btn-secondary" style="width:100%;justify-content:flex-start;" onclick="closeAllTopbarMenus();openSheetSettingsModal();">☁️ إعدادات السحابة والنسخ</button>
           </div>
@@ -3056,8 +3035,8 @@
         <div class="notes-box" id="notesBoxSection" data-ov-group="leaders">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:10px;">
             <div>
-              <h3 style="font-size:15px;font-weight:900;color:var(--text);">📋 سجل الملاحظات اليومية الذكي (Auto-Workflow Operational Notes)</h3>
-              <p style="font-size:12px;color:var(--text2);">ابحث باسم السائق عربي/إنجليزي أو ID، أو حول أي ملاحظة إلى أمر صيانة أو تحقيق بضغطة زر</p>
+              <h3 style="font-size:15px;font-weight:900;color:var(--text);">📋 سجل الملاحظات اليومية الذكي (Auto-Workflow Operational Notes — شهر 11 / نوفمبر فقط)</h3>
+              <p style="font-size:12px;color:var(--text2);">يعرض ملاحظات شهر نوفمبر (شهر 11) فقط — ابحث باسم السائق أو ID، أو حول أي ملاحظة إلى أمر صيانة أو تحقيق بضغطة زر</p>
             </div>
             <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
               <input type="text" class="filter-input" id="overviewNotesSearch" placeholder="🔍 ابحث باسم السائق في سجل الملاحظات..." style="min-width:240px;" oninput="renderOverviewNotesRegistry()" />
@@ -9111,25 +9090,35 @@
       const tbody = document.getElementById('overviewNotesTbody');
       const filterType = document.getElementById('notesTypeFilter').value;
       const searchQ = (document.getElementById('overviewNotesSearch')?.value || '').toLowerCase().trim();
+      const activeM = (typeof getActiveMonthInfo === 'function') ? getActiveMonthInfo() : { key: '2026-11' };
+      const isNov = activeM.key === '2026-11';
       let noteCount = 0;
       let rowsHtml = '';
 
+      if (!isNov) {
+        document.getElementById('notesCountBadge').textContent = '0 ملاحظة (مقتصر على شهر 11)';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--text3);">هذا السجل مخصص لملاحظات شهر نوفمبر (شهر 11) فقط. قم بتحديد شهر نوفمبر 2026 كشهر نشط لعرض الملاحظات.</td></tr>';
+        return;
+      }
+
       DB.allRidersList.filter(r => matchesCohort(r, APP.activeCohort)).forEach(r => {
         if (searchQ && !r.nameAr.toLowerCase().includes(searchQ) && !r.nameEn.toLowerCase().includes(searchQ) && !r.id.toLowerCase().includes(searchQ)) return;
-        Object.entries(r.dailyNotes).forEach(([day, note]) => {
+        Object.entries(r.dailyNotes || {}).forEach(([day, note]) => {
+          const dNum = parseInt(day, 10);
+          if (isNaN(dNum) || dNum < 1 || dNum > 30) return;
           if (filterType !== 'ALL' && !note.includes(filterType)) return;
           noteCount++;
           const isMaint = note.includes('حادث') || note.includes('صيانة');
           const actionBtn = isMaint
-            ? `<button class="btn-action" style="background:var(--orange);padding:4px 10px;font-size:11.5px;" onclick="triggerActionFromNote('${r.id}', ${day}, '${note.replace(/'/g, '')}')">🔧 + أمر صيانة فوري</button>`
-            : `<button class="btn-action" style="background:var(--red);padding:4px 10px;font-size:11.5px;" onclick="triggerActionFromNote('${r.id}', ${day}, '${note.replace(/'/g, '')}')">🔍 + إحالة للتحقيق</button>`;
+            ? `<button class="btn-action" style="background:var(--orange);padding:4px 10px;font-size:11.5px;" onclick="triggerActionFromNote('${r.id}', ${dNum}, '${note.replace(/'/g, '')}')">🔧 + أمر صيانة فوري</button>`
+            : `<button class="btn-action" style="background:var(--red);padding:4px 10px;font-size:11.5px;" onclick="triggerActionFromNote('${r.id}', ${dNum}, '${note.replace(/'/g, '')}')">🔍 + إحالة للتحقيق</button>`;
 
           rowsHtml += `
             <tr>
               <td style="font-weight:800;cursor:pointer;" onclick="openDriverModal('${r.id}')">${r.nameAr} <small style="color:var(--text3);">(${r.nameEn})</small></td>
               <td><code>${r.id}</code></td>
               <td><span class="badge badge-${r.co.toLowerCase()}">${r.co}</span></td>
-              <td style="font-weight:800;color:var(--orange);">${day} أكتوبر</td>
+              <td style="font-weight:800;color:var(--orange);">${dNum} نوفمبر</td>
               <td style="font-weight:800;">${note}</td>
               <td>${actionBtn}</td>
             </tr>
@@ -9137,8 +9126,8 @@
         });
       });
 
-      document.getElementById('notesCountBadge').textContent = `${noteCount} ملاحظة مسجلة`;
-      tbody.innerHTML = rowsHtml || '<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--text3);">لا توجد ملاحظات مطابقة للبحث أو الفلتر.</td></tr>';
+      document.getElementById('notesCountBadge').textContent = `${noteCount} ملاحظة (نوفمبر)`;
+      tbody.innerHTML = rowsHtml || '<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--text3);">لا توجد ملاحظات مسجلة لشهر 11 (نوفمبر) مطابقة للبحث أو الفلتر.</td></tr>';
     }
 
     function triggerActionFromNote(riderId, day, noteText) {
@@ -9148,13 +9137,13 @@
       if (n.includes('صيانة') || n.includes('حادث')) {
         navigate('maintenance');
         selectRiderForMaint(riderId);
-        document.getElementById('maintIssueSummary').value = `تحويل تلقائي من ملاحظات الأوردرات ليوم ${day} أكتوبر: ${n}`;
-        document.getElementById('maintEntryDate').value = `2026-10-${String(day).padStart(2, '0')}T09:00`;
+        document.getElementById('maintIssueSummary').value = `تحويل تلقائي من ملاحظات الأوردرات ليوم ${day} نوفمبر: ${n}`;
+        document.getElementById('maintEntryDate').value = `2026-11-${String(day).padStart(2, '0')}T09:00`;
       } else {
         navigate('investigations');
         selectRiderForInv(riderId);
-        document.getElementById('invTopic').value = `ملاحظة تشغيلية بيوم ${day} أكتوبر (${n})`;
-        document.getElementById('invDate').value = `2026-10-${String(day).padStart(2, '0')}`;
+        document.getElementById('invTopic').value = `ملاحظة تشغيلية بيوم ${day} نوفمبر (${n})`;
+        document.getElementById('invDate').value = `2026-11-${String(day).padStart(2, '0')}`;
       }
     }
 
@@ -10229,7 +10218,8 @@
         <th class="sortable" onclick="sortTableBy('attendance', 'late')">تأخير <span class="sort-arrow" id="sort-attendance-late">↕</span></th>
         <th class="sortable" onclick="sortTableBy('attendance', 'suspended')">إيقاف <span class="sort-arrow" id="sort-attendance-suspended">↕</span></th>
         <th class="sortable" onclick="sortTableBy('attendance', 'noShift')">بدون شفت <span class="sort-arrow" id="sort-attendance-noShift">↕</span></th>`;
-      for (let i = 1; i <= 31; i++) ths += `<th style="text-align:center;">${i}</th>`;
+      const attDaysCount = DB.activeMonthDaysCount || ((typeof getActiveMonthInfo === 'function' && getActiveMonthInfo().key === '2026-11') ? 30 : 31);
+      for (let i = 1; i <= attDaysCount; i++) ths += `<th style="text-align:center;">${i}</th>`;
       ths += `</tr>`;
       document.getElementById('attendanceThead').innerHTML = ths;
       updateSortHeaderArrows('attendance', attSortCols);
@@ -16538,10 +16528,12 @@
 
     // Auto-complete Online Attendance sheet after 10 October from Orders Daily (orders > 0 = Worked, excuse = Excused/Suspended, 0 without excuse = No Show / No Shift)
     function autoCompleteAttendanceFromOrdersDaily() {
-      const maxActiveDay = Math.max(12, DB.lastActiveOrdersDay || 12);
+      const activeM = (typeof getActiveMonthInfo === 'function') ? getActiveMonthInfo() : { key: '2026-11', daysCount: 30 };
+      const daysInMonth = DB.activeMonthDaysCount || activeM.daysCount || 30;
+      const maxActiveDay = activeM.key === '2026-11' ? Math.min(daysInMonth, Math.max(13, DB.lastActiveOrdersDay || 13)) : Math.max(12, DB.lastActiveOrdersDay || 12);
       DB.allRidersList.forEach(r => {
         let wCnt = 0, nsCnt = 0, suspCnt = 0, lateCnt = 0, noShiftCnt = 0;
-        for (let d = 1; d <= 31; d++) {
+        for (let d = 1; d <= daysInMonth; d++) {
           let st = String(r.attendance.dailyStatus[d - 1] || '').trim();
           const ord = r.dailyOrders[d - 1] || 0;
           const note = String(r.dailyNotes[d] || '').trim();
@@ -16566,7 +16558,7 @@
               }
             } else if (!st) {
               // 0 orders and no excuse note on an active day (>10 Oct)
-              const isoD = `2026-10-${String(d).padStart(2, '0')}`;
+              const isoD = `${activeM.key}-${String(d).padStart(2, '0')}`;
               const bookedMins = r.sevenDayMins?.[isoD] || 0;
               if (bookedMins > 0 || r.totalOrders > 0) {
                 st = 'No Show';
@@ -17219,8 +17211,8 @@
       const kpiGrid = document.getElementById('cumPerfKpiGrid');
       if (kpiGrid) {
         kpiGrid.innerHTML = `
-          <div class="kpi-card"><div class="kpi-label">📦 إجمالي الأوردرات التراكمي (7 شهور فعلية + أكت)</div><div class="kpi-value" style="color:var(--blue);">${totCumOrd.toLocaleString()}</div><div class="kpi-footer-link"><span>لـ ${filteredRiders.length} سائق في الفلتر</span></div></div>
-          <div class="kpi-card"><div class="kpi-label">✅ متوسط نسبة القبول التراكمية</div><div class="kpi-value val-pos">${avgCumAcc.toFixed(1)}%</div><div class="kpi-footer-link"><span>من شيتات الأداء الفعلية (ش1–ش9)</span></div></div>
+          <div class="kpi-card"><div class="kpi-label">📦 إجمالي الأوردرات التراكمي (ش1–ش10 + 13 يوم نوفمبر)</div><div class="kpi-value" style="color:var(--blue);">${totCumOrd.toLocaleString()}</div><div class="kpi-footer-link"><span>لـ ${filteredRiders.length} سائق (شامل شهور 1–10 + نوفمبر)</span></div></div>
+          <div class="kpi-card"><div class="kpi-label">✅ متوسط نسبة القبول التراكمية</div><div class="kpi-value val-pos">${avgCumAcc.toFixed(1)}%</div><div class="kpi-footer-link"><span>من شيتات الأداء الفعلية (ش1–ش10 + نوفمبر)</span></div></div>
           <div class="kpi-card"><div class="kpi-label">⚡ متوسط اليو تي ار (UTR) التراكمي</div><div class="kpi-value" style="color:var(--orange);">${avgCumUtr.toFixed(2)} طلب/س</div><div class="kpi-footer-link"><span>معدل كفاءة التوصيل بالساعة</span></div></div>
           <div class="kpi-card"><div class="kpi-label">📈 معدل النمو التراكمي للأداء</div><div class="kpi-value ${avgGrowth >= 0 ? 'val-pos' : 'val-neg'}">${avgGrowth >= 0 ? '+' : ''}${avgGrowth.toFixed(1)}%</div><div class="kpi-footer-link"><span>مقارنة بداية العام بالشهور الأخيرة</span></div></div>
         `;
@@ -17233,7 +17225,7 @@
         document.getElementById('cumDriverSpotlightBox').innerHTML = `
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
             <div>
-              <span class="badge badge-good">🌟 بطاقة الأداء التراكمي الفعلي للسائق (ش1، ش3، ش4، ش5، ش6، ش7، ش9 + أكتوبر)</span>
+              <span class="badge badge-good">🌟 بطاقة الأداء التراكمي الفعلي للسائق (ش1 – ش10 أكتوبر + 13 يوم نوفمبر)</span>
               <h3 style="font-size:17px;font-weight:900;margin-top:4px;">${sr.nameAr} (${sr.nameEn}) — ID: <code>${sr.id}</code> • الشركة: <span class="badge badge-${sr.co.toLowerCase()}">${sr.co}</span> • المشرف: <b>${sr.supervisor}</b></h3>
             </div>
             <div style="display:flex;gap:8px;">
@@ -19772,16 +19764,21 @@
       const dispAvp = mPerf ? ((mPerf.avpPct || 100) + '%') : (r.perf.avpPct || '100%');
       const dispBatch = mPerf ? mPerf.batch : (ledgerItem ? ledgerItem.batch : r.batch);
 
+      const ledgerRows = r.monthlyFinancialLedger || [];
+      const expectedTableBottom = 482 + 30 + (ledgerRows.length * 28) + 34;
+      const dynamicChartY = Math.max(820, expectedTableBottom + 24);
+      const dynamicCanvasH = dynamicChartY + 310 + 40;
+
       const canvas = document.createElement('canvas');
       canvas.width = 1560;
-      canvas.height = 1140;
+      canvas.height = dynamicCanvasH;
       const ctx = canvas.getContext('2d');
 
-      const bg = ctx.createLinearGradient(0, 0, 1560, 1140);
+      const bg = ctx.createLinearGradient(0, 0, 1560, dynamicCanvasH);
       bg.addColorStop(0, '#090D16');
       bg.addColorStop(1, '#141D2E');
       ctx.fillStyle = bg;
-      ctx.fillRect(0, 0, 1560, 1140);
+      ctx.fillRect(0, 0, 1560, dynamicCanvasH);
 
       ctx.fillStyle = isHistorical ? '#8B5CF6' : '#0071E3';
       ctx.fillRect(0, 0, 1560, 12);
@@ -19929,7 +19926,7 @@
       ctx.fillText('Company Profit', rightX + 625, my + 20);
       my += 30;
 
-      (r.monthlyFinancialLedger || []).forEach((ml, idx) => {
+      ledgerRows.forEach((ml, idx) => {
         const isSel = (isHistorical && ml.monthKey === monthKey) || (!isHistorical && ml.isCurrent);
         ctx.fillStyle = isSel ? 'rgba(0, 113, 227, 0.28)' : (idx % 2 === 0 ? '#1E293B' : '#151C28');
         ctx.fillRect(rightX, my, 735, 28);
@@ -19949,8 +19946,33 @@
         my += 28;
       });
 
+      // Clear Bottom TOTAL Row (المجموع التراكمي)
+      const sumOrdTot = ledgerRows.reduce((s, x) => s + (x.orders || 0), 0);
+      const sumRevTot = ledgerRows.reduce((s, x) => s + (x.talabatRev || 0), 0);
+      const sumNetTot = ledgerRows.reduce((s, x) => s + (x.driverNet || 0), 0);
+      const sumFmTot  = ledgerRows.reduce((s, x) => s + (x.fuelAndMobile || 0), 0);
+      const sumProfTot = ledgerRows.reduce((s, x) => s + (x.companyNetProfit || 0), 0);
+      ctx.fillStyle = '#064E3B';
+      ctx.fillRect(rightX, my, 735, 34);
+      ctx.strokeStyle = '#10B981';
+      ctx.strokeRect(rightX, my, 735, 34);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 12.5px Cairo, Inter, sans-serif';
+      ctx.fillText('TOTAL (المجموع)', rightX + 10, my + 22);
+      ctx.fillStyle = '#38BDF8';
+      ctx.fillText(sumOrdTot.toLocaleString(), rightX + 185, my + 22);
+      ctx.fillStyle = '#C4B5FD';
+      ctx.fillText(`${sumRevTot.toFixed(2)}`, rightX + 275, my + 22);
+      ctx.fillStyle = '#34D399';
+      ctx.fillText(`${sumNetTot.toFixed(2)}`, rightX + 415, my + 22);
+      ctx.fillStyle = '#FBBF24';
+      ctx.fillText(`${sumFmTot.toFixed(1)}`, rightX + 535, my + 22);
+      ctx.fillStyle = '#6EE7B7';
+      ctx.fillText(`${sumProfTot.toFixed(2)} KWD`, rightX + 625, my + 22);
+      my += 34;
+
       // Bottom Full-Width Monthly Growth Trajectory Chart (Jan - Latest Month)
-      const chartX = 40, chartY = 805, chartW = 1480, chartH = 300;
+      const chartX = 40, chartY = dynamicChartY, chartW = 1480, chartH = 310;
       ctx.fillStyle = '#151C28';
       ctx.fillRect(chartX, chartY, chartW, chartH);
       ctx.strokeStyle = '#334155';
@@ -19999,6 +20021,78 @@
       document.getElementById('cohortImageModalOverlay').classList.add('open');
     };
 
+    function exportDriverDetailedPayslipPDF(riderId) {
+      const r = DB.fleet[riderId];
+      if (!r) return;
+      const activeM = (typeof getActiveMonthInfo === 'function') ? getActiveMonthInfo() : { nameAr: 'نوفمبر 2026', shortAr: 'نوفمبر' };
+      const ledgerRows = r.monthlyFinancialLedger || [];
+      const structuredHtml = (typeof renderStructuredPayslipTableHTML === 'function') ? renderStructuredPayslipTableHTML(r) : '';
+      const rowsHtml = ledgerRows.map(ml => `
+        <tr style="${ml.isCurrent ? 'background:#FFF7ED;font-weight:800;' : ''}">
+          <td><b>${ml.monthLabel}</b></td>
+          <td>باتش ${ml.batch}</td>
+          <td style="color:#1D4ED8;font-weight:900;">${ml.orders}</td>
+          <td>${ml.rateUsed.toFixed(3)} د.ك</td>
+          <td style="color:#059669;font-weight:800;">${fmtKWD(ml.talabatRev)}</td>
+          <td>${fmtKWD(ml.ordersValue)}</td>
+          <td style="color:#DC2626;">${ml.targetDiff} (${ml.targetPenalty > 0 ? '-' + fmtKWD(ml.targetPenalty) : '0.000'})</td>
+          <td style="color:#D97706;">${fmtKWD(ml.cashDed)}</td>
+          <td style="color:#DC2626;">${fmtKWD(ml.violations)}</td>
+          <td style="color:#059669;">+${fmtKWD(ml.invoices)}</td>
+          <td style="color:#7C3AED;">-${fmtKWD(ml.debtDed)} (متبقي: ${ml.remainingDebt.toFixed(1)})</td>
+          <td style="font-weight:900;color:${ml.driverNet >= 0 ? '#059669' : '#DC2626'};">${fmtKWD(ml.driverNet)}</td>
+          <td>-${fmtKWD(ml.fuelAndMobile)}</td>
+          <td style="font-weight:900;color:${ml.companyNetProfit >= 0 ? '#059669' : '#DC2626'};">${fmtKWD(ml.companyNetProfit)}</td>
+        </tr>
+      `).join('');
+
+      const win = window.open('', '_blank', 'width=1200,height=850');
+      if (!win) { alert('يرجى السماح بالنوافذ المنبثقة (Popups) لتصدير PDF'); return; }
+      win.document.write(`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>Payslip PDF - ${r.nameAr} (${r.id})</title>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+        <style>
+          body{font-family:'Cairo',sans-serif;background:#F8FAFC;color:#0F172A;padding:24px;margin:0;}
+          .hdr{background:linear-gradient(135deg,#0F172A,#1E293B);color:#FFF;padding:18px 22px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+          .card{background:#FFF;border:1px solid #E2E8F0;border-radius:12px;padding:14px;margin-bottom:16px;}
+          table{width:100%;border-collapse:collapse;font-size:11.5px;}
+          th,td{border:1px solid #CBD5E1;padding:6px 8px;text-align:center;}
+          th{background:#0F172A;color:#FFF;font-weight:800;}
+          .no-print{margin-bottom:14px;display:flex;justify-content:flex-end;gap:10px;}
+          @media print{.no-print{display:none!important;} body{padding:8px;background:#FFF;}}
+        </style></head><body>
+        <div class="no-print"><button onclick="window.print()" style="background:#059669;color:#FFF;border:none;padding:9px 20px;border-radius:8px;font-weight:900;cursor:pointer;font-family:'Cairo',sans-serif;">🖨️ طباعة / حفظ PDF للسائق</button></div>
+        <div class="hdr">
+          <div>
+            <h2 style="margin:0;font-size:18px;">💎 كشف PAYSLIP التفصيلي وحصيلة إيرادات طلبات وراتب السائق وصافي ربح الشركة</h2>
+            <div style="font-size:12.5px;color:#38BDF8;margin-top:4px;">السائق: <b>${r.nameAr}</b> (${r.nameEn}) | ID: <b>${r.id}</b> | الشركة: <b>${r.co}</b> | المركبة: <b>${r.vehicleType}</b> (${r.plateNum || '--'}) | الفترة: يناير – ${activeM.nameAr}</div>
+          </div>
+          <div style="text-align:left;font-size:11.5px;color:#CBD5E1;">شركة ففتين منت لتوصيل الطلبات الاستهلاكيه<br/>تاريخ الإصدار: ${new Date().toLocaleDateString('ar-KW')}</div>
+        </div>
+        <div class="card">${structuredHtml}</div>
+        <div class="card">
+          <h3 style="margin:0 0 10px 0;font-size:14px;color:#0F172A;">📊 الجدول المالي الشهري التراكمي (يناير – ${activeM.nameAr})</h3>
+          <table>
+            <thead><tr><th>الشهر</th><th>الباتش</th><th>الأوردرات</th><th>تسعيرة طلبات</th><th>إيراد طلبات</th><th>قيمة الأوردرات</th><th>فارق التارجت</th><th>الكاش</th><th>مخالفات</th><th>فواتير (+)</th><th>مديونية</th><th>صافي راتب السائق</th><th>بنزين+موبايل</th><th>صافي ربح الشركة</th></tr></thead>
+            <tbody>
+              ${rowsHtml}
+              <tr style="background:#ECFDF5;font-weight:900;font-size:12.5px;">
+                <td colspan="2">الإجمالي التراكمي (يناير – ${activeM.shortAr})</td>
+                <td style="color:#1D4ED8;">${(r.annualTotalOrders || r.totalOrders).toLocaleString()}</td>
+                <td>--</td>
+                <td style="color:#059669;">${fmtKWD(r.annualTalabatRevenue)}</td>
+                <td colspan="6"></td>
+                <td style="color:#D97706;">${fmtKWD(r.annualDriverNetSalary)}</td>
+                <td>--</td>
+                <td style="color:#059669;">${fmtKWD(r.annualCompanyNetProfit)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <script>setTimeout(()=>window.print(), 450);<\/script>
+      </body></html>`);
+      win.document.close();
+    }
+
     // Enhance openDriverModal to show the full Month-by-Month Talabat Revenue vs Salary vs Company Profit Ledger
     const _v14OpenDriverModal = openDriverModal;
     openDriverModal = function(riderId) {
@@ -20013,7 +20107,10 @@
         <div style="background:var(--card-alt);border:1.5px solid var(--blue);border-radius:12px;padding:14px;margin-top:14px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
             <h4 style="font-size:14.5px;font-weight:900;color:var(--blue);margin:0;">💎 كشف PAYSLIP التفصيلي وحصيلة إيرادات طلبات وراتب السائق وصافي ربح الشركة (من يناير حتى ${activeM.nameAr})</h4>
-            <span class="badge badge-good">تسعيرة الباتش القديمة (ش1–15 سبتمبر) + التسعيرة الجديدة (16 سبتمبر–الآن)</span>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <button class="btn-action" style="background:linear-gradient(135deg,#DC2626,#EA580C)!important;padding:6px 14px;font-size:12px;font-weight:900;" onclick="exportDriverDetailedPayslipPDF('${r.id}')">📄 تصدير كشف Payslip PDF للسائق</button>
+              <span class="badge badge-good">تسعيرة الباتش القديمة (ش1–15 سبتمبر) + التسعيرة الجديدة (16 سبتمبر–الآن)</span>
+            </div>
           </div>
           ${renderStructuredPayslipTableHTML(r)}
           <div class="tbl-wrap" style="margin-top:12px;margin-bottom:0;">
@@ -21865,11 +21962,14 @@
     }
 
     function computeDailyReportDataset() {
-      const selDay = parseInt(document.getElementById('drTargetDaySelect')?.value || DB.lastActiveOrdersDay || 12, 10);
+      const activeM = (typeof getActiveMonthInfo === 'function') ? getActiveMonthInfo() : { key: '2026-11', nameAr: 'نوفمبر 2026', shortAr: 'نوف', shortEn: 'Nov', daysCount: 30 };
+      const selDay = parseInt(document.getElementById('drTargetDaySelect')?.value || DB.lastActiveOrdersDay || 9, 10);
       const coFilter = document.getElementById('drCompanyFilterSelect')?.value || 'ALL';
       const customExcusesMap = JSON.parse(safeStorage.getItem(STORAGE_KEYS.dailyExcusesCustom) || '{}');
       const manualState = loadDailyReportManualState();
-      const dailyTarget = Math.max(1, parseInt(manualState.dailyTargetThreshold, 10) || 15);
+      const carDailyTarget = 15;
+      const bikeDailyTarget = 13;
+      const dailyTarget = bikeDailyTarget; // baseline reference for fleet averages
 
       const riders = DB.allRidersList.filter(r => coFilter === 'ALL' || r.co === coFilter);
       const totalRiders = riders.length || 1;
@@ -21891,8 +21991,8 @@
       let sumAcc = 0, sumUtr = 0, sumBreakH = 0, sumActualH = 0, sumPlannedH = 0, sumFailPct = 0, sumQualityScore = 0;
       let perfCount = 0;
 
-      const maxDay = Math.max(selDay, DB.lastActiveOrdersDay || 12);
-      const dailyCurveLabels = Array.from({ length: maxDay }, (_, i) => `${i + 1} أكت`);
+      const maxDay = Math.max(selDay, DB.lastActiveOrdersDay || 9);
+      const dailyCurveLabels = Array.from({ length: maxDay }, (_, i) => `${i + 1} ${activeM.shortAr}`);
       const dailyCurveValues = Array(maxDay).fill(0);
 
       const excuseCatCounts = {};
@@ -21948,18 +22048,19 @@
         totMobileFee += r.mobileFee;
         totNetRevenue += (r.companyGrossRevenue - (wEarned + r.maintCost + r.fuelExpense + r.mobileFee));
 
-        const dailyVariance = dOrd - dailyTarget;
-        const isDailyTargetMet = dOrd >= dailyTarget;
+        const driverDailyTarget = (r.vehicleType === 'Car') ? 15 : 13;
+        const dailyVariance = dOrd - driverDailyTarget;
+        const isDailyTargetMet = dOrd >= driverDailyTarget;
         if (isDailyTargetMet) {
           targetMetCount++;
           metGroupTotalOrders += dOrd;
-          metGroupBaseTargetOrders += dailyTarget;
-          ordersAboveTargetTotal += (dOrd - dailyTarget);
+          metGroupBaseTargetOrders += driverDailyTarget;
+          ordersAboveTargetTotal += (dOrd - driverDailyTarget);
         } else {
           targetDeficitCount++;
           deficitGroupTotalOrders += dOrd;
-          deficitGroupRequiredOrders += dailyTarget;
-          ordersDeficitBelowTargetTotal += (dailyTarget - dOrd);
+          deficitGroupRequiredOrders += driverDailyTarget;
+          ordersDeficitBelowTargetTotal += (driverDailyTarget - dOrd);
         }
 
         for (let d = 0; d < maxDay; d++) {
@@ -22008,7 +22109,7 @@
           batch: r.batch,
           dayOrders: dOrd,
           hasNumericOrderInCell: hasNumericOrderInCell,
-          dailyTarget: dailyTarget,
+          dailyTarget: driverDailyTarget,
           dailyVariance: dailyVariance,
           isDailyTargetMet: isDailyTargetMet,
           totalOrders: r.totalOrders,
@@ -22077,15 +22178,16 @@
 
           cRiders.forEach(r => {
             const dOrd = r.dailyOrders[selDay - 1] || 0;
+            const rTarget = (r.vehicleType === 'Car') ? 15 : 13;
             cDayOrders += dOrd;
             cMonthOrders += (r.totalOrders || 0);
-            if (dOrd >= dailyTarget) {
+            if (dOrd >= rTarget) {
               cMetCount++;
-              cAboveTargetOrders += (dOrd - dailyTarget);
+              cAboveTargetOrders += (dOrd - rTarget);
             } else {
               cDeficitCount++;
               cBeforeTargetOrders += dOrd;
-              cDeficitMissingOrders += (dailyTarget - dOrd);
+              cDeficitMissingOrders += (rTarget - dOrd);
             }
           });
 
@@ -22146,12 +22248,15 @@
       });
       noFuelDriversList.sort((a, b) => (a.isCritical !== b.isCritical ? (a.isCritical ? -1 : 1) : a.rawBal - b.rawBal));
 
-      const monthNamesAr = ['يناير (ش1)', 'فبراير (ش2)', 'مارس (ش3)', 'أبريل (ش4)', 'مايو (ش5)', 'يونيو (ش6)', 'يوليو (ش7)', 'أغسطس (ش8)', 'سبتمبر (ش9)', 'أكتوبر (ش10)'];
-      const annualOrdersValues = Array(10).fill(0);
+      const isNovActive = activeM.key === '2026-11';
+      const monthNamesAr = isNovActive
+        ? ['يناير (ش1)', 'فبراير (ش2)', 'مارس (ش3)', 'أبريل (ش4)', 'مايو (ش5)', 'يونيو (ش6)', 'يوليو (ش7)', 'أغسطس (ش8)', 'سبتمبر (ش9)', 'أكتوبر (ش10)', 'نوفمبر (ش11)']
+        : ['يناير (ش1)', 'فبراير (ش2)', 'مارس (ش3)', 'أبريل (ش4)', 'مايو (ش5)', 'يونيو (ش6)', 'يوليو (ش7)', 'أغسطس (ش8)', 'سبتمبر (ش9)', 'أكتوبر (ش10)'];
+      const annualOrdersValues = Array(monthNamesAr.length).fill(0);
       riders.forEach(r => {
         if (Array.isArray(r.m1ToM9History)) {
           r.m1ToM9History.forEach((h, idx) => {
-            if (idx < 9) annualOrdersValues[idx] += (h.orders || 0);
+            if (idx < 10) annualOrdersValues[idx] += (h.orders || 0);
           });
         }
       });
@@ -22160,14 +22265,18 @@
         if (coFilter !== 'ALL' && DB.fleet[hp.riderId] && DB.fleet[hp.riderId].co !== coFilter) return;
         hpByM[hp.monthKey] = (hpByM[hp.monthKey] || 0) + (hp.orders || 0);
       });
-      ['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09'].forEach((mk, idx) => {
+      ['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09','2026-10'].forEach((mk, idx) => {
         if (coFilter === 'ALL' && typeof V15_OFFICIAL_INVOICES !== 'undefined' && V15_OFFICIAL_INVOICES[mk]) {
           annualOrdersValues[idx] = V15_OFFICIAL_INVOICES[mk].officialOrders;
         } else if (annualOrdersValues[idx] === 0 && hpByM[mk]) {
           annualOrdersValues[idx] = hpByM[mk];
         }
       });
-      annualOrdersValues[9] = cumMonthOrders;
+      if (isNovActive) {
+        annualOrdersValues[10] = cumMonthOrders;
+      } else {
+        annualOrdersValues[9] = cumMonthOrders;
+      }
       const grandAnnualOrdersToDate = annualOrdersValues.reduce((a, b) => a + b, 0);
 
       const excusesTotalDenom = Math.max(1, totalExcusesMonthCount);
@@ -22197,9 +22306,12 @@
       const overallPerfScore = Number((sumQualityScore / pDenom).toFixed(1));
 
       return {
+        activeM,
         selDay,
         coFilter,
         dailyTarget,
+        carDailyTarget,
+        bikeDailyTarget,
         totalRiders,
         todayOrdersTotal,
         totalTodayWorkMinutes,
@@ -22256,13 +22368,17 @@
 
     function populateDailyReportDayAndShiftSelectors() {
       const daySel = document.getElementById('drTargetDaySelect');
-      const lastD = DB.lastActiveOrdersDay || 12;
+      const activeM = (typeof getActiveMonthInfo === 'function') ? getActiveMonthInfo() : { key: '2026-11', nameAr: 'نوفمبر 2026', shortAr: 'نوف' };
+      const lastD = DB.lastActiveOrdersDay || 9;
       if (daySel) {
-        const currentVal = parseInt(daySel.value || lastD, 10);
+        const prevVal = parseInt(daySel.value || 0, 10);
+        const isFirstInit = !daySel.dataset.monthKey || daySel.dataset.monthKey !== activeM.key;
+        daySel.dataset.monthKey = activeM.key;
+        const targetVal = (!isFirstInit && prevVal >= 1 && prevVal <= lastD) ? prevVal : lastD;
         let opts = '';
         for (let d = lastD; d >= 1; d--) {
-          const isSel = (currentVal >= 1 && currentVal <= lastD) ? (d === currentVal) : (d === lastD);
-          opts += `<option value="${d}" ${isSel ? 'selected' : ''}>${d} أكتوبر 2026 ${d === lastD ? '(آخر يوم نشط)' : ''}</option>`;
+          const isSel = (d === targetVal);
+          opts += `<option value="${d}" ${isSel ? 'selected' : ''}>${d} ${activeM.nameAr} ${d === lastD ? '(آخر يوم نشط)' : ''}</option>`;
         }
         daySel.innerHTML = opts;
       }
@@ -22421,7 +22537,7 @@
 
               ${vis('term_badge_target') ? `
                 <span style="background:rgba(245,158,11,0.16);color:#FBBF24;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:900;display:inline-flex;align-items:center;gap:5px;">
-                  <span>التارجت اليومي: ${d.dailyTarget} طلب/يوم</span>
+                  <span>التارجت اليومي: 🚗 15 / 🏍️ 13 طلب/يوم</span>
                   ${isInteractivePreview ? `<span class="dr-no-export" onclick="removeDailyReportElement('term_badge_target', 'شارة التارجت اليومي')" style="cursor:pointer;color:#F87171;font-weight:900;" title="إزالة الشارة">✕</span>` : ''}
                 </span>
               ` : ''}
@@ -22431,7 +22547,7 @@
           ${vis('term_badge_date') ? `
             <div style="text-align:left;font-size:12px;color:#CBD5E1;font-weight:800;position:relative;padding-left:${isInteractivePreview ? '24px' : '0'};">
               ${isInteractivePreview ? `<button class="dr-no-export" onclick="removeDailyReportElement('term_badge_date', 'التاريخ والتوقيت')" title="إزالة التاريخ والتوقيت" style="position:absolute;top:0;left:0;background:rgba(239,68,68,0.18);color:#F87171;border:none;border-radius:5px;width:18px;height:18px;font-size:10px;cursor:pointer;">✕</button>` : ''}
-              <div>📅 اليوم: <b style="color:#38BDF8;">${d.selDay} أكتوبر 2026</b></div>
+              <div>📅 اليوم: <b style="color:#38BDF8;">${d.selDay} ${(d.activeM && d.activeM.nameAr) || 'نوفمبر 2026'}</b></div>
               <div style="font-size:11px;color:#94A3B8;">التوقيت: ${new Date().toLocaleTimeString('ar-KW')}</div>
             </div>
           ` : ''}
@@ -22731,7 +22847,7 @@
             ${drCardRemoveBtn(isInteractivePreview, 'chart_daily', 'شارت منحنى الأوردرات اليومي')}
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-left:${isInteractivePreview ? '22px' : '0'};">
               <b style="font-size:13.5px;color:#38BDF8;">📈 ${drEditableTerm(isInteractivePreview, st, 'lbl_chart_daily', 'منحنى الأوردرات اليومي')}</b>
-              <span style="font-size:11px;color:#94A3B8;">1 – ${d.dailyCurveLabels.length} أكتوبر</span>
+              <span style="font-size:11px;color:#94A3B8;">1 – ${d.dailyCurveLabels.length} ${(d.activeM && d.activeM.shortAr) || 'نوفمبر'}</span>
             </div>
             ${chartUrls && chartUrls.dailyChart ? `<img src="${chartUrls.dailyChart}" style="width:100%;height:auto;border-radius:8px;" />` : `
               <svg viewBox="0 0 670 158" style="width:100%;height:158px;overflow:visible;">
@@ -22746,7 +22862,7 @@
             ${drCardRemoveBtn(isInteractivePreview, 'chart_annual', 'شارت منحنى الأوردرات السنوي')}
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-left:${isInteractivePreview ? '22px' : '0'};">
               <b style="font-size:13.5px;color:#10B981;">📊 ${drEditableTerm(isInteractivePreview, st, 'lbl_chart_annual', 'منحنى الأوردرات السنوي')}</b>
-              <span style="font-size:11px;color:#94A3B8;">شهر 1 (يناير) – شهر 10 (أكتوبر)</span>
+              <span style="font-size:11px;color:#94A3B8;">شهر 1 (يناير) – ${(d.activeM && d.activeM.nameAr) || 'نوفمبر 2026'}</span>
             </div>
             ${chartUrls && chartUrls.annualChart ? `<img src="${chartUrls.annualChart}" style="width:100%;height:auto;border-radius:8px;" />` : `
               <svg viewBox="0 0 660 158" style="width:100%;height:158px;overflow:visible;">
@@ -22783,7 +22899,7 @@
                     <td style="padding:6px;border:1px solid #26334D;font-weight:800;color:#F8FAFC;">${r.nameAr} <small style="color:#94A3B8;">(${r.id})</small></td>
                     <td style="padding:6px;border:1px solid #26334D;color:#38BDF8;font-weight:800;">${r.co}</td>
                     <td style="padding:6px;border:1px solid #26334D;font-weight:900;color:#34D399;font-size:13px;">${r.dayOrders}</td>
-                    <td style="padding:6px;border:1px solid #26334D;font-weight:900;color:#10B981;">+${Math.max(0, r.dayOrders - d.dailyTarget)}</td>
+                    <td style="padding:6px;border:1px solid #26334D;font-weight:900;color:#10B981;">+${Math.max(0, r.dayOrders - r.dailyTarget)}</td>
                     <td style="padding:6px;border:1px solid #26334D;color:#CBD5E1;font-weight:700;">${r.workHoursFormatted} س</td>
                     ${isInteractivePreview ? `<td class="dr-no-export" style="padding:4px;border:1px solid #26334D;text-align:center;"><button onclick="removeDailyReportElement('row_top5_${r.id}', 'صف السائق ${r.nameAr}')" title="إزالة هذا الصف" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;border-radius:4px;width:20px;height:20px;cursor:pointer;font-weight:900;">✕</button></td>` : ''}
                   </tr>
@@ -22818,7 +22934,7 @@
                     <td style="padding:6px;border:1px solid #26334D;font-weight:800;color:#F8FAFC;">${r.nameAr} <small style="color:#94A3B8;">(${r.id})</small></td>
                     <td style="padding:6px;border:1px solid #26334D;color:#38BDF8;font-weight:800;">${r.co}</td>
                     <td style="padding:6px;border:1px solid #26334D;font-weight:900;color:#F87171;font-size:13px;">${r.dayOrders}</td>
-                    <td style="padding:6px;border:1px solid #26334D;font-weight:900;color:#FCA5A5;">-${Math.max(0, d.dailyTarget - r.dayOrders)}</td>
+                    <td style="padding:6px;border:1px solid #26334D;font-weight:900;color:#FCA5A5;">-${Math.max(0, r.dailyTarget - r.dayOrders)}</td>
                     <td style="padding:6px;border:1px solid #26334D;">
                       <span style="background:rgba(56,189,248,0.15);color:#38BDF8;padding:2px 6px;border-radius:5px;font-weight:900;margin-left:5px;">⏱️ ${r.workHoursFormatted} س</span>
                       <span style="color:#FBBF24;font-weight:800;">💬 ${r.effectiveExcuse}</span>
@@ -30999,7 +31115,7 @@
         badgesEl.innerHTML = realM.map(m => {
           const isUp = !!uploadedCumPerf[m.k];
           return `<span class="badge badge-good">✅ ${m.n} ${isUp ? '(مرفوع مخصص)' : ''}</span>`;
-        }).join('') + `<span class="badge badge-warn">⚡ + ${activeM.nameAr} (ش11 — تحديث يومي حي حتى يوم ${DB.lastActiveOrdersDay || 3})</span>`;
+        }).join('') + `<span class="badge badge-warn">⚡ + ${activeM.nameAr} (ش11 — 13 يوم بنوفمبر | آخر يوم مرصود: ${DB.lastActiveOrdersDay || 9} نوفمبر، جاهز لرفع 10-12 نوفمبر)</span>`;
       }
     };
 
@@ -33585,7 +33701,26 @@
       box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28) !important;
     }
 
-    /* Organized Section & Page Titles */
+    /* 75% Chrome Zoom Topbar Polish & Overflow Prevention */
+    .soft-ui-topbar {
+      padding: 0 14px !important;
+      gap: 10px !important;
+    }
+    .soft-search-expanded {
+      flex: 1 1 240px !important;
+      min-width: 210px !important;
+      max-width: 480px !important;
+    }
+    .soft-topbar-actions {
+      gap: 6px !important;
+    }
+    .soft-pill-btn, .soft-pill-accent, .soft-pill-green, .soft-pill-dark, .soft-pill-reports, .soft-pill-purple, .soft-sync-pill {
+      height: 36px !important;
+      padding: 0 11px !important;
+      font-size: 12px !important;
+    }
+
+    /* Organized Section & Page Titles: Titles aligned LEFT, Hints/Subtitles CENTERED */
     .page-header {
       background: var(--card);
       border: 1px solid var(--border);
@@ -33593,11 +33728,34 @@
       padding: 16px 22px;
       margin-bottom: 18px;
       box-shadow: var(--sh);
+      display: flex !important;
+      flex-direction: row-reverse !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      flex-wrap: wrap !important;
+      gap: 14px !important;
+    }
+    .page-header > div:first-child {
+      flex: 1 1 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
     }
     .page-title {
       font-size: 20px !important;
       font-weight: 900 !important;
       letter-spacing: -0.3px;
+      text-align: left !important;
+      width: 100%;
+    }
+    .page-header p,
+    .page-sub,
+    .notes-box > div > div > p,
+    .hint-text,
+    .section-hint {
+      text-align: center !important;
+      margin-inline: auto !important;
+      width: 100%;
     }
   </style>
 
